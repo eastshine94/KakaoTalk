@@ -5,13 +5,14 @@ import {
     Route
 } from 'react-router-dom';
 import {Home} from '~/pages';
+import { PAGE_PATH } from '~/constants';
 
 class App extends Component {
     render() {
         return (
             <Router>
                 <Switch>
-                    <Route path='/' component={Home}/>
+                    <Route path={PAGE_PATH.HOME} component={Home}/>
                 </Switch>
             </Router>
         )
