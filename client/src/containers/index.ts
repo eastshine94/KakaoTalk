@@ -1,0 +1,1 @@
+export { default as FriendsContainer } from './friends/friendsContainer';

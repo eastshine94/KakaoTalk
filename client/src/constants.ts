@@ -1,3 +1,4 @@
-export enum PAGE_PATH  {
+export enum PAGE_PATHS  {
     HOME = '/',
+    MENU = '/menu',
 }

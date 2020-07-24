@@ -26,8 +26,9 @@ module.exports = {
     ]
   },
   devServer: {
-    contentBase: './public',
+    contentBase: path.resolve(__dirname, "public"),
     compress: true,
+    historyApiFallback: true,
     port:3000,
   },
   output: {
@@ -37,7 +38,7 @@ module.exports = {
  
   plugins: [
     new HtmlWebpackPlugin({
-      template: `./public/index.html`,
+      template: path.resolve(__dirname, "/public/index.html"),
     }),
     new CleanWebpackPlugin({
       cleanAfterEveryBuildPatterns: ['build']
