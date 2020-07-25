@@ -61,7 +61,7 @@ export const MainContent = styled.section`
     width: 100%;
     & li{
         position: relative;
-        padding: 20px 10px 20px 80px;
+        padding: 20px 100px 20px 80px;
         & img {
             position: absolute;
             top: 18px;
