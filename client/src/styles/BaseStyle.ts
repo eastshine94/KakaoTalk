@@ -20,7 +20,7 @@ export const SideBar = styled.aside`
     }
 `;
 export const Main = styled.main`
-    margin-left: 100px;
+    padding-left: 100px;
     width: 100%;
     min-height: 100vh;
 `
@@ -72,6 +72,9 @@ export const MainContent = styled.section`
         }
         & p {
             color: #707070;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
             & b{
                 color: #000;
                 font-weight: bold;

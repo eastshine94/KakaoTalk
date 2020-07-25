@@ -15,6 +15,9 @@ const MyProfileBlock = styled.div`
     }
     & p {
         color: #707070;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
         & b{
             color: #000;
             font-weight: bold;
@@ -41,7 +44,7 @@ const Content: React.FC = () => {
             <MyProfileBlock>
                 <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSoy3heSU-2SeFekCWTQ2mgw-WfCzV8DJYdtg&usqp=CAU" alt="profile Image"/>
                 <p><b>내 이름</b></p>
-                <p>상태</p>
+                <p>60606060606060606060606060606060606060606060606060606060606060606060606060606060606060606060606060606060</p>
             </MyProfileBlock>
             <FriendsBorder>
                 <p>친구 100</p>
