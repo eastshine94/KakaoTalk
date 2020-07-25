@@ -13,7 +13,7 @@ class App extends Component {
         return (
             <Router>
                 <Switch>
-                    <Route exact path={PAGE_PATHS.MENU} component={Menu}/>
+                    <Route path={PAGE_PATHS.MENU} component={Menu}/>
                     <Route path={PAGE_PATHS.HOME} component={() => <Redirect to={PAGE_PATHS.MENU}/>}/>
                 </Switch>
             </Router>

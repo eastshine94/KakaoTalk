@@ -33,12 +33,13 @@ module.exports = {
   },
   output: {
     path: path.resolve(__dirname, "build"),
+    publicPath: "/",
     filename: "[chunkhash]_bundle.js"
   },
  
   plugins: [
     new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, "/public/index.html"),
+      template: path.resolve(__dirname, "./public/index.html"),
     }),
     new CleanWebpackPlugin({
       cleanAfterEveryBuildPatterns: ['build']
