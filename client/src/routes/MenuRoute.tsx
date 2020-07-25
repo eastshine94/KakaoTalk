@@ -6,9 +6,9 @@ import {FriendsContainer } from '~/containers'
 const MenuRoute:React.SFC = () => {
     return(
         <Switch>
-            <Route path={`${PAGE_PATHS.MENU}/friends`} component={FriendsContainer}/>
-            <Route path={`${PAGE_PATHS.MENU}/chatting`}/>
-            <Route path={PAGE_PATHS.MENU} component={() => <Redirect to={`${PAGE_PATHS.MENU}/friends`}/>}/>
+            <Route path={PAGE_PATHS.FRIENDS} component={FriendsContainer}/>
+            <Route path={PAGE_PATHS.CHATTING}/>
+            <Route path={PAGE_PATHS.MENU} component={() => <Redirect to={PAGE_PATHS.FRIENDS}/>}/>
         </Switch>
     )
 }

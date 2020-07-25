@@ -14,7 +14,7 @@ class App extends Component {
             <Router>
                 <Switch>
                     <Route path={PAGE_PATHS.MENU} component={Menu}/>
-                    <Route path={PAGE_PATHS.HOME} component={() => <Redirect to={PAGE_PATHS.MENU}/>}/>
+                    <Route path={PAGE_PATHS.HOME} component={() => <Redirect to={PAGE_PATHS.FRIENDS}/>}/>
                 </Switch>
             </Router>
         )

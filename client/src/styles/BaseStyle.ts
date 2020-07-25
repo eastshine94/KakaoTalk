@@ -4,7 +4,7 @@ export const SideBar = styled.aside`
     position: fixed;
     width: 100px;
     height: 100%;
-    min-height: 400px;
+    min-height: 100vh;
     background: #dfdfdf;
     padding-top: 20px;
     z-index: 2;
@@ -22,6 +22,7 @@ export const SideBar = styled.aside`
 export const Main = styled.main`
     margin-left: 100px;
     width: 100%;
+    min-height: 100vh;
 `
 export const MainHeader = styled.section`
     position: fixed;
@@ -58,7 +59,6 @@ export const TitleBlock = styled.section`
 export const MainContent = styled.section`
     margin-top: 100px;
     width: 100%;
-    height: 500px;
     & li{
         position: relative;
         padding: 20px 10px 20px 80px;
