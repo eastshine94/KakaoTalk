@@ -1,5 +1,7 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { PAGE_PATHS } from '../../constants';
 
 const Wrapper = styled.header`
     & ul{
@@ -15,7 +17,7 @@ const Footer: React.FC = () => {
     return(
         <Wrapper>
             <ul>
-                <li>회원 가입</li>
+                <li><Link to= {PAGE_PATHS.SIGNUP}>회원 가입</Link></li>
             </ul>
         </Wrapper>
     )
