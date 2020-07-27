@@ -4,7 +4,7 @@ import {SignupContainer} from '~/containers';
 
 const Wrapper = styled.div`
     width: 100%;
-    height: 100vh;
+    min-height: 100vh;
     background-color: #f5f6f7;
 `;
 

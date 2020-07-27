@@ -43,7 +43,7 @@ const Content: React.FC = () => {
             <form>
                 <label>
                     <h3>아이디</h3>
-                    <span><input type="text" maxLength={MAX_LEN}/></span>
+                    <span><input type="text" maxLength={MAX_LEN} onBlur={()=>console.log("out")}/></span>
                 </label>
                 <label>
                     <h3>비밀번호</h3>

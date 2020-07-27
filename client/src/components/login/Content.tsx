@@ -31,11 +31,12 @@ const Wrapper = styled.main`
 `;
 
 const Content: React.FC = () => {
+    const MAX_LEN = 20;
     return(
         <Wrapper>
             <form>
-                <input type="text" placeholder="계정"/>
-                <input type="password" placeholder="비밀번호"/>
+                <input type="text" placeholder="계정" maxLength={MAX_LEN}/>
+                <input type="password" placeholder="비밀번호" maxLength={MAX_LEN}/>
                 <button>로그인</button>
             </form>
         </Wrapper>
