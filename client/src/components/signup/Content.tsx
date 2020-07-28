@@ -37,6 +37,7 @@ const Wrapper = styled.main`
         background-color: #ffeb33;
         font-size: 15px;
         font-weight: bold;
+        cursor: pointer;
     }
     & p {
         color: red;

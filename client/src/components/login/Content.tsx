@@ -25,8 +25,17 @@ const Wrapper = styled.main`
         margin-top: 5px;
         padding: 10px 5px;
         width: 230px;
-        border: 1px solid #dcdcdc;
-        color: #a2a2a2;
+        border: 1px solid #000;
+        color: #fff;
+        background-color: #423630;
+        outline: none;
+        &:hover {
+            background-color:#594941;
+            cursor: pointer;
+        }
+        &:active{
+            background-color: #423630; 
+        }
     }
 `;
 
