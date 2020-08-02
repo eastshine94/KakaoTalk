@@ -2,6 +2,7 @@ import React, {useState, ChangeEvent, FocusEvent} from 'react';
 import styled from 'styled-components';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { PAGE_PATHS } from '~/constants';
+import { signup, findUser } from '~/apis/auth';
 /* ----------------- 스타일 ----------------- */ 
 const Wrapper = styled.main`
     width: 100%;
@@ -50,20 +51,20 @@ const Wrapper = styled.main`
 const Content: React.FC<RouteComponentProps> = (props) => {
     const MAX_LEN = 20;
     const {history} = props;
-    const [id, setId] = useState("");
+    const [userId, setUserId] = useState("");
     const [pw, setPw] = useState("");
     const [checkPw, setCheckPw] = useState("");
     const [name, setName] = useState("");
 
-    const [ idWarningMsg, setIdWarningMsg] = useState("");
+    const [ userIdWarningMsg, setUserIdWarningMsg] = useState("");
     const [ pwWarningMsg, setPwWarningMsg] = useState("");
     const [ checkPwWarningMsg, setCheckPwWarningMsg] = useState("");
     const [ nameWarningMsg, setNameWarningMsg] = useState("");
 
-    const onIdChange = (event: ChangeEvent<HTMLInputElement>):void => {
+    const onUserIdChange = (event: ChangeEvent<HTMLInputElement>):void => {
         event.preventDefault();
         const value = event.target.value;
-        setId(value);
+        setUserId(value);
     }
 
     const onPwChange = (event: ChangeEvent<HTMLInputElement>):void => {
@@ -82,18 +83,22 @@ const Content: React.FC<RouteComponentProps> = (props) => {
         setName(value);
     }
 
-    const isMatchId = (): boolean => {
+    const isMatchUserId = (): boolean => {
         const regExp = /^[0-9a-z]+$/
-        const isMatch = id.match(regExp);
+        const isMatch = userId.match(regExp);
         return isMatch ? true : false;
     }
-    const isValidId = (): boolean => {
-        const len = id.length;
-        if(len < 5 || !isMatchId()) {
-            setIdWarningMsg("5 ~ 20자의 영문 소문자, 숫자만 사용 가능합니다.")
+    const isValidUserId = (): boolean => {
+        const len = userId.length;
+        if(len < 5 || !isMatchUserId()) {
+            setUserIdWarningMsg("5 ~ 20자의 영문 소문자, 숫자만 사용 가능합니다.");
             return false;
         }
-        setIdWarningMsg("")
+        else if(findUser(userId)){
+            setUserIdWarningMsg("이미 사용중이거나 탈퇴한 아이디입니다.");
+            return false;
+        }
+        setUserIdWarningMsg("")
         return true;
     }
     const isValidPw = (): boolean => {
@@ -123,9 +128,9 @@ const Content: React.FC<RouteComponentProps> = (props) => {
         return true;
     }
 
-    const onIdBlur = (event: FocusEvent<HTMLInputElement>):void => {
+    const onUserIdBlur = (event: FocusEvent<HTMLInputElement>):void => {
         event.preventDefault();
-        isValidId();
+        isValidUserId();
     }
     const onPwBlur = (event: FocusEvent<HTMLInputElement>):void => {
         event.preventDefault();
@@ -142,22 +147,29 @@ const Content: React.FC<RouteComponentProps> = (props) => {
 
 
     const onSubmit = () => {
-        const validId = isValidId();
+        const validId = isValidUserId();
         const validPw = isValidPw();
         const validCheckPw = isValidCheckPw()
         const validName = isValidName();
 
         if( validId && validPw && validCheckPw && validName ){
-            alert("회원 가입 되었습니다.");
-            history.replace(PAGE_PATHS.LOGIN);
+            try{
+                signup({userId, password: pw, name});
+                alert("회원 가입 되었습니다.");
+                history.replace(PAGE_PATHS.LOGIN);
+            }
+            catch(err){
+                alert(err);
+            }
+            
         }
     }
     return(
         <Wrapper>
             <label>
                 <h3>아이디</h3>
-                <span><input type="text" maxLength={MAX_LEN} onChange={onIdChange} onBlur={onIdBlur}/></span>
-                <p>{idWarningMsg}</p>
+                <span><input type="text" maxLength={MAX_LEN} onChange={onUserIdChange} onBlur={onUserIdBlur}/></span>
+                <p>{userIdWarningMsg}</p>
             </label>
             <label>
                 <h3>비밀번호</h3>
