@@ -1,6 +1,6 @@
-import React from 'react';
+import React,{ useState, ChangeEvent, FormEvent} from 'react';
 import styled from 'styled-components';
-
+import { LoginData } from '~/types/auth';
 
 const Wrapper = styled.main`
     width: 100%;
@@ -39,13 +39,35 @@ const Wrapper = styled.main`
     }
 `;
 
-const Content: React.FC = () => {
+interface Props {
+    login(loginData: LoginData): void;
+}
+const Content: React.FC<Props> = (props) => {
+    const { login } = props;
     const MAX_LEN = 20;
+    const [userId, setUserId] = useState("");
+    const [password, setPassword] = useState("");
+    const onUserIdChange = (event: ChangeEvent<HTMLInputElement>):void => {
+        event.preventDefault();
+        const value = event.target.value;
+        setUserId(value);
+    }
+
+    const onPasswordChange = (event: ChangeEvent<HTMLInputElement>):void => {
+        event.preventDefault();
+        const value = event.target.value;
+        setPassword(value);
+    }
+    const onSubmit = (event: FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        login({userId, password});
+    }
+
     return(
         <Wrapper>
-            <form>
-                <input type="text" placeholder="계정" maxLength={MAX_LEN}/>
-                <input type="password" placeholder="비밀번호" maxLength={MAX_LEN}/>
+            <form onSubmit={onSubmit}>
+                <input type="text" placeholder="계정" maxLength={MAX_LEN} onChange={onUserIdChange}/>
+                <input type="password" placeholder="비밀번호" maxLength={MAX_LEN} onChange={onPasswordChange}/>
                 <button>로그인</button>
             </form>
         </Wrapper>

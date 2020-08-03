@@ -34,9 +34,11 @@ export const login = (loginData: LoginData): string|null => {
     const user = findUser(userId);
     if(user){
         if(user.password === password){
-            return JSON.stringify(user);
+            const token = JSON.stringify(user);
+            window.sessionStorage.setItem("jwt", token);
+            return token;
         }
     }
-    return null;
+    throw new Error("계정 또는 비밀번호를 다시 확인해주세요.");
 }
 

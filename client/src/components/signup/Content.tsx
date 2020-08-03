@@ -187,7 +187,6 @@ const Content: React.FC<RouteComponentProps> = (props) => {
                 <p>{nameWarningMsg}</p>
             </label>    
             <button onClick={onSubmit}>가입하기</button>
-          
         </Wrapper>
     )
 }
