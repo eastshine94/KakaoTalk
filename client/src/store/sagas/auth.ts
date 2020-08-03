@@ -21,7 +21,6 @@ function* login$(action: LoginAction){
     }
     catch{
         yield put({type: AuthTypes.LOGIN_FAILURE, payload: '로그인에 실패하였습니다.'});
-        alert("로그인 실패");
     }
 }
 

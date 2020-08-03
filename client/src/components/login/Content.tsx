@@ -37,6 +37,11 @@ const Wrapper = styled.main`
             background-color: #423630; 
         }
     }
+    & p {
+        padding-top: 20px;
+        text-align: center;
+        color: red;
+    }
 `;
 
 interface Props {
@@ -47,6 +52,7 @@ const Content: React.FC<Props> = (props) => {
     const MAX_LEN = 20;
     const [userId, setUserId] = useState("");
     const [password, setPassword] = useState("");
+    const [failuerMsg, setFailuerMsg] = useState("");
     const onUserIdChange = (event: ChangeEvent<HTMLInputElement>):void => {
         event.preventDefault();
         const value = event.target.value;
@@ -61,14 +67,17 @@ const Content: React.FC<Props> = (props) => {
     const onSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         login({userId, password});
+        setPassword("");
+        setFailuerMsg("계정 또는 비밀번호를 다시 확인해주세요.");
     }
 
     return(
         <Wrapper>
             <form onSubmit={onSubmit}>
-                <input type="text" placeholder="계정" maxLength={MAX_LEN} onChange={onUserIdChange}/>
-                <input type="password" placeholder="비밀번호" maxLength={MAX_LEN} onChange={onPasswordChange}/>
+                <input type="text" value={userId} placeholder="계정" maxLength={MAX_LEN} onChange={onUserIdChange}/>
+                <input type="password" value={password} placeholder="비밀번호" maxLength={MAX_LEN} onChange={onPasswordChange}/>
                 <button>로그인</button>
+                <p>{failuerMsg}</p>
             </form>
         </Wrapper>
     )
