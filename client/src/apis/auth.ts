@@ -26,7 +26,7 @@ export const signup = (signupData: SignupData) => {
     users.push({id: id++,user_id: userId, password, name, status_msg:"", profile_img_url:"", background_img_url:"", created_at: date, updated_at: date})
 }
 
-export const findUser = (userId: string) => users.find(user => user.user_id === userId);
+export const findUser = (userId: string):UserDto|undefined => users.find(user => user.user_id === userId);
 
 // 나중에 jwt로 대체
 export const login = (loginData: LoginData): string|null => {
@@ -34,7 +34,11 @@ export const login = (loginData: LoginData): string|null => {
     const user = findUser(userId);
     if(user){
         if(user.password === password){
-            const token = JSON.stringify(user);
+            const userData = {...user};
+            delete userData.password;
+            delete userData.created_at;
+            delete userData.updated_at;
+            const token = JSON.stringify(userData);
             window.sessionStorage.setItem("jwt", token);
             return token;
         }

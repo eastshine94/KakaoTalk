@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import {  MainContent } from '~/styles/BaseStyle';
+import {UserData} from '~/types/user';
 
 const MyProfileBlock = styled.div`
     position: relative;
@@ -18,6 +19,7 @@ const MyProfileBlock = styled.div`
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+        min-height: 19px;
         & b{
             color: #000;
             font-weight: bold;
@@ -38,13 +40,17 @@ const FriendsBorder = styled.div`
     }
 `;
 
-const Content: React.FC = () => {
+interface Props {
+    userData: UserData
+}
+
+const Content: React.FC<Props> = ({userData}) => {
     return(
         <MainContent>
             <MyProfileBlock>
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSoy3heSU-2SeFekCWTQ2mgw-WfCzV8DJYdtg&usqp=CAU" alt="profile Image"/>
-                <p><b>내 이름</b></p>
-                <p>60606060606060606060606060606060606060606060606060606060606060606060606060606060606060606060606060606060</p>
+                <img src={userData.profile_img_url||"/asset/base_profile.jpg"} alt="profile Image"/>
+                <p><b>{userData.name}</b></p>
+                <p>{userData.status_msg}</p>
             </MyProfileBlock>
             <FriendsBorder>
                 <p>친구 100</p>
