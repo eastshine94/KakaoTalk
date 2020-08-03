@@ -1,21 +1,17 @@
-import React, { Component } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { MenuRoute } from '~/routes';
-import { MenuSideBar } from '~/components/menu';
+import { MenuContainer } from '~/containers';
 
-const Wrapper = styled.main`
+const Wrapper = styled.div`
     width: 100%;
-    display: flex;
 `;
-class Menu extends Component {
-    render() {
-        return (
-            <Wrapper>
-                <MenuSideBar/>
-                <MenuRoute/>
-            </Wrapper>
-        );
-    }
+
+const Menu: React.FC = () => {
+    return(
+        <Wrapper>
+            <MenuContainer/>
+        </Wrapper>
+    )
 }
 
 export default Menu;

@@ -15,13 +15,17 @@ const Menu = styled(NavLink)`
     }
 `; 
 
-const MenuSideBar: React.FC = () => {
+interface Props {
+    logout(): void;
+}
+
+const MenuSideBar: React.FC<Props> = ({logout}) => {
     return (
         <SideBar>
             <ul>
                 <Menu to={PAGE_PATHS.FRIENDS}><li title="친구"><i className="fas fa-user"/></li></Menu>
                 <Menu activeClassName="active" to={PAGE_PATHS.CHATTING}><li title="채팅"><i className="fas fa-comment"/></li></Menu>
-                <li title="로그아웃"><i className="fas fa-sign-out-alt"/></li>
+                <li title="로그아웃" onClick={logout}><i className="fas fa-sign-out-alt"/></li>
             </ul>
         </SideBar>
     );

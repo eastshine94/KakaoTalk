@@ -1,37 +1,45 @@
 import { LoginData } from "~/types/auth";
 
-export const LOGIN_REQUEST = 'LOGIN_REQUEST';
-export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
-export const LOGIN_FAILURE = 'LOGIN_FAILURE';
-
-export const LOGOUT_REQUEST = 'LOGOUT_REQUEST';
-export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
-export const LOGOUT_FAILURE = 'LOGOUT_FAILURE';
-
-export const AuthTypes = { LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE,LOGOUT_REQUEST, LOGOUT_SUCCESS, LOGOUT_FAILURE };
+export enum AuthTypes { 
+  LOGIN_REQUEST = 'LOGIN_REQUEST',
+  LOGIN_SUCCESS = 'LOGIN_SUCCESS',
+  LOGIN_FAILURE =  'LOGIN_FAILURE',
+  LOGOUT = 'LOGOUT',
+};
 
 export interface LoginAction {
-    type: typeof LOGIN_REQUEST;
-    payload: LoginData;
-  }
-  export interface LoginSuccessAction {
-    type: typeof LOGIN_SUCCESS;
-    payload: string;
-  }
-  export interface LoginFailureAction {
-    type: typeof LOGIN_FAILURE;
-    payload: string;
-  }
+  type: typeof AuthTypes.LOGIN_REQUEST;
+  payload: LoginData;
+}
+export interface LoginSuccessAction {
+  type: typeof AuthTypes.LOGIN_SUCCESS;
+  payload: string;
+}
+export interface LoginFailureAction {
+  type: typeof AuthTypes.LOGIN_FAILURE;
+  payload: string;
+}
   
+export interface LogoutAction {
+  type: typeof AuthTypes.LOGOUT;
+}
+
+
 export type AuthActionTypes = LoginAction
   | LoginSuccessAction
-  | LoginFailureAction;
+  | LoginFailureAction
+  | LogoutAction
 
 export const login = (loginData: LoginData): LoginAction => ({
-    type: LOGIN_REQUEST,
-    payload: loginData
+  type: AuthTypes.LOGIN_REQUEST,
+  payload: loginData
+})
+
+export const logout = (): LogoutAction => ({
+  type: AuthTypes.LOGOUT
 })
 
 export const AuthActions = {
     login,
+    logout,
 }

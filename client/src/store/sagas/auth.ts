@@ -6,6 +6,7 @@ import * as authApi from '~/apis/auth';
 export default function* authSaga() {
     yield all([
         takeLatest(AuthTypes.LOGIN_REQUEST, login$),
+        takeLatest(AuthTypes.LOGOUT, logout$),
     ])
 }
 
@@ -22,4 +23,8 @@ function* login$(action: LoginAction){
         yield put({type: AuthTypes.LOGIN_FAILURE, payload: '로그인에 실패하였습니다.'});
         alert("로그인 실패");
     }
+}
+
+function* logout$() {
+    yield call(authApi.logout);
 }

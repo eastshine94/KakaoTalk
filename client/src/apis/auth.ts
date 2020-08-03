@@ -42,3 +42,7 @@ export const login = (loginData: LoginData): string|null => {
     throw new Error("계정 또는 비밀번호를 다시 확인해주세요.");
 }
 
+export const logout = () => {
+    window.sessionStorage.removeItem("jwt");
+}
+

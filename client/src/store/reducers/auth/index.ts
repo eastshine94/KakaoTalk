@@ -2,12 +2,10 @@ import {AuthTypes, AuthActionTypes} from "~/store/actions/auth";
 
 export interface AuthState {
   token: string|null;
-  isLoggingOut: boolean; // 로그아웃 시도중
   isLoggingIn: boolean; // 로그인 시도중
 }
 const initialState: AuthState = {
   token: window.sessionStorage.getItem('jwt'),
-  isLoggingOut: false,
   isLoggingIn: false, 
 }
 
@@ -29,6 +27,11 @@ const authReducer = (state = initialState, action: AuthActionTypes )=> {
         ...state,
         isLoggingIn: false,
       }
+    case AuthTypes.LOGOUT : 
+      return {
+        ...state,
+        token: null
+      };
     default:
       return state;
   }
