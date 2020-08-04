@@ -1,7 +1,17 @@
 import React, {Component} from 'react';
 import styled from 'styled-components';
+import { UserProfile, Menu } from '~/components/profile';
 
-const Wrapper = styled.main`
+const Wrapper = styled.div`
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 99;
+    width: 100%;
+    min-height: 100vh;
+    padding: 40px 0;
+`;
+const Content = styled.main`
     position: relative;
     width: 360px;
     height: 580px;
@@ -46,54 +56,17 @@ const BackgroundImage = styled.img`
     opacity: 0.6;
     z-index: -1;
 `;
-
-const ProfileImage = styled.img`
-    display: block;
-    margin: auto;
-    margin-top: 310px;
-    margin-bottom: 10px;
-    width: 90px;
-    height: 90px;
-    border-radius: 35px;
-`;
-
-
-const Footer = styled.div`
-    border-top: 1px solid #fff;
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
-    padding: 30px 20px;
-    & div{
-        text-align: center;
-        & i {
-            color: #fff;
-            font-size: 20px;
-            margin-bottom: 5px;
-        }
-    }
-`;
 class ProfileContainer extends Component {
     render(){
         return(
             <Wrapper>
-                <BackgroundBase/>
-                <BackgroundImage src="/asset/bg2.jpg" alt="bg_image"/>
-                <CancelIcon className="fas fa-times"/>
-                <ProfileImage src="/asset/profile1.jpg" alt="profile_image"/>
-                <p><b>홍길동홍길길홍길동홍길길홍길동</b></p>
-                <p>상태 메시지상태 메시지상태 메시지상태 메시지상태 메시지상태 메시지상태 메시지상태 메시지상태 메시지상태 메시지상태 메시지상태 메시지</p>
-                
-                <Footer>
-                    <div>
-                        <i className="fas fa-comment"/>
-                        <p>나와의 채팅</p>
-                    </div>
-                    <div>
-                        <i className="fas fa-pen"/>
-                        <p>프로필 관리</p>
-                    </div>
-                </Footer>
+                <Content>
+                    <BackgroundBase/>
+                    <BackgroundImage src="/asset/bg2.jpg" alt="bg_image"/>
+                    <CancelIcon className="fas fa-times"/>
+                    <UserProfile/>
+                    <Menu/>
+                </Content>
             </Wrapper>
         )
     }
