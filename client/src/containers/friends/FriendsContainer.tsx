@@ -7,6 +7,7 @@ import { RootState } from '~/store/reducers';
 import { UserState } from '~/store/reducers/user';
 import { UserActions } from '~/store/actions/user';
 import {UserData} from '~/types/user';
+import Profile from '~/pages/Profile';
 
 interface Props{
     userState: UserState,
@@ -27,10 +28,14 @@ class FriendsContainer extends Component<Props> {
     render() {
         const { userState } = this.props
         return(
-            <Main>
-                <Header/>
-                <Content userData={userState}/>
-            </Main>
+            <React.Fragment>
+                <Profile/>
+                <Main>
+                    <Header/>
+                    <Content userData={userState}/>
+                </Main>
+            </React.Fragment>
+            
         )
     }
 }
