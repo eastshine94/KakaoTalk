@@ -10,6 +10,7 @@ export interface UserState extends UserData {
     background_img_url: string,
 }
 
+
 const initialState: UserState = {
     id: undefined,
     user_id: undefined,

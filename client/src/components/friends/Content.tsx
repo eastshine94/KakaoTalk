@@ -64,7 +64,7 @@ const Content: React.FC<Props> = ({userData}) => {
                 <li>
                     <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSoy3heSU-2SeFekCWTQ2mgw-WfCzV8DJYdtg&usqp=CAU" alt="profile Image"/>
                     <p><b>홍길동</b></p>
-                    <p>상태</p>
+                    <p></p>
                 </li>
                 <li>
                     <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSoy3heSU-2SeFekCWTQ2mgw-WfCzV8DJYdtg&usqp=CAU" alt="profile Image"/>

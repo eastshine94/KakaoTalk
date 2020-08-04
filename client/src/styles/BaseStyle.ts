@@ -75,6 +75,7 @@ export const MainContent = styled.section`
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
+            min-height: 19px;
             & b{
                 color: #000;
                 font-weight: bold;

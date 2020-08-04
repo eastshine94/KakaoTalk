@@ -10,3 +10,12 @@ export interface FetchUserAction {
 }
 
 export type UserActionTypes = FetchUserAction;
+
+export const fetchUser = (userData: UserData) => ({
+    type: UserTypes.FETCH_USER,
+    payload: userData
+})
+
+export const UserActions = {
+    fetchUser,
+}

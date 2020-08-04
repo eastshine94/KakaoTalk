@@ -1,6 +1,5 @@
 import { all, put, call, takeLatest } from 'redux-saga/effects';
 import { AuthTypes, LoginAction } from '~/store/actions/auth';
-import { UserTypes } from '~/store/actions/user';
 import * as authApi from '~/apis/auth';
 
 
@@ -19,11 +18,6 @@ function* login$(action: LoginAction){
             type: AuthTypes.LOGIN_SUCCESS,
             payload: token,
         })
-        yield put({
-            type: UserTypes.FETCH_USER,
-            payload: JSON.parse(token),
-        })
-        
     }
     catch{
         yield put({type: AuthTypes.LOGIN_FAILURE, payload: '로그인에 실패하였습니다.'});
