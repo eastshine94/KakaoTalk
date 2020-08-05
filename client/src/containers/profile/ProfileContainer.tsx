@@ -1,18 +1,26 @@
-import React, {Component} from 'react';
+import React, {Component, MouseEvent} from 'react';
 import styled from 'styled-components';
 import { UserProfile, Menu } from '~/components/profile';
+import {connect} from 'react-redux';
+import { Dispatch, bindActionCreators } from 'redux';
+import { RootState } from '~/store/reducers';
+import { ProfileState } from '~/store/reducers/profile';
+import { ProfileActions } from '~/store/actions/profile';
 
-const Wrapper = styled.div`
+const Overlay = styled.div`
     position: fixed;
     top: 0;
     left: 0;
     z-index: 99;
     width: 100%;
     min-height: 100vh;
-    padding: 40px 0;
 `;
-const Content = styled.main`
-    position: relative;
+const Wrapper = styled.main`
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 100;
     width: 360px;
     height: 580px;
     border: 1px solid #646464;
@@ -56,21 +64,44 @@ const BackgroundImage = styled.img`
     opacity: 0.6;
     z-index: -1;
 `;
-class ProfileContainer extends Component {
+
+interface Props {
+    profileState: ProfileState;
+    profileActions: typeof ProfileActions;
+}
+
+class ProfileContainer extends Component<Props> {
     render(){
+        const { profileState } = this.props;
+        const { hideProfile } = this.props.profileActions;
+        const setBackground = profileState.background_img_url ? <BackgroundImage src={profileState.background_img_url} alt="bg_image"/> : "";
+        
+        if(!profileState.isProfileShown) return "";
         return(
-            <Wrapper>
-                <Content>
+            <React.Fragment>
+                <Overlay onClick={hideProfile}/>
+                <Wrapper>
                     <BackgroundBase/>
-                    <BackgroundImage src="/asset/bg2.jpg" alt="bg_image"/>
-                    <CancelIcon className="fas fa-times"/>
-                    <UserProfile/>
+                    {setBackground}
+                    <CancelIcon className="fas fa-times" onClick={hideProfile}/>
+                    <UserProfile userData={ profileState }/>
                     <Menu/>
-                </Content>
-            </Wrapper>
+                </Wrapper>
+            </React.Fragment>
+           
         )
     }
 }
 
+const mapStateToProps = (state: RootState) => ({
+    profileState: state.profile,
+});
 
-export default ProfileContainer;
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+    profileActions: bindActionCreators(ProfileActions, dispatch),
+});
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(ProfileContainer);

@@ -1,11 +1,11 @@
 import { UserData } from '~/types/user';
 
 export enum UserTypes {
-    FETCH_USER= "FETCH_USER"
+    FETCH_USER= "user/FETCH_USER"
 }
 
 export interface FetchUserAction {
-    type: UserTypes.FETCH_USER;
+    type: typeof UserTypes.FETCH_USER;
     payload: UserData;
 }
 

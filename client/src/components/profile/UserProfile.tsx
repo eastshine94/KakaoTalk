@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-
-const Wrapper = styled.main`
+import { UserData } from '~/types/user';
+const Wrapper = styled.section`
     width: 100%;
     height: 450px;
     padding-top: 300px;
@@ -16,13 +16,17 @@ const ProfileImage = styled.img`
     border-radius: 35px;
 `;
 
+interface Props {
+    userData: UserData;
+}
 
-const UserProfile: React.FC = () => {
+
+const UserProfile: React.FC<Props> = ({userData}) => {
     return(
         <Wrapper>
-            <ProfileImage src="/asset/profile1.jpg" alt="profile_image"/>
-            <p><b>홍길동홍길길홍길동홍길길홍길동</b></p>
-            <p>상태 메시지상태 메시지상태 메시지상태 메시지상태 메시지상태 메시지상태 메시지상태 메시지상태 메시지상태 메시지상태 메시지상태 메시지</p>
+            <ProfileImage src={userData.profile_img_url? userData.profile_img_url:"/asset/base_profile.jpg"} alt="profile_image"/>
+            <p><b>{userData.name}</b></p>
+            <p>{userData.status_msg}</p>
         </Wrapper>
     )
 }

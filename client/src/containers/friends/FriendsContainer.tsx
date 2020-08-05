@@ -6,12 +6,16 @@ import { connect } from 'react-redux';
 import { RootState } from '~/store/reducers';
 import { UserState } from '~/store/reducers/user';
 import { UserActions } from '~/store/actions/user';
+import { ProfileState } from '~/store/reducers/profile';
+import { ProfileActions } from '~/store/actions/profile';
 import {UserData} from '~/types/user';
-import Profile from '~/pages/Profile';
+import { ProfileContainer } from '~/containers';
 
 interface Props{
     userState: UserState,
+    profileState: ProfileState,
     userActions: typeof UserActions,
+    profileActions: typeof ProfileActions,
 }
 
 
@@ -26,13 +30,14 @@ class FriendsContainer extends Component<Props> {
     }
     
     render() {
-        const { userState } = this.props
+        const { userState } = this.props;
+        const { showProfile } = this.props.profileActions;
         return(
             <React.Fragment>
-                <Profile/>
+                <ProfileContainer/>
                 <Main>
                     <Header/>
-                    <Content userData={userState}/>
+                    <Content userData={userState} showProfile={showProfile}/>
                 </Main>
             </React.Fragment>
             
@@ -42,9 +47,11 @@ class FriendsContainer extends Component<Props> {
 
 const mapStateToProps = (state: RootState) => ({
     userState: state.user,
+    profileState: state.profile,
 })
 const mapDispatchToProps = (dispatch: Dispatch) => ({
     userActions: bindActionCreators(UserActions, dispatch),
+    profileActions: bindActionCreators(ProfileActions, dispatch)
 })
 
 export default connect(

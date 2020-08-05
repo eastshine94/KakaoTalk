@@ -13,6 +13,7 @@ const MyProfileBlock = styled.div`
         width: 50px;
         height: 50px;
         border-radius: 15px;
+        cursor: pointer;
     }
     & p {
         color: #707070;
@@ -41,14 +42,15 @@ const FriendsBorder = styled.div`
 `;
 
 interface Props {
-    userData: UserData
+    userData: UserData;
+    showProfile(userData: UserData): void;
 }
 
-const Content: React.FC<Props> = ({userData}) => {
+const Content: React.FC<Props> = ({userData, showProfile}) => {
     return(
         <MainContent>
             <MyProfileBlock>
-                <img src={userData.profile_img_url||"/asset/base_profile.jpg"} alt="profile Image"/>
+                <img src={userData.profile_img_url||"/asset/base_profile.jpg"} alt="profile Image" onClick={() => showProfile(userData)}/>
                 <p><b>{userData.name}</b></p>
                 <p>{userData.status_msg}</p>
             </MyProfileBlock>

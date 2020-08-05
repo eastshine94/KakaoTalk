@@ -1,10 +1,10 @@
 import { LoginData } from "~/types/auth";
 
 export enum AuthTypes { 
-  LOGIN_REQUEST = 'LOGIN_REQUEST',
-  LOGIN_SUCCESS = 'LOGIN_SUCCESS',
-  LOGIN_FAILURE =  'LOGIN_FAILURE',
-  LOGOUT = 'LOGOUT',
+  LOGIN_REQUEST = 'auth/LOGIN_REQUEST',
+  LOGIN_SUCCESS = 'auth/LOGIN_SUCCESS',
+  LOGIN_FAILURE =  'auth/LOGIN_FAILURE',
+  LOGOUT = 'auth/LOGOUT',
 };
 
 export interface LoginAction {

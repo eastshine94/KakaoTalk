@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Wrapper = styled.div`
+const Wrapper = styled.section`
     border-top: 1px solid #fff;
     margin-top: 20px;
     display: flex;
