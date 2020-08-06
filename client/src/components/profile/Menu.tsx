@@ -15,6 +15,7 @@ const Wrapper = styled.section`
             font-size: 20px;
             margin-bottom: 5px;
         }
+        
     }
 `;
 
@@ -24,11 +25,7 @@ const Menu: React.FC = () => {
         <Wrapper>
             <div>
                 <i className="fas fa-comment"/>
-                <p>나와의 채팅</p>
-            </div>
-            <div>
-                <i className="fas fa-pen"/>
-                <p>프로필 관리</p>
+                <p>1:1 채팅</p>
             </div>
         </Wrapper>
     )

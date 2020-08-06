@@ -76,9 +76,11 @@ export const MainContent = styled.section`
             text-overflow: ellipsis;
             white-space: nowrap;
             min-height: 19px;
+            font-size: 12px;
             & b{
                 color: #000;
                 font-weight: bold;
+                font-size: 14px;
             }
         }
         &:hover {

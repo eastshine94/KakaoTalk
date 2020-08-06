@@ -1,4 +1,4 @@
-import React, {Component, MouseEvent} from 'react';
+import React, { Component } from 'react';
 import styled from 'styled-components';
 import { UserProfile, Menu } from '~/components/profile';
 import {connect} from 'react-redux';
@@ -25,27 +25,9 @@ const Wrapper = styled.main`
     height: 580px;
     border: 1px solid #646464;
     margin: auto;
-    & p {
-        min-height: 19px;
-        padding: 0px 10px;
-        text-align: center;
-        font-size: 12px;
-        color: #ffffff;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        & b{
-            font-size: 16px;
-        }
-    }
+    color: #fff; 
+    text-align: center;
 `;
-const CancelIcon = styled.i`
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    color: #fff;
-    cursor: pointer;
-`
 const BackgroundBase = styled.div`
     position: absolute;
     top: 0px;
@@ -64,6 +46,17 @@ const BackgroundImage = styled.img`
     opacity: 0.6;
     z-index: -1;
 `;
+const CancelIcon = styled.i`
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 15px;
+    color: #fff;
+    cursor: pointer;
+`
+
+
+
 
 interface Props {
     profileState: ProfileState;
@@ -75,7 +68,7 @@ class ProfileContainer extends Component<Props> {
         const { profileState } = this.props;
         const { hideProfile } = this.props.profileActions;
         const setBackground = profileState.background_img_url ? <BackgroundImage src={profileState.background_img_url} alt="bg_image"/> : "";
-        
+
         if(!profileState.isProfileShown) return "";
         return(
             <React.Fragment>
