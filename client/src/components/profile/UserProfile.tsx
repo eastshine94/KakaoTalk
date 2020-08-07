@@ -6,8 +6,8 @@ const Wrapper = styled.section`
     width: 100%;
     height: 450px;
     padding-top: 300px;
-    
 `;
+
 const BackgroundSetting = styled.div`
     position: absolute;
     top: 15px;
@@ -79,15 +79,20 @@ const ProfileImage = styled.div`
         cursor: pointer;
     }   
 `;
-
+const SettingBg = styled.div`
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+`;
 interface Props {
     userData: UserData;
 }
 
-
 const UserProfile: React.FC<Props> = ({userData}) => {
-    const [isShowBgSetting, showShowBgSetting] = useState(false);
-    const [isShowProfileSetting, showShowProfileSetting] = useState(false);
+    const [isShowBgSetting, showBgSetting] = useState(false);
+    const [isShowProfileSetting, showProfileSetting] = useState(false);
     const bgSetting = isShowBgSetting? (
         <SettingBlock className="bgSetting">
             <p>배경 변경</p>
@@ -99,16 +104,31 @@ const UserProfile: React.FC<Props> = ({userData}) => {
             <p>사진 변경</p>
             <p>기본 이미지로 변경</p>
         </SettingBlock>
+        
     ): "";
-
+    const onBgClick = () => {
+        showBgSetting(false);
+        showProfileSetting(false);
+    }
+    const onBgSettingClick = () => {
+        showBgSetting(!isShowBgSetting);
+        showProfileSetting(false);
+    }
+    const onProfileSettingClick = () => {
+        showBgSetting(false);
+        showProfileSetting(!isShowProfileSetting);
+    }
+    const showSettinBg = isShowBgSetting || isShowProfileSetting?<SettingBg onClick={onBgClick}/>:""
+    
     return(
         <React.Fragment>
-            <BackgroundSetting onClick={() => showShowBgSetting(!isShowBgSetting)}>
-                <i className="fas fa-image"/>
-                {bgSetting}
-            </BackgroundSetting>
+            {showSettinBg}
             <Wrapper>
-                <ProfileImage onClick={() => showShowProfileSetting(!isShowProfileSetting)}>
+                <BackgroundSetting onClick={onBgSettingClick}>
+                    <i className="fas fa-image"/>
+                    {bgSetting}
+                </BackgroundSetting>
+                <ProfileImage onClick={onProfileSettingClick}>
                     <img 
                         src={userData.profile_img_url? userData.profile_img_url:"/asset/base_profile.jpg"} 
                         alt="profile_image"
@@ -124,6 +144,7 @@ const UserProfile: React.FC<Props> = ({userData}) => {
                     <i className="fas fa-pen"/>
                 </ProfileText>
             </Wrapper>
+
         </React.Fragment>
     )
 }

@@ -35,16 +35,12 @@ const BackgroundBase = styled.div`
     width: 100%;
     height: 100%;
     background-color: #848b91;
-    z-index: -2;
-`;
-const BackgroundImage = styled.img`
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    width: 100%;
-    height: 100%;
-    opacity: 0.6;
     z-index: -1;
+    & img {
+        width: 100%;
+        height: 100%;
+        opacity: 0.6;
+    }
 `;
 const CancelIcon = styled.i`
     position: absolute;
@@ -52,11 +48,9 @@ const CancelIcon = styled.i`
     right: 15px;
     font-size: 15px;
     color: #fff;
+    z-index: 99;
     cursor: pointer;
 `
-
-
-
 
 interface Props {
     profileState: ProfileState;
@@ -67,15 +61,16 @@ class ProfileContainer extends Component<Props> {
     render(){
         const { profileState } = this.props;
         const { hideProfile } = this.props.profileActions;
-        const setBackground = profileState.background_img_url ? <BackgroundImage src={profileState.background_img_url} alt="bg_image"/> : "";
+        const setBackground = profileState.background_img_url ? <img src={profileState.background_img_url} alt="bg_image"/> : "";
 
         if(!profileState.isProfileShown) return "";
         return(
             <React.Fragment>
                 <Overlay onClick={hideProfile}/>
                 <Wrapper>
-                    <BackgroundBase/>
-                    {setBackground}
+                    <BackgroundBase>
+                        {setBackground}
+                    </BackgroundBase>
                     <CancelIcon className="fas fa-times" onClick={hideProfile}/>
                     <UserProfile userData={ profileState }/>
                     <Menu/>
