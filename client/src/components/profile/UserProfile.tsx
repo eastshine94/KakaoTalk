@@ -1,6 +1,7 @@
 import React,{ useState } from 'react';
 import styled from 'styled-components';
 import { UserData } from '~/types/user';
+import ProfileInputWindow from './ProfileInputWindow';
 
 const Wrapper = styled.section`
     width: 100%;
@@ -24,7 +25,7 @@ const SettingBlock = styled.div`
     border: 1px solid #646464;
     background: #fff;
     text-align: start;
-    z-index: 1;
+    z-index: 100;
     &.bgSetting {
         top: 20px;
     }
@@ -85,7 +86,9 @@ const SettingBg = styled.div`
     left: 0px;
     width: 100%;
     height: 100%;
+    z-index: 99;
 `;
+
 interface Props {
     userData: UserData;
 }
@@ -93,6 +96,9 @@ interface Props {
 const UserProfile: React.FC<Props> = ({userData}) => {
     const [isShowBgSetting, showBgSetting] = useState(false);
     const [isShowProfileSetting, showProfileSetting] = useState(false);
+    const [isShowNameChange, showNameChange] = useState(false);
+    const [isShowStatusMsgChange, showStatusMsgChange] = useState(false);
+
     const bgSetting = isShowBgSetting? (
         <SettingBlock className="bgSetting">
             <p>배경 변경</p>
@@ -104,44 +110,45 @@ const UserProfile: React.FC<Props> = ({userData}) => {
             <p>사진 변경</p>
             <p>기본 이미지로 변경</p>
         </SettingBlock>
-        
     ): "";
-    const onBgClick = () => {
+
+    const onSettingBgClick = () => {
         showBgSetting(false);
         showProfileSetting(false);
     }
-    const onBgSettingClick = () => {
-        showBgSetting(!isShowBgSetting);
-        showProfileSetting(false);
+    const showSettinBg = isShowBgSetting || isShowProfileSetting ? <SettingBg onClick={onSettingBgClick}/>:""
+    const showProfileInputWindow = () => {
+        if(isShowNameChange){
+            return <ProfileInputWindow currentValue={userData.name || ""} maxLength={20} showWindow={showNameChange}/>
+        }
+        else if(isShowStatusMsgChange){
+            return <ProfileInputWindow currentValue={userData.status_msg || ""} maxLength={60} showWindow={showStatusMsgChange}/>
+        }
+        return ""
     }
-    const onProfileSettingClick = () => {
-        showBgSetting(false);
-        showProfileSetting(!isShowProfileSetting);
-    }
-    const showSettinBg = isShowBgSetting || isShowProfileSetting?<SettingBg onClick={onBgClick}/>:""
-    
     return(
         <React.Fragment>
             {showSettinBg}
+            {showProfileInputWindow()}
             <Wrapper>
-                <BackgroundSetting onClick={onBgSettingClick}>
+                <BackgroundSetting onClick={() => showBgSetting(!isShowBgSetting)}>
                     <i className="fas fa-image"/>
                     {bgSetting}
                 </BackgroundSetting>
-                <ProfileImage onClick={onProfileSettingClick}>
+                <ProfileImage onClick={() => showProfileSetting(!isShowProfileSetting)}>
                     <img 
-                        src={userData.profile_img_url? userData.profile_img_url:"/asset/base_profile.jpg"} 
+                        src={userData.profile_img_url || "/asset/base_profile.jpg"} 
                         alt="profile_image"
                     />
                     {profileSetting}
                 </ProfileImage>
                 <ProfileText>
                     <p><b>{userData.name}</b></p>
-                    <i className="fas fa-pen"/>
+                    <i className="fas fa-pen" onClick={() => showNameChange(true)}/>
                 </ProfileText>
                 <ProfileText>
                     <p>{userData.status_msg}</p>
-                    <i className="fas fa-pen"/>
+                    <i className="fas fa-pen" onClick={() => showStatusMsgChange(true)}/>
                 </ProfileText>
             </Wrapper>
 

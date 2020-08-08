@@ -48,7 +48,7 @@ const CancelIcon = styled.i`
     right: 15px;
     font-size: 15px;
     color: #fff;
-    z-index: 99;
+    z-index: 100;
     cursor: pointer;
 `
 
