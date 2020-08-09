@@ -1,5 +1,6 @@
 import * as express from 'express';
 import * as cors from 'cors';
+import logger from './logger';
 
 
 const runServer = () => {
@@ -8,7 +9,7 @@ const runServer = () => {
     app.use(express.json());
     app.use(cors());
     const server = app.listen(app.get('port'), () => {
-        console.log(`listening on port ${app.get('port')}...`);
+        logger.info(`listening on port ${app.get('port')}...`);
     });
 
 };
