@@ -1,4 +1,16 @@
-import {LoginData, SignupData} from '~/types/auth';
+import axios from 'axios';
+import {ApiResponse, LoginData, SignupData} from '~/types/auth';
+
+interface SignupRequestDto {
+    user_id: string; 
+    password: string;
+    name: string;
+}
+
+interface LoginResponseDto {
+    token: string;
+}
+
 
 interface UserDto {
     id: number;
@@ -12,38 +24,25 @@ interface UserDto {
     updated_at: Date,
 }
 
-let date = new Date();
-let id = 4;
-export const users: Array<UserDto>  = [
-    { id: 1, user_id: "test01", password:"123456", name: "ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ", status_msg: "ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ", profile_img_url:"", background_img_url: "", created_at: date, updated_at: date},
-    { id: 2, user_id: "test02", password:"123456", name: "김갑수", status_msg: "갑수올시다.", profile_img_url:"/asset/profile1.jpg", background_img_url: "/asset/bg1.jpg", created_at: date, updated_at: date},
-    { id: 3, user_id: "test03", password:"123456", name: "장갑판", status_msg: "만나서 반갑습니다.", profile_img_url:"/asset/profile2.jpg", background_img_url: "/asset/bg2.jpg", created_at: date, updated_at: date}
-]
+const API_HOST = process.env.API_HOST || 'http://localhost:3001/api';
 
-export const signup = (signupData: SignupData) => {
-    const{ userId, password, name} = signupData;
-    date = new Date();
-    users.push({id: id++,user_id: userId, password, name, status_msg:"", profile_img_url:"", background_img_url:"", created_at: date, updated_at: date})
+export const signup = async(signupData: SignupData) => {
+    console.log("signup");
+    const signupRequest: SignupRequestDto = {
+        user_id: signupData.userId,
+        password: signupData.password,
+        name: signupData.name,
+    }
+    await axios.post(`${API_HOST}/auth/signup`, signupRequest);
 }
 
-export const findUser = (userId: string):UserDto|undefined => users.find(user => user.user_id === userId);
-
+export const findUser = async(userId: string) => {
+    const foundUser: ApiResponse<boolean> = await axios.post(`${API_HOST}/auth/find`, {user_id: userId});
+    return foundUser.data.data;
+}
 // 나중에 jwt로 대체
-export const login = (loginData: LoginData): string|null => {
-    const {userId, password} = loginData;
-    const user = findUser(userId);
-    if(user){
-        if(user.password === password){
-            const userData = {...user};
-            delete userData.password;
-            delete userData.created_at;
-            delete userData.updated_at;
-            const token = JSON.stringify(userData);
-            window.sessionStorage.setItem("jwt", token);
-            return token;
-        }
-    }
-    throw new Error("계정 또는 비밀번호를 다시 확인해주세요.");
+export const login = (loginData: LoginData)  => {
+    
 }
 
 export const logout = () => {

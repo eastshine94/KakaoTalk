@@ -3,48 +3,54 @@ import config from '../config';
 import User from './User';
 import * as bcrypt from 'bcrypt-nodejs';
 export function init(): Sequelize {
-    const sequelize = new Sequelize(config.db.url);
+    const sequelize = new Sequelize(config.db.url,{
+        dialect: 'mysql',
+        timezone: '+09:00',
+    });
     //User
     User.init({
-        ID: {
+        id: {
             type: DataTypes.INTEGER.UNSIGNED,
             autoIncrement: true,
             primaryKey: true,
             allowNull: false,
         },
-        USER_ID: {
+        user_id: {
             type: new DataTypes.STRING(20),
             unique: true,
             allowNull: false,
         },
-        PASSWORD: {
+        password: {
             type: new DataTypes.STRING(150),
             allowNull: false,
         },
-        NAME: {
+        name: {
             type: new DataTypes.STRING(20),
             allowNull: false,
         },
-        STATUS_MSG: {
+        status_msg: {
             type: new DataTypes.STRING(60),
             allowNull: true,
+            defaultValue: "",
         },
-        PROFILE_IMG_URL: {
+        profile_img_url: {
             type: new DataTypes.STRING(150),
             allowNull: true,
+            defaultValue: "",
         },
-        BACKGROUND_IMG_URL: {
+        background_img_url: {
             type: new DataTypes.STRING(150),
             allowNull: true,
+            defaultValue: "",
         },
         createdAt: {
             type: DataTypes.DATE,
-            field: 'CREATED_AT',
+            field: 'created_at',
             allowNull: false,
         },
         updatedAt: {
             type: DataTypes.DATE,
-            field: 'UPDATED_AT',
+            field: 'updated_at',
             allowNull: false,
         },
     }, {

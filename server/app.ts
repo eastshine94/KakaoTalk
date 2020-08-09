@@ -5,6 +5,7 @@ import * as http from 'http';
 import { Sequelize } from 'sequelize/types';
 import logger from './logger';
 import authRouter from './routes/auth';
+import User from './models/User';
 const stopServer = async (server: http.Server, sequelize: Sequelize, signal?: string) => {
     logger.info(`Stopping server with signal: ${signal}`);
     await server.close();

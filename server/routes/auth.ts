@@ -28,20 +28,27 @@ router.post("/find", async (req, res) => {
   const user = await User.findOne({
     where: { user_id },
   });
-
   if (user) {
-    return res.status(400).json({ msg: "이미 사용중이거나 탈퇴한 아이디입니다." });
+    return res.json({ 
+      data: true,
+      msg: "이미 사용중이거나 탈퇴한 아이디입니다." 
+    });
   }
   return res.json({
+    data: false,
     msg: "사용 가능한 ID 입니다.",
   });
 });
 
 router.post("/signup", async (req, res) => {
   const { user_id, password, name } = req.body;
-
+  const user = await User.findOne({
+    where: { user_id },
+  });
+  if (user) {
+    return res.status(400).json({ msg: "이미 사용중이거나 탈퇴한 아이디입니다." });
+  }
   await User.create({ user_id, password, name });
-
   return res.json({
     msg: "회원가입 되었습니다.",
   });

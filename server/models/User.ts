@@ -10,10 +10,11 @@ export default class User extends Model {
         return bcrypt.compareSync(password, this.password);
     }
     public name!:string;
-    public status_msg: string;
-    public profile_img_url: string;
-    public background_img_url: string;
+    public status_msg: string = "";
+    public profile_img_url: string = "";
+    public background_img_url: string = "";
     public readonly created_at!: Date;
     public readonly updated_at!: Date;
+    
 }
 

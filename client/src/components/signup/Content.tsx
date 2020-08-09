@@ -88,14 +88,14 @@ const Content: React.FC<RouteComponentProps> = (props) => {
         const isMatch = userId.match(regExp);
         return isMatch ? true : false;
     }
-    const isValidUserId = (): boolean => {
+    const isValidUserId = async() => {
         const len = userId.length;
         if(len < 5 || !isMatchUserId()) {
             setUserIdWarningMsg("5 ~ 20자의 영문 소문자, 숫자만 사용 가능합니다.");
             return false;
         }
-        else if(findUser(userId)){
-            setUserIdWarningMsg("이미 사용중이거나 탈퇴한 아이디입니다.");
+        else if(await findUser(userId)){
+            await setUserIdWarningMsg("이미 사용중이거나 탈퇴한 아이디입니다.");
             return false;
         }
         setUserIdWarningMsg("")
@@ -146,20 +146,20 @@ const Content: React.FC<RouteComponentProps> = (props) => {
     }
 
 
-    const onSubmit = () => {
-        const validId = isValidUserId();
+    const onSubmit = async() => {
+        const validId = await isValidUserId();
         const validPw = isValidPw();
         const validCheckPw = isValidCheckPw()
         const validName = isValidName();
 
         if( validId && validPw && validCheckPw && validName ){
             try{
-                signup({userId, password: pw, name});
-                alert("회원 가입 되었습니다.");
-                history.replace(PAGE_PATHS.LOGIN);
+                await signup({userId, password: pw, name});
+                await alert("회원 가입 되었습니다.");
+                await history.replace(PAGE_PATHS.LOGIN);
             }
             catch(err){
-                alert(err);
+                alert("회원 가입에 실패하였습니다.");
             }
             
         }
