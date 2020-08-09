@@ -1,6 +1,6 @@
 import axios from 'axios';
-import {ApiResponse, LoginData, SignupData} from '~/types/auth';
-
+import {LoginData, SignupData} from '~/types/auth';
+import { ApiResponse } from '~/types/base';
 interface SignupRequestDto {
     user_id: string; 
     password: string;
@@ -11,18 +11,6 @@ interface LoginResponseDto {
     token: string;
 }
 
-
-interface UserDto {
-    id: number;
-    user_id: string,
-    password: string,
-    name: string,
-    status_msg: string;
-    profile_img_url: string,
-    background_img_url: string,
-    created_at: Date,
-    updated_at: Date,
-}
 
 const API_HOST = process.env.API_HOST || 'http://localhost:3001/api';
 
@@ -40,9 +28,16 @@ export const findUser = async(userId: string) => {
     const foundUser: ApiResponse<boolean> = await axios.post(`${API_HOST}/auth/find`, {user_id: userId});
     return foundUser.data.data;
 }
-// 나중에 jwt로 대체
-export const login = (loginData: LoginData)  => {
+
+export const login = async(loginData: LoginData)  => {
+    const request = {
+        user_id: loginData.userId,
+        password: loginData.password,
+    }
+    const response: ApiResponse<LoginResponseDto> = await axios.post(`${API_HOST}/auth/login`, request);
+    const token = response.data.data.token;
     
+    return token;
 }
 
 export const logout = () => {

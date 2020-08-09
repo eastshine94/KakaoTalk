@@ -14,6 +14,7 @@ function* login$(action: LoginAction){
     try{
         const loginData = action.payload;
         const token = yield call(authApi.login, loginData);
+        window.sessionStorage.setItem('jwt', token);
         yield put({
             type: AuthTypes.LOGIN_SUCCESS,
             payload: token,
