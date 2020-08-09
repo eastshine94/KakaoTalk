@@ -6,23 +6,31 @@ import { Dispatch, bindActionCreators} from 'redux';
 import { MenuRoute } from '~/routes';
 import { MenuSideBar } from '~/components/menu';
 import { AuthActions } from '~/store/actions/auth';
+import { UserActions } from '~/store/actions/user';
 import { RootState } from '~/store/reducers';
-import { AuthState } from '~/store/reducers/auth'
 import { PAGE_PATHS } from '~/constants';
-
+import { Auth } from '~/types/auth';
 const Wrapper = styled.main`
     width: 100%;
     display: flex;
 `;
 
 interface Props {
-    authState: AuthState;
+    rootState: RootState;
     authActions: typeof AuthActions;
+    userActions: typeof UserActions;
 }
 class MenuContainer extends Component<Props> {
+    constructor(props: Props) {
+        super(props);
+        const auth: Auth|undefined = this.props.rootState.auth.auth;
+        if(auth){
+            props.userActions.fetchUser(auth.user_id);
+        }
+    }
     render() {
         const { logout } = this.props.authActions;
-        const { token } = this.props.authState;
+        const { token } = this.props.rootState.auth;
         
         if(!token) {
             return <Redirect to={PAGE_PATHS.LOGIN}/>
@@ -38,10 +46,11 @@ class MenuContainer extends Component<Props> {
 }
 
 const mapStateToProps = (state: RootState) => ({
-    authState: state.auth,
+    rootState: state,
 });
 const mapDispatchToProps = (dispatch: Dispatch) => ({
     authActions: bindActionCreators(AuthActions, dispatch),
+    userActions: bindActionCreators(UserActions, dispatch),
 });
 
 export default connect(

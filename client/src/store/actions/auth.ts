@@ -1,4 +1,4 @@
-import { LoginData } from "~/types/auth";
+import { LoginData, Auth } from "~/types/auth";
 
 export enum AuthTypes { 
   LOGIN_REQUEST = 'auth/LOGIN_REQUEST',
@@ -13,7 +13,10 @@ export interface LoginAction {
 }
 export interface LoginSuccessAction {
   type: typeof AuthTypes.LOGIN_SUCCESS;
-  payload: string;
+  payload: {
+    token: string,
+    auth: Auth
+  };
 }
 export interface LoginFailureAction {
   type: typeof AuthTypes.LOGIN_FAILURE;

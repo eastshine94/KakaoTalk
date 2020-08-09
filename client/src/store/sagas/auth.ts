@@ -1,6 +1,8 @@
-import { all, put, call, takeLatest } from 'redux-saga/effects';
+import { all, put, call, takeLatest} from 'redux-saga/effects';
+import jwtDecode from 'jwt-decode';
 import { AuthTypes, LoginAction } from '~/store/actions/auth';
 import * as authApi from '~/apis/auth';
+import {Auth} from '~/types/auth';
 
 
 export default function* authSaga() {
@@ -14,14 +16,18 @@ function* login$(action: LoginAction){
     try{
         const loginData = action.payload;
         const token = yield call(authApi.login, loginData);
-        window.sessionStorage.setItem('jwt', token);
+        const auth = jwtDecode(token) as Auth;
         yield put({
             type: AuthTypes.LOGIN_SUCCESS,
-            payload: token,
-        })
+            payload: {
+                token,
+                auth
+            }
+        });
+        yield window.sessionStorage.setItem('jwt', token);
     }
     catch{
-        yield put({type: AuthTypes.LOGIN_FAILURE, payload: '로그인에 실패하였습니다.'});
+        yield put({type: AuthTypes.LOGIN_FAILURE, payload: '계정 또는 비밀번호를 다시 확인해주세요.'});
     }
 }
 

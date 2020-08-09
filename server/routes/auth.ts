@@ -30,12 +30,12 @@ router.post("/find", async (req, res) => {
   });
   if (user) {
     return res.json({ 
-      data: true,
+      data: user,
       msg: "이미 사용중이거나 탈퇴한 아이디입니다." 
     });
   }
   return res.json({
-    data: false,
+    data: null,
     msg: "사용 가능한 ID 입니다.",
   });
 });

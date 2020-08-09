@@ -23,13 +23,13 @@ interface Props {
 class LoginContainer extends Component<Props> {
     render() {
         const { login } = this.props.authActions;
-        const { token } = this.props.authState;
+        const { token, loginFailuerMsg } = this.props.authState;
 
         if(token) return <Redirect to={PAGE_PATHS.FRIENDS}/>
         return(
             <Wrapper>
                 <Header/>
-                <Content login={login}/>
+                <Content login={login} loginFailuerMsg={loginFailuerMsg}/>
                 <Footer/>
             </Wrapper>
         )

@@ -8,3 +8,8 @@ export interface SignupData {
     password: string;
     name: string;
 }
+
+export interface Auth {
+    id: number;
+    user_id: string;
+}

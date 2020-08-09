@@ -17,7 +17,7 @@ const initialState: UserState = {
 
 const userReducer = (state=initialState, action:UserActionTypes) => {
     switch(action.type){
-        case UserTypes.FETCH_USER :
+        case UserTypes.FETCH_USER_SUCCESS :
             return {
                 ...state,
                 ...action.payload
