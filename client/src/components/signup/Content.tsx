@@ -2,7 +2,8 @@ import React, {useState, ChangeEvent, FocusEvent} from 'react';
 import styled from 'styled-components';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { PAGE_PATHS } from '~/constants';
-import { signup, findUser } from '~/apis/auth';
+import { signup } from '~/apis/auth';
+import { findUser } from '~/apis/user';
 /* ----------------- 스타일 ----------------- */ 
 const Wrapper = styled.main`
     width: 100%;

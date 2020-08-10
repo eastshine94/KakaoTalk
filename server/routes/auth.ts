@@ -23,22 +23,6 @@ router.post("/login", async (req, res) => {
   
 });
 
-router.post("/find", async (req, res) => {
-  const { user_id } = req.body;
-  const user = await User.findOne({
-    where: { user_id },
-  });
-  if (user) {
-    return res.json({ 
-      data: user,
-      msg: "이미 사용중이거나 탈퇴한 아이디입니다." 
-    });
-  }
-  return res.json({
-    data: null,
-    msg: "사용 가능한 ID 입니다.",
-  });
-});
 
 router.post("/signup", async (req, res) => {
   const { user_id, password, name } = req.body;

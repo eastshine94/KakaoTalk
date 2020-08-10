@@ -2,8 +2,6 @@ import { all, put, call, takeLatest} from 'redux-saga/effects';
 import jwtDecode from 'jwt-decode';
 import { AuthTypes, LoginAction } from '~/store/actions/auth';
 import * as authApi from '~/apis/auth';
-import {Auth} from '~/types/auth';
-
 
 export default function* authSaga() {
     yield all([
@@ -16,7 +14,7 @@ function* login$(action: LoginAction){
     try{
         const loginData = action.payload;
         const token = yield call(authApi.login, loginData);
-        const auth = jwtDecode(token) as Auth;
+        const auth = yield call(jwtDecode, token);
         yield put({
             type: AuthTypes.LOGIN_SUCCESS,
             payload: {

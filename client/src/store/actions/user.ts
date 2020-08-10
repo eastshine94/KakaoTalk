@@ -1,27 +1,34 @@
 import { UserData } from '~/types/user';
-
+import { ProfileChangeRequestDto } from '~/types/profile';
 export enum UserTypes {
     FETCH_USER_REQUEST= "user/FETCH_USER_REQUEST",
     FETCH_USER_SUCCESS= "user/FETCH_USER_SUCCESS",
     FETCH_USER_FAILUER= "user/FETCH_USER_FAILUER",
+    CHANGE_PROFILE = "user/CHANGE_PROFILE",
 }
 
 export interface FetchUserAction {
-    type: typeof UserTypes.FETCH_USER_REQUEST;
+    type: UserTypes.FETCH_USER_REQUEST;
     payload: string;
 }
 export interface FetchUserSuccessAction {
-    type: typeof UserTypes.FETCH_USER_SUCCESS;
+    type: UserTypes.FETCH_USER_SUCCESS;
     payload: UserData;
 }
 export interface FetchUserFailureAction {
-    type: typeof UserTypes.FETCH_USER_FAILUER;
+    type: UserTypes.FETCH_USER_FAILUER;
     payload: string;
 }
+export interface ChangeProfileAction {
+    type: UserTypes.CHANGE_PROFILE;
+    payload: ProfileChangeRequestDto
+}
+
 
 export type UserActionTypes = FetchUserAction
 | FetchUserSuccessAction
-| FetchUserFailureAction;
+| FetchUserFailureAction
+| ChangeProfileAction;
 
 export const fetchUser = (userId: string) => ({
     type: UserTypes.FETCH_USER_REQUEST,

@@ -61,9 +61,10 @@ interface Props{
     currentValue: string;
     maxLength : number;
     showWindow(isShow:boolean): void;
+    changeProfile(value: string): void;
 }
 
-const ProfileInputWindow: React.FC<Props> = ({currentValue, maxLength, showWindow}) => {
+const ProfileInputWindow: React.FC<Props> = ({currentValue, maxLength, showWindow, changeProfile}) => {
     const [value, setValue] = useState(currentValue);
     const onValueChange = (event: ChangeEvent<HTMLInputElement>) => {
         event.preventDefault();
@@ -72,6 +73,7 @@ const ProfileInputWindow: React.FC<Props> = ({currentValue, maxLength, showWindo
     }
     const onSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        changeProfile(value);
         showWindow(false);
     }
     return(

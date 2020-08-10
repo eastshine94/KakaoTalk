@@ -35,6 +35,11 @@ const profileReducer = (state = initialState, action:ProfileActionTypes ) => {
                 background_img_url: "",
                 isProfileShown: false,
             }
+        case ProfileTypes.CHANGE_PROFILE_SUCCESS :
+            return {
+                ...state,
+                ...action.payload,
+            }
         default :
             return state;
     }

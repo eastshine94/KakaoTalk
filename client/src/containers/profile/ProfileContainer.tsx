@@ -60,7 +60,7 @@ interface Props {
 class ProfileContainer extends Component<Props> {
     render(){
         const { profileState } = this.props;
-        const { hideProfile } = this.props.profileActions;
+        const { hideProfile, changeProfile } = this.props.profileActions;
         const setBackground = profileState.background_img_url ? <img src={profileState.background_img_url} alt="bg_image"/> : "";
 
         if(!profileState.isProfileShown) return "";
@@ -72,7 +72,7 @@ class ProfileContainer extends Component<Props> {
                         {setBackground}
                     </BackgroundBase>
                     <CancelIcon className="fas fa-times" onClick={hideProfile}/>
-                    <UserProfile userData={ profileState }/>
+                    <UserProfile userData={ profileState } changeProfile={changeProfile}/>
                     <Menu/>
                 </Wrapper>
             </React.Fragment>

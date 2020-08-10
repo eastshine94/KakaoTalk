@@ -11,7 +11,7 @@ export default function* userSaga() {
 function* fetchUser$(action: FetchUserAction){
     try{
         const userId = action.payload;
-        const user = yield call(api.fetchUser, userId);
+        const user = yield call(api.findUser, userId);
         yield put({
             type: UserTypes.FETCH_USER_SUCCESS,
             payload: user,

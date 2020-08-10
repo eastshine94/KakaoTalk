@@ -18,10 +18,6 @@ if (initialState.token) {
 
 const authReducer = (state = initialState, action: AuthActionTypes )=> {
   switch(action.type){
-    case AuthTypes.LOGIN_REQUEST: 
-      return {
-        ...state,
-      }
     case AuthTypes.LOGIN_SUCCESS : 
       return {
         ...state,

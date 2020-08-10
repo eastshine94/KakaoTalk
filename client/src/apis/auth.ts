@@ -1,7 +1,7 @@
 import axios from 'axios';
 import {LoginData, SignupData} from '~/types/auth';
 import { ApiResponse } from '~/types/base';
-import { UserData } from '~/types/user';
+
 interface SignupRequestDto {
     user_id: string; 
     password: string;
@@ -25,10 +25,6 @@ export const signup = async(signupData: SignupData) => {
     await axios.post(`${API_HOST}/auth/signup`, signupRequest);
 }
 
-export const findUser = async(userId: string) => {
-    const foundUser: ApiResponse<UserData> = await axios.post(`${API_HOST}/auth/find`, {user_id: userId});
-    return foundUser.data.data;
-}
 
 export const login = async(loginData: LoginData)  => {
     const request = {

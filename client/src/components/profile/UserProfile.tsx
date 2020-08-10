@@ -1,7 +1,9 @@
 import React,{ useState } from 'react';
 import styled from 'styled-components';
-import { UserData } from '~/types/user';
 import ProfileInputWindow from './ProfileInputWindow';
+import { UserData } from '~/types/user';
+import {ProfileChangeRequestDto} from '~/types/profile';
+
 
 const Wrapper = styled.section`
     width: 100%;
@@ -91,9 +93,10 @@ const SettingBg = styled.div`
 
 interface Props {
     userData: UserData;
+    changeProfile(profileData: ProfileChangeRequestDto): void;
 }
 
-const UserProfile: React.FC<Props> = ({userData}) => {
+const UserProfile: React.FC<Props> = ({userData, changeProfile}) => {
     const [isShowBgSetting, showBgSetting] = useState(false);
     const [isShowProfileSetting, showProfileSetting] = useState(false);
     const [isShowNameChange, showNameChange] = useState(false);
@@ -118,11 +121,20 @@ const UserProfile: React.FC<Props> = ({userData}) => {
     }
     const showSettinBg = isShowBgSetting || isShowProfileSetting ? <SettingBg onClick={onSettingBgClick}/>:""
     const showProfileInputWindow = () => {
+        const id = userData.id as number;
+        
+        const changeName = async(name: string) => {
+            await changeProfile({id, name});
+        }
+        const changeStatusMsg = async(msg:string) => {
+            await changeProfile({id, status_msg: msg});
+        }
+        
         if(isShowNameChange){
-            return <ProfileInputWindow currentValue={userData.name || ""} maxLength={20} showWindow={showNameChange}/>
+            return <ProfileInputWindow currentValue={userData.name || ""} maxLength={20} showWindow={showNameChange} changeProfile={changeName}/>
         }
         else if(isShowStatusMsgChange){
-            return <ProfileInputWindow currentValue={userData.status_msg || ""} maxLength={60} showWindow={showStatusMsgChange}/>
+            return <ProfileInputWindow currentValue={userData.status_msg || ""} maxLength={60} showWindow={showStatusMsgChange} changeProfile={changeStatusMsg}/>
         }
         return ""
     }

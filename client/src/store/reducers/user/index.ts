@@ -22,6 +22,11 @@ const userReducer = (state=initialState, action:UserActionTypes) => {
                 ...state,
                 ...action.payload
             }
+        case UserTypes.CHANGE_PROFILE :
+            return {
+                ...state,
+                ...action.payload
+            }
         default: 
             return state
     }
