@@ -71,10 +71,10 @@ const ProfileInputWindow: React.FC<Props> = ({currentValue, maxLength, showWindo
         const value = event.target.value;
         setValue(value.substr(0,maxLength));
     }
-    const onSubmit = (event: FormEvent<HTMLFormElement>) => {
+    const onSubmit = async(event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        changeProfile(value);
-        showWindow(false);
+        await changeProfile(value);
+        await showWindow(false);
     }
     return(
         <React.Fragment>
@@ -83,7 +83,7 @@ const ProfileInputWindow: React.FC<Props> = ({currentValue, maxLength, showWindo
                 <CancelIcon className="fas fa-times" onClick={() => showWindow(false)}/>
                 <div>
                     <form onSubmit={onSubmit}>
-                        <input value={value} maxLength={maxLength} onChange={onValueChange}/>
+                        <input value={value} maxLength={maxLength} onChange={onValueChange} autoFocus={true}/>
                         <span>{`${value.length}/${maxLength}`}</span>
                         <button type="submit"><i className="fas fa-check"/></button>
                     </form>

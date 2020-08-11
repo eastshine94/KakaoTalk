@@ -124,7 +124,9 @@ const UserProfile: React.FC<Props> = ({userData, changeProfile}) => {
         const id = userData.id as number;
         
         const changeName = async(name: string) => {
-            await changeProfile({id, name});
+            if(name){
+                await changeProfile({id, name});
+            }
         }
         const changeStatusMsg = async(msg:string) => {
             await changeProfile({id, status_msg: msg});
