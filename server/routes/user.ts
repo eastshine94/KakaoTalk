@@ -1,6 +1,8 @@
 import * as express from "express";
 import User from "../models/User";
+import * as multer from 'multer';
 
+const upload = multer({dest:"uploads/"})
 const router = express.Router();
 
 router.post("/find", async(req, res) => {
@@ -23,7 +25,6 @@ router.post("/find", async(req, res) => {
 
 router.post("/profile/change", async(req, res) => {
   const body = req.body;
-
   try{
     await User.update({...body},
     {
@@ -34,8 +35,15 @@ router.post("/profile/change", async(req, res) => {
   }catch(err){
     return res.status(400).json({data: false, msg: err.message});
   }
-
 })
 
+router.post("/upload", upload.single("image"), (req, res) => {
+    try {
+      const image = req.file;
+      return res.json({ data: `${image.path}` });
+    } catch (err) {
+      return res.status(400).json({ msg: err.message });
+    }
+})
 
 export default router;

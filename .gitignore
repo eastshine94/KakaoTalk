@@ -2,3 +2,4 @@ node_modules
 *.log
 config.ts
 *.lock
+uploads

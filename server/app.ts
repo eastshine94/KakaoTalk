@@ -2,6 +2,7 @@ import * as express from 'express';
 import * as DB from './models';
 import * as cors from 'cors';
 import * as http from 'http';
+import * as path from 'path';
 import { Sequelize } from 'sequelize/types';
 import logger from './logger';
 import authRouter from './routes/auth';
@@ -22,7 +23,10 @@ const runServer = async() => {
     app.use(cors());
     app.use('/api/auth', authRouter);
     app.use('/api/user', userRouter);
-    
+    app.get('/uploads/:fileName', (req, res) => {
+        const fileName = req.params.fileName
+        res.sendFile(path.join(__dirname, `../uploads/${fileName}`));
+    });
     const server = app.listen(app.get('port'), () => {
         logger.info(`listening on port ${app.get('port')}...`);
     });

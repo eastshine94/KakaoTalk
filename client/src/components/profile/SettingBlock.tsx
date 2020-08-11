@@ -1,5 +1,8 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 import styled from 'styled-components';
+import { UserData } from '~/types/user';
+import {ProfileChangeRequestDto} from '~/types/profile';
+import {uploadImageFile} from '~/apis/user';
 
 const BgImageSettingWrapper = styled.div`
     position: absolute;
@@ -38,6 +41,9 @@ const SettingBlock = styled.div`
         top: 90px;
         left: 50px;
     }
+    &.hideSetting {
+        top:-9999px;
+    }
     & p {
         color: #000;
         font-size: 12px;
@@ -48,47 +54,78 @@ const SettingBlock = styled.div`
             background: #f0f0f0;
         }
     }
+    & input {
+        display: none;
+    }
 `;
 
-
 interface SettingProps {
+    userData: UserData;
     isShowSetting: boolean;
     showSetting(isShowSettign: boolean): void;
+    changeProfile(profileData: ProfileChangeRequestDto): void;
 }
 
 interface SettingBlockProps {
     className: string;
+    showSetting(isShowSettign: boolean): void;
+    changeImage(imageUrl: string): void;
 }
 
-export const BgImageSetting: React.FC<SettingProps> = ({isShowSetting, showSetting}) => {
-    const settingBlock = isShowSetting? <Setting className="bgSetting"/> : ""; 
+export const BgImageSetting: React.FC<SettingProps> = ({userData, isShowSetting, showSetting, changeProfile}) => {
+    const settingClassName = `bgSetting ${!isShowSetting?"hideSetting":""}`;
+    const id = userData.id as number;
+    const changeImage = (imageUrl: string) => {
+        changeProfile({id, background_img_url:imageUrl});
+    }
     return(
-        <BgImageSettingWrapper onClick={() => showSetting(!isShowSetting)}>
-            <i className="fas fa-image"/>
-            {settingBlock}
+        <BgImageSettingWrapper>
+            <i className="fas fa-image" onClick={() => showSetting(true)}/>
+            <Setting className={settingClassName} showSetting={showSetting} changeImage={changeImage}/>
         </BgImageSettingWrapper>
     )
 }
 
-export const ProfileImageSetting: React.FC<SettingProps> = ({isShowSetting, showSetting, children}) => {
-    const settingBlock = isShowSetting? <Setting className="profileSetting"/> : ""; 
+export const ProfileImageSetting: React.FC<SettingProps> = ({userData, isShowSetting, showSetting, changeProfile}) => {
+    const settingClassName = `profileSetting ${!isShowSetting?"hideSetting":""}`;
+    const id = userData.id as number; 
+    const changeImage = (imageUrl: string) => {
+        changeProfile({id, profile_img_url: imageUrl});
+    }
     return(
-        <ProfileImageSettingWrapper onClick={() => showSetting(!isShowSetting)}>
-            {children}
-            {settingBlock}
+        <ProfileImageSettingWrapper>
+            <img 
+                src={userData.profile_img_url || "/asset/base_profile.jpg"} 
+                alt="profile_image"
+                onClick = {() => showSetting(true)}
+            />
+            <Setting className={settingClassName} showSetting={showSetting} changeImage={changeImage}/>
         </ProfileImageSettingWrapper>
     )
 }
 
-const Setting: React.FC<SettingBlockProps> = ({className}) => {
+const Setting: React.FC<SettingBlockProps> = ({className, showSetting, changeImage}) => {
     const settingName = className === "bgSetting" ? "배경 변경" : "사진 변경";
+    const validFileType = ["image/bmp","image/png","image/jpg","image/jpeg"];
+
+    const selectFile = async(event: ChangeEvent<HTMLInputElement>) => {
+        event.preventDefault();
+        if(event.target.files){
+            const file = event.target.files[0];
+            if(validFileType.includes(file.type)){
+                const imageUrl = await uploadImageFile(file);
+                await changeImage(imageUrl);
+            }
+            else alert("이미지 파일만 가능합니다.");
+        }
+    }
     return(
         <SettingBlock className={className}>
             <label>
-                <p>{settingName}</p>
-                <input type="file" style={{display: "none"}} accept=".bmp, .png, .jpg, .jpeg"/>
+                <p onClick={()=>showSetting(false)}>{settingName}</p>
+                <input type="file" accept=".bmp, .png, .jpg, .jpeg" onChange={selectFile}/>
             </label>
-            <p>기본 이미지로 변경</p>
+            <p onClick={()=>showSetting(false)}>기본 이미지로 변경</p>
         </SettingBlock>
     )
 }

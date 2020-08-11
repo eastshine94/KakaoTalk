@@ -82,13 +82,9 @@ const UserProfile: React.FC<Props> = ({userData, changeProfile}) => {
             {showSettinOverlay}
             {showProfileInputWindow()}
             <Wrapper>
-                <BgImageSetting isShowSetting={isShowBgSetting} showSetting={showBgSetting}/>
-                <ProfileImageSetting isShowSetting={isShowProfileSetting} showSetting={showProfileSetting}>
-                    <img 
-                        src={userData.profile_img_url || "/asset/base_profile.jpg"} 
-                        alt="profile_image"
-                    />
-                </ProfileImageSetting>
+                <BgImageSetting userData={userData} changeProfile={changeProfile} isShowSetting={isShowBgSetting} showSetting={showBgSetting}/>
+                <ProfileImageSetting userData={userData} changeProfile={changeProfile} isShowSetting={isShowProfileSetting} showSetting={showProfileSetting}/>
+                   
                 <ProfileText>
                     <p><b>{userData.name}</b></p>
                     <i className="fas fa-pen" onClick={() => showNameChange(true)}/>
