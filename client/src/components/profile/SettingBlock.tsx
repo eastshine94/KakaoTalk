@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent, MouseEvent } from 'react';
 import styled from 'styled-components';
 import { UserData } from '~/types/user';
 import {ProfileChangeRequestDto} from '~/types/profile';
@@ -70,18 +70,27 @@ interface SettingBlockProps {
     className: string;
     showSetting(isShowSettign: boolean): void;
     changeImage(imageUrl: string): void;
+    changeToInitImage(): void;
 }
 
 export const BgImageSetting: React.FC<SettingProps> = ({userData, isShowSetting, showSetting, changeProfile}) => {
     const settingClassName = `bgSetting ${!isShowSetting?"hideSetting":""}`;
     const id = userData.id as number;
-    const changeImage = (imageUrl: string) => {
-        changeProfile({id, background_img_url:imageUrl});
+    const changeImage = async(imageUrl: string) => {
+        await changeProfile({id, background_img_url:imageUrl});
+    }
+    const changeToInitImage = async() => {
+        await changeProfile({id, background_img_url: ""});
     }
     return(
         <BgImageSettingWrapper>
             <i className="fas fa-image" onClick={() => showSetting(true)}/>
-            <Setting className={settingClassName} showSetting={showSetting} changeImage={changeImage}/>
+            <Setting 
+                className={settingClassName} 
+                showSetting={showSetting} 
+                changeImage={changeImage} 
+                changeToInitImage={changeToInitImage}
+            />
         </BgImageSettingWrapper>
     )
 }
@@ -89,8 +98,11 @@ export const BgImageSetting: React.FC<SettingProps> = ({userData, isShowSetting,
 export const ProfileImageSetting: React.FC<SettingProps> = ({userData, isShowSetting, showSetting, changeProfile}) => {
     const settingClassName = `profileSetting ${!isShowSetting?"hideSetting":""}`;
     const id = userData.id as number; 
-    const changeImage = (imageUrl: string) => {
-        changeProfile({id, profile_img_url: imageUrl});
+    const changeImage = async(imageUrl: string) => {
+        await changeProfile({id, profile_img_url: imageUrl});
+    }
+    const changeToInitImage = async() => {
+        await changeProfile({id, profile_img_url: ""});
     }
     return(
         <ProfileImageSettingWrapper>
@@ -99,12 +111,17 @@ export const ProfileImageSetting: React.FC<SettingProps> = ({userData, isShowSet
                 alt="profile_image"
                 onClick = {() => showSetting(true)}
             />
-            <Setting className={settingClassName} showSetting={showSetting} changeImage={changeImage}/>
+            <Setting 
+                className={settingClassName}
+                showSetting={showSetting}
+                changeImage={changeImage}
+                changeToInitImage={changeToInitImage}
+            />
         </ProfileImageSettingWrapper>
     )
 }
 
-const Setting: React.FC<SettingBlockProps> = ({className, showSetting, changeImage}) => {
+const Setting: React.FC<SettingBlockProps> = ({className, showSetting, changeImage, changeToInitImage}) => {
     const settingName = className === "bgSetting" ? "배경 변경" : "사진 변경";
     const validFileType = ["image/bmp","image/png","image/jpg","image/jpeg"];
 
@@ -119,13 +136,19 @@ const Setting: React.FC<SettingBlockProps> = ({className, showSetting, changeIma
             else alert("이미지 파일만 가능합니다.");
         }
     }
+
+    const onInitSettingClick = (event:MouseEvent<HTMLElement>) => {
+        event.preventDefault();
+        showSetting(false);
+        changeToInitImage()
+    }
     return(
         <SettingBlock className={className}>
             <label>
                 <p onClick={()=>showSetting(false)}>{settingName}</p>
                 <input type="file" accept=".bmp, .png, .jpg, .jpeg" onChange={selectFile}/>
             </label>
-            <p onClick={()=>showSetting(false)}>기본 이미지로 변경</p>
+            <p onClick={onInitSettingClick}>기본 이미지로 변경</p>
         </SettingBlock>
     )
 }
