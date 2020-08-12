@@ -36,7 +36,7 @@ export const MainHeader = styled.section`
     & input {
         border: none; 
         border-radius: 10px;
-        background-color: #e6e7e7;
+        background-color: #f6f6f7;
         width: 100%;
         padding: 5px 10px;
     }

@@ -1,7 +1,9 @@
 import { Sequelize, DataTypes } from 'sequelize';
+import * as bcrypt from 'bcrypt-nodejs';
 import config from '../config';
 import User from './User';
-import * as bcrypt from 'bcrypt-nodejs';
+import Friend from './Friend';
+
 export function init(): Sequelize {
     const sequelize = new Sequelize(config.db.url,{
         dialect: 'mysql',
@@ -72,6 +74,50 @@ export function init(): Sequelize {
     }
     });
 
+    //friend
+    Friend.init({
+        id: {
+            type: DataTypes.INTEGER.UNSIGNED,
+            autoIncrement: true,
+            primaryKey: true,
+            allowNull: false,
+        },
+        my_id: {
+            type: DataTypes.INTEGER.UNSIGNED,
+            allowNull: false,
+        },
+        friend_id: {
+            type: DataTypes.INTEGER.UNSIGNED,
+            allowNull: false,
+        },
+        friend_name: {
+            type: new DataTypes.STRING(20),
+            allowNull: false,
+        },
+        createdAt: {
+            type: DataTypes.DATE,
+            field: 'created_at',
+            allowNull: false,
+        },
+        updatedAt: {
+            type: DataTypes.DATE,
+            field: 'updated_at',
+            allowNull: false,
+        },
+    }, {
+        sequelize,
+        tableName: 'friend',
+        engine: 'InnoDB',
+        charset: 'utf8',
+        freezeTableName: true
+    })
+    User.hasMany(Friend, {
+        foreignKey: 'my_id',
+        as: "friends"
+      })
+    User.hasMany(Friend, {
+        foreignKey: 'friend_id',
+    })
     return sequelize;
 }
 
