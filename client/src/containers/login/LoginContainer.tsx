@@ -21,6 +21,11 @@ interface Props {
 }
 
 class LoginContainer extends Component<Props> {
+    
+    componentWillUnmount() {
+        this.props.authActions.returnAuthInitState();
+    }
+
     render() {
         const { login } = this.props.authActions;
         const { token, loginFailuerMsg } = this.props.authState;

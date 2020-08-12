@@ -5,33 +5,38 @@ export enum AuthTypes {
   LOGIN_SUCCESS = 'auth/LOGIN_SUCCESS',
   LOGIN_FAILURE =  'auth/LOGIN_FAILURE',
   LOGOUT = 'auth/LOGOUT',
+  RETURN_AUTH_INIT_STATE = "auth/RETURN_AUTH_INIT_STATE",
 };
 
 export interface LoginAction {
-  type: typeof AuthTypes.LOGIN_REQUEST;
+  type: AuthTypes.LOGIN_REQUEST;
   payload: LoginData;
 }
 export interface LoginSuccessAction {
-  type: typeof AuthTypes.LOGIN_SUCCESS;
+  type: AuthTypes.LOGIN_SUCCESS;
   payload: {
     token: string,
     auth: Auth
   };
 }
 export interface LoginFailureAction {
-  type: typeof AuthTypes.LOGIN_FAILURE;
+  type: AuthTypes.LOGIN_FAILURE;
   payload: string;
 }
   
 export interface LogoutAction {
-  type: typeof AuthTypes.LOGOUT;
+  type: AuthTypes.LOGOUT;
 }
 
+export interface ReturnAuthInitState{
+  type: AuthTypes.RETURN_AUTH_INIT_STATE;
+}
 
 export type AuthActionTypes = LoginAction
   | LoginSuccessAction
   | LoginFailureAction
   | LogoutAction
+  | ReturnAuthInitState
 
 export const login = (loginData: LoginData): LoginAction => ({
   type: AuthTypes.LOGIN_REQUEST,
@@ -39,10 +44,13 @@ export const login = (loginData: LoginData): LoginAction => ({
 })
 
 export const logout = (): LogoutAction => ({
-  type: AuthTypes.LOGOUT
+  type: AuthTypes.LOGOUT,
 })
-
+export const returnAuthInitState = (): ReturnAuthInitState => ({
+  type: AuthTypes.RETURN_AUTH_INIT_STATE,
+})
 export const AuthActions = {
     login,
     logout,
+    returnAuthInitState,
 }
