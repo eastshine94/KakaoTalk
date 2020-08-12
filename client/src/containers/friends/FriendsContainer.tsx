@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {Main} from '~/styles/BaseStyle';
-import { Header, Content } from '~/components/friends';
+import { Header, Content, FindFriendWindow } from '~/components/friends';
 import { Dispatch, bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { RootState } from '~/store/reducers';
@@ -22,6 +22,7 @@ class FriendsContainer extends Component<Props> {
         return(
             <React.Fragment>
                 <ProfileContainer/>
+                <FindFriendWindow/>
                 <Main>
                     <Header/>
                     <Content userData={userState} showProfile={showProfile}/>
