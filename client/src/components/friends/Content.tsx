@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import {  MainContent } from '~/styles/BaseStyle';
 import {UserData} from '~/types/user';
-
+import { BASE_IMG_URL } from '~/constants';
 const MyProfileBlock = styled.div`
     position: relative;
     padding: 25px 10px 25px 85px;
@@ -52,7 +52,7 @@ const Content: React.FC<Props> = ({userData, showProfile}) => {
     return(
         <MainContent>
             <MyProfileBlock>
-                <img src={userData.profile_img_url||"/asset/base_profile.jpg"} alt="profile Image" onClick={() => showProfile(userData)}/>
+                <img src={userData.profile_img_url||BASE_IMG_URL} alt="profile Image" onClick={() => showProfile(userData)}/>
                 <p><b>{userData.name}</b></p>
                 <p>{userData.status_msg}</p>
             </MyProfileBlock>

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { findUser } from '~/apis/user';
 import { UserResponseDto } from '~/types/user';
 import Modal, {ModalProps} from '~/pages/Modal';
-
+import {BASE_IMG_URL} from '~/constants';
 
 const Wrapper = styled.div`
     width: 360px;
@@ -102,7 +102,7 @@ const FindUserProfile: React.FC<FindUserProfileProps> = ({findUserId, user}) => 
     if(user){
         return(
             <FoundUserProfile>
-                <img src={user.profile_img_url || "/asset/base_profile.jpg"} alt="profile_img"/>
+                <img src={user.profile_img_url || BASE_IMG_URL} alt="profile_img"/>
                 <p>{user.name}</p>
                 <Button>친구 추가</Button>
             </FoundUserProfile>

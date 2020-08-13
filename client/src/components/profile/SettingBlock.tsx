@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { UserData } from '~/types/user';
 import {ProfileChangeRequestDto} from '~/types/profile';
 import {uploadImageFile} from '~/apis/user';
+import { BASE_IMG_URL } from '~/constants';
 
 const BgImageSettingWrapper = styled.div`
     position: absolute;
@@ -107,7 +108,7 @@ export const ProfileImageSetting: React.FC<SettingProps> = ({userData, isShowSet
     return(
         <ProfileImageSettingWrapper>
             <img 
-                src={userData.profile_img_url || "/asset/base_profile.jpg"} 
+                src={userData.profile_img_url || BASE_IMG_URL} 
                 alt="profile_image"
                 onClick = {() => showSetting(true)}
             />

@@ -7,3 +7,4 @@ export enum PAGE_PATHS  {
     CHATTING = '/menu/chatting',
 }
 
+export const BASE_IMG_URL = '/asset/base_profile.jpg';
