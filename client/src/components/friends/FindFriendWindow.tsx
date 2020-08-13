@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { useState, ChangeEvent, FormEvent } from 'react';
 import styled from 'styled-components';
-
+import { findUser } from '~/apis/user';
+import { UserResponseDto } from '~/types/user';
 const Overlay = styled.div`
-    position: absolute;
+    position: fixed;
     top: 0px;
     left: 0px;
     width: 100%;
     height: 100%;
+    min-height: 100vh;
     background: #c8c8c8;
     opacity: 0.5;
     z-index: 99;
@@ -48,19 +50,6 @@ const Wrapper = styled.div`
         }
     }
 
-    & img{
-        display: block;
-        width: 90px;
-        height: 90px;
-        border-radius: 35px;
-        margin: auto;
-        margin-top: 50px;
-    }
-
-    & p {
-        text-align: center;
-        padding-top: 10px;
-    }
 `;
 const Menu = styled.div`
     padding: 0 20px;
@@ -94,7 +83,78 @@ const CancelIcon = styled.i`
     z-index: 100;
     cursor: pointer;
 `
+
+const FoundUserProfile = styled.div`
+    margin-top: 50px;
+    & img{
+        display: block;
+        width: 90px;
+        height: 90px;
+        border-radius: 35px;
+        margin: auto;
+    }
+
+    & p {
+        text-align: center;
+        padding-top: 10px;
+    }
+`
+const FindNull = styled.div`
+    text-align: center;
+    & p {
+        padding-top: 50px;
+        font-size: 15px;
+        font-weight: bold;
+    }
+`;
+
+interface FindUserProfileProps {
+    findUserId: string;
+    user: UserResponseDto|undefined|null;
+}
+
+const FindUserProfile: React.FC<FindUserProfileProps> = ({findUserId, user}) => {
+    if(user){
+        return(
+            <FoundUserProfile>
+                <img src={user.profile_img_url || "/asset/base_profile.jpg"} alt="profile_img"/>
+                <p>{user.name}</p>
+                <Button>친구 추가</Button>
+            </FoundUserProfile>
+        )
+    }
+    if(user===null){
+        return(
+            <FindNull>
+                <p>{`'${findUserId}'를 찾을 수 없습니다.`}</p>
+            </FindNull>
+        )
+    }
+    return null;
+}
+
 const FindFriendWindow: React.FC = () => {
+    const MAX_LEN = 20;
+    const [userId, setUserId] = useState("");
+    const [foundUser, setFoundUser] = useState<UserResponseDto|undefined|null>();
+    const [findUserId, setFindUserId] = useState("");
+
+    const onIdInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+        event.preventDefault();
+        const value = event.target.value;
+        if(value.length <=20){
+            setUserId(event.target.value);
+        }
+        if(value.length === 0){
+            setFoundUser(undefined);
+        }
+    }
+    const onSubmit = async(event: FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        const user = await findUser(userId);
+        await setFoundUser(user);
+        await setFindUserId (userId);
+    }
     return(
         <React.Fragment>
             <Overlay/>
@@ -102,13 +162,16 @@ const FindFriendWindow: React.FC = () => {
                 <CancelIcon className="fas fa-times" />
                 <h4>친구 추가</h4>
                 <Menu><span>ID로 추가</span></Menu>
-                <form>
-                    <input  maxLength={20} autoFocus={true}/>
-                    <span>{`0/20`}</span>
+                <form onSubmit={onSubmit}>
+                    <input 
+                        value= {userId} 
+                        maxLength={MAX_LEN} 
+                        autoFocus={true} 
+                        onChange={onIdInputChange}
+                    />
+                    <span>{`${userId.length}/${MAX_LEN}`}</span>
                 </form>
-                <img src="/asset/base_profile.jpg" alt="profile_img"/>
-                <p>이름</p>
-                <Button>친구 추가</Button>
+                <FindUserProfile findUserId={findUserId} user= {foundUser}/>
             </Wrapper>
         </React.Fragment>
     )
