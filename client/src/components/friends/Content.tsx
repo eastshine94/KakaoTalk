@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import {  MainContent } from '~/styles/BaseStyle';
 import {UserData} from '~/types/user';
 import { BASE_IMG_URL } from '~/constants';
+
 const MyProfileBlock = styled.div`
     position: relative;
     padding: 25px 10px 25px 85px;
@@ -47,8 +48,26 @@ interface Props {
     userData: UserData;
     showProfile(userData: UserData): void;
 }
+interface FriendRowProps {
+    name: string;
+    status_msg: string;
+    profile_img_url: string,
+}
+const FriendRow:React.FC<FriendRowProps> = (props) => {
+    const {name, status_msg, profile_img_url} = props
+    return(
+        <li>
+            <img src={profile_img_url||BASE_IMG_URL} alt="profile Image"/>
+            <p><b>{name}</b></p>
+            <p>{status_msg}</p>
+        </li>
+    )
+}
+
 
 const Content: React.FC<Props> = ({userData, showProfile}) => {
+    const friendsList = userData.friends_list;
+    const renderFriends = friendsList.map(friend => <FriendRow {...friend} key={friend.id}/>)
     return(
         <MainContent>
             <MyProfileBlock>
@@ -57,59 +76,10 @@ const Content: React.FC<Props> = ({userData, showProfile}) => {
                 <p>{userData.status_msg}</p>
             </MyProfileBlock>
             <FriendsBorder>
-                <p>친구 100</p>
+                <p>{`친구 ${friendsList.length}`}</p>
             </FriendsBorder>
             <ul>
-                <li>
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSoy3heSU-2SeFekCWTQ2mgw-WfCzV8DJYdtg&usqp=CAU" alt="profile Image"/>
-                    <p><b>홍길동</b></p>
-                    <p>상태</p>
-                </li>
-                <li>
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSoy3heSU-2SeFekCWTQ2mgw-WfCzV8DJYdtg&usqp=CAU" alt="profile Image"/>
-                    <p><b>홍길동</b></p>
-                    <p></p>
-                </li>
-                <li>
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSoy3heSU-2SeFekCWTQ2mgw-WfCzV8DJYdtg&usqp=CAU" alt="profile Image"/>
-                    <p><b>홍길동</b></p>
-                    <p>상태</p>
-                </li>
-                <li>
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSoy3heSU-2SeFekCWTQ2mgw-WfCzV8DJYdtg&usqp=CAU" alt="profile Image"/>
-                    <p><b>홍길동</b></p>
-                    <p>상태</p>
-                </li>
-                <li>
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSoy3heSU-2SeFekCWTQ2mgw-WfCzV8DJYdtg&usqp=CAU" alt="profile Image"/>
-                    <p><b>홍길동</b></p>
-                    <p>상태</p>
-                </li>
-                <li>
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSoy3heSU-2SeFekCWTQ2mgw-WfCzV8DJYdtg&usqp=CAU" alt="profile Image"/>
-                    <p><b>홍길동</b></p>
-                    <p>상태</p>
-                </li>
-                <li>
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSoy3heSU-2SeFekCWTQ2mgw-WfCzV8DJYdtg&usqp=CAU" alt="profile Image"/>
-                    <p><b>홍길동</b></p>
-                    <p>상태</p>
-                </li>
-                <li>
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSoy3heSU-2SeFekCWTQ2mgw-WfCzV8DJYdtg&usqp=CAU" alt="profile Image"/>
-                    <p><b>홍길동</b></p>
-                    <p>상태</p>
-                </li>
-                <li>
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSoy3heSU-2SeFekCWTQ2mgw-WfCzV8DJYdtg&usqp=CAU" alt="profile Image"/>
-                    <p><b>홍길동</b></p>
-                    <p>상태</p>
-                </li>
-                <li>
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSoy3heSU-2SeFekCWTQ2mgw-WfCzV8DJYdtg&usqp=CAU" alt="profile Image"/>
-                    <p><b>홍길동</b></p>
-                    <p>상태</p>
-                </li>
+                {renderFriends}
             </ul>
         </MainContent>
     )

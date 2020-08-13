@@ -34,15 +34,14 @@ const Portal:React.FC = ({children}) => {
 
 const Modal: React.FC<ModalProps> = ({overlayClose = true, onClose, children}) => {
     useEffect(() => {
-        console.log("useEffect");
-        document.body.style.cssText = `position: fixed; top: -${window.scrollY}px`
+        document.body.style.cssText = `position: fixed; top: -${window.scrollY}px`;
         return () => {
-            console.log("clean up");
-            const scrollY = document.body.style.top
-            document.body.style.cssText = `position: ""; top: "";`
-            window.scrollTo(0, parseInt(scrollY || '0') * -1)
+            const scrollY = document.body.style.top;
+            document.body.style.cssText = `position: ""; top: "";`;
+            window.scrollTo(0, parseInt(scrollY || '0') * -1);
         }
-      }, [])
+      }, []);
+
     const onOverlayClick = () => {
         if(overlayClose){
             onClose();

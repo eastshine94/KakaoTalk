@@ -1,9 +1,10 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 import styled from 'styled-components';
 import { findUser } from '~/apis/user';
-import { UserResponseDto } from '~/types/user';
+import { UserData, UserResponseDto } from '~/types/user';
 import Modal, {ModalProps} from '~/pages/Modal';
-import {BASE_IMG_URL} from '~/constants';
+import FoundFriendProfile from './FoundFriendProfile';
+
 
 const Wrapper = styled.div`
     width: 360px;
@@ -48,18 +49,6 @@ const Menu = styled.div`
         padding: 10px 0;
     }  
 `
-const Button = styled.button`
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
-    display: inline-block;
-    padding: 10px;
-    background: #fee500;
-    &:hover{
-        background: #fada0a;
-        cursor: pointer;
-    }
-`;
 const CancelIcon = styled.i`
     position: absolute;
     top: 15px;
@@ -69,57 +58,15 @@ const CancelIcon = styled.i`
     z-index: 100;
     cursor: pointer;
 `
-const FoundUserProfile = styled.div`
-    margin-top: 50px;
-    & img{
-        display: block;
-        width: 90px;
-        height: 90px;
-        border-radius: 35px;
-        margin: auto;
-    }
 
-    & p {
-        text-align: center;
-        padding-top: 10px;
-    }
-`
-const FindNull = styled.div`
-    text-align: center;
-    & p {
-        padding-top: 50px;
-        font-size: 15px;
-        font-weight: bold;
-    }
-`;
 
-interface FindUserProfileProps {
-    findUserId: string;
-    user: UserResponseDto|undefined|null;
+interface Props extends ModalProps{
+    userData: UserData;
 }
 
-const FindUserProfile: React.FC<FindUserProfileProps> = ({findUserId, user}) => {
-    if(user){
-        return(
-            <FoundUserProfile>
-                <img src={user.profile_img_url || BASE_IMG_URL} alt="profile_img"/>
-                <p>{user.name}</p>
-                <Button>친구 추가</Button>
-            </FoundUserProfile>
-        )
-    }
-    if(user===null){
-        return(
-            <FindNull>
-                <p>{`'${findUserId}'를 찾을 수 없습니다.`}</p>
-            </FindNull>
-        )
-    }
-    return null;
-}
 
-const FindFriendWindow: React.FC<ModalProps> = (props) => {
-    const { overlayClose ,onClose } = props;
+const FindFriendWindow: React.FC<Props> = (props) => {
+    const { userData, overlayClose ,onClose } = props;
     const MAX_LEN = 20;
     const [userId, setUserId] = useState("");
     const [foundUser, setFoundUser] = useState<UserResponseDto|undefined|null>();
@@ -156,11 +103,10 @@ const FindFriendWindow: React.FC<ModalProps> = (props) => {
                     />
                     <span>{`${userId.length}/${MAX_LEN}`}</span>
                 </form>
-                <FindUserProfile findUserId={findUserId} user= {foundUser}/>
+                <FoundFriendProfile userData={userData} findUserId={findUserId} foundUser= {foundUser}/>
             </Wrapper>
         </Modal>
     )
 }
-
 
 export default FindFriendWindow;

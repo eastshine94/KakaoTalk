@@ -1,6 +1,6 @@
 import React, { ChangeEvent, MouseEvent } from 'react';
 import styled from 'styled-components';
-import { UserData } from '~/types/user';
+import { UserResponseDto } from '~/types/user';
 import {ProfileChangeRequestDto} from '~/types/profile';
 import {uploadImageFile} from '~/apis/user';
 import { BASE_IMG_URL } from '~/constants';
@@ -61,7 +61,7 @@ const SettingBlock = styled.div`
 `;
 
 interface SettingProps {
-    userData: UserData;
+    userData: UserResponseDto;
     isShowSetting: boolean;
     showSetting(isShowSettign: boolean): void;
     changeProfile(profileData: ProfileChangeRequestDto): void;
@@ -76,7 +76,7 @@ interface SettingBlockProps {
 
 export const BgImageSetting: React.FC<SettingProps> = ({userData, isShowSetting, showSetting, changeProfile}) => {
     const settingClassName = `bgSetting ${!isShowSetting?"hideSetting":""}`;
-    const id = userData.id as number;
+    const id = userData.id;
     const changeImage = async(imageUrl: string) => {
         await changeProfile({id, background_img_url:imageUrl});
     }
@@ -98,7 +98,7 @@ export const BgImageSetting: React.FC<SettingProps> = ({userData, isShowSetting,
 
 export const ProfileImageSetting: React.FC<SettingProps> = ({userData, isShowSetting, showSetting, changeProfile}) => {
     const settingClassName = `profileSetting ${!isShowSetting?"hideSetting":""}`;
-    const id = userData.id as number; 
+    const id = userData.id; 
     const changeImage = async(imageUrl: string) => {
         await changeProfile({id, profile_img_url: imageUrl});
     }

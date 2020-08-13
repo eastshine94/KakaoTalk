@@ -1,7 +1,7 @@
 import React,{ useState } from 'react';
 import styled from 'styled-components';
 import ProfileInputWindow from './ProfileInputWindow';
-import { UserData } from '~/types/user';
+import { UserResponseDto } from '~/types/user';
 import {ProfileChangeRequestDto} from '~/types/profile';
 import { BgImageSetting, ProfileImageSetting } from './SettingBlock';
 
@@ -43,7 +43,7 @@ const SettingOverlay = styled.div`
 `;
 
 interface Props {
-    userData: UserData;
+    userData: UserResponseDto;
     changeProfile(profileData: ProfileChangeRequestDto): void;
 }
 
@@ -59,7 +59,7 @@ const UserProfile: React.FC<Props> = ({userData, changeProfile}) => {
     }
     const showSettinOverlay = isShowBgSetting || isShowProfileSetting ? <SettingOverlay onClick={onSettingBgClick}/>:""
     const showProfileInputWindow = () => {
-        const id = userData.id as number;
+        const id = userData.id;
         const changeName = async(name: string) => {
             if(name){
                 await changeProfile({id, name});

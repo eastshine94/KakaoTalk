@@ -1,4 +1,4 @@
-import { UserData } from '~/types/user';
+import { UserResponseDto } from '~/types/user';
 import { ProfileChangeRequestDto } from '~/types/profile';
 export enum UserTypes {
     FETCH_USER_REQUEST= "user/FETCH_USER_REQUEST",
@@ -13,7 +13,7 @@ export interface FetchUserAction {
 }
 export interface FetchUserSuccessAction {
     type: UserTypes.FETCH_USER_SUCCESS;
-    payload: UserData;
+    payload: UserResponseDto;
 }
 export interface FetchUserFailureAction {
     type: UserTypes.FETCH_USER_FAILUER;

@@ -1,13 +1,13 @@
-import {UserData} from '~/types/user';
+import { UserResponseDto } from '~/types/user';
 import { ProfileTypes, ProfileActionTypes } from '~/store/actions/profile';
-export interface ProfileState extends UserData {
+export interface ProfileState extends UserResponseDto {
     isProfileShown: boolean;
 }
 
 const initialState: ProfileState = {
-    id: undefined,
-    user_id: undefined,
-    name: undefined,
+    id: -1,
+    user_id: "",
+    name: "",
     status_msg: "",
     profile_img_url: "",
     background_img_url: "",
@@ -27,9 +27,9 @@ const profileReducer = (state = initialState, action:ProfileActionTypes ) => {
         case ProfileTypes.HIDE_PROFILE :
             return{
                 ...state,
-                id: undefined,
-                user_id: undefined,
-                name: undefined,
+                id: -1,
+                user_id: "",
+                name: "",
                 status_msg: "",
                 profile_img_url: "",
                 background_img_url: "",

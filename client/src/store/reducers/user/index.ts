@@ -6,12 +6,13 @@ export interface UserState extends UserData {
 
 
 const initialState: UserState = {
-    id: undefined,
-    user_id: undefined,
-    name: undefined,
+    id: -1,
+    user_id: "",
+    name: "",
     status_msg: "",
     profile_img_url: "",
     background_img_url: "",
+    friends_list: [],
 }
 
 

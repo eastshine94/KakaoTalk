@@ -1,4 +1,4 @@
-import { UserData } from '../../types/user';
+import { UserResponseDto } from '../../types/user';
 import { ProfileChangeRequestDto } from '../../types/profile';
 
 export enum ProfileTypes {
@@ -11,7 +11,7 @@ export enum ProfileTypes {
 
 export interface ShowProfileAction {
     type: ProfileTypes.SHOW_PROFILE;
-    payload: UserData;
+    payload: UserResponseDto;
 }
 export interface HideProfileAction {
     type: ProfileTypes.HIDE_PROFILE;
@@ -31,7 +31,7 @@ export type ProfileActionTypes = ShowProfileAction
 | ChangeProfileAction
 | ChangeProfileSuccessAction;
 
-export const showProfile = (userData: UserData):ShowProfileAction => ({
+export const showProfile = (userData: UserResponseDto):ShowProfileAction => ({
     type: ProfileTypes.SHOW_PROFILE,
     payload: userData,
 });
