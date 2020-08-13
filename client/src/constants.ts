@@ -6,3 +6,4 @@ export enum PAGE_PATHS  {
     FRIENDS = '/menu/friends',
     CHATTING = '/menu/chatting',
 }
+

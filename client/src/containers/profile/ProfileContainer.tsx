@@ -6,21 +6,10 @@ import { Dispatch, bindActionCreators } from 'redux';
 import { RootState } from '~/store/reducers';
 import { ProfileState } from '~/store/reducers/profile';
 import { ProfileActions } from '~/store/actions/profile';
+import { Modal } from '~/pages';
 
-const Overlay = styled.div`
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 99;
-    width: 100%;
-    min-height: 100vh;
-`;
+
 const Wrapper = styled.main`
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 100;
     width: 360px;
     height: 580px;
     border: 1px solid #646464;
@@ -63,10 +52,8 @@ class ProfileContainer extends Component<Props> {
         const { hideProfile, changeProfile } = this.props.profileActions;
         const setBackground = profileState.background_img_url ? <img src={profileState.background_img_url} alt="bg_image"/> : "";
 
-        if(!profileState.isProfileShown) return "";
         return(
-            <React.Fragment>
-                <Overlay onClick={hideProfile}/>
+            <Modal visible={profileState.isProfileShown} onClose={hideProfile}>
                 <Wrapper>
                     <BackgroundBase>
                         {setBackground}
@@ -75,8 +62,7 @@ class ProfileContainer extends Component<Props> {
                     <UserProfile userData={ profileState } changeProfile={changeProfile}/>
                     <Menu/>
                 </Wrapper>
-            </React.Fragment>
-           
+            </Modal>
         )
     }
 }

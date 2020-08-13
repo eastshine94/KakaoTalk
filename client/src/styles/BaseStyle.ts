@@ -50,6 +50,7 @@ export const TitleBlock = styled.section`
         margin-bottom: 10px;
     }
     & i {
+        cursor: pointer;
         font-size: 20px;
         position: absolute;
         top: 5px;

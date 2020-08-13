@@ -24,8 +24,8 @@ const Wrapper = styled.div`
 
 export interface ModalProps{
     visible: boolean;
-    overlayClose: boolean;
-    open(isOpen: boolean): void;
+    overlayClose?: boolean;
+    onClose(): void;
 }
 
 const Portal:React.FC = ({children}) => {
@@ -33,10 +33,10 @@ const Portal:React.FC = ({children}) => {
     return createPortal(children, rootElement);
 }
 
-const Modal: React.FC<ModalProps> = ({visible, overlayClose, open, children}) => {
+const Modal: React.FC<ModalProps> = ({visible, overlayClose = true, onClose, children}) => {
     const onOverlayClick = () => {
         if(overlayClose){
-            open(false);
+            onClose();
         }
     }
     
