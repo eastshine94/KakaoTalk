@@ -2,23 +2,10 @@ import React, { useState, ChangeEvent, FormEvent } from 'react';
 import styled from 'styled-components';
 import { findUser } from '~/apis/user';
 import { UserResponseDto } from '~/types/user';
-const Overlay = styled.div`
-    position: fixed;
-    top: 0px;
-    left: 0px;
-    width: 100%;
-    height: 100%;
-    min-height: 100vh;
-    background: #c8c8c8;
-    opacity: 0.5;
-    z-index: 99;
-`;
+import Modal, {ModalProps} from '~/pages/Modal';
+
+
 const Wrapper = styled.div`
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 100;
     width: 360px;
     height: 450px;
     border: 1px solid #646464;
@@ -49,7 +36,6 @@ const Wrapper = styled.div`
             text-align: center;
         }
     }
-
 `;
 const Menu = styled.div`
     padding: 0 20px;
@@ -83,7 +69,6 @@ const CancelIcon = styled.i`
     z-index: 100;
     cursor: pointer;
 `
-
 const FoundUserProfile = styled.div`
     margin-top: 50px;
     & img{
@@ -133,7 +118,8 @@ const FindUserProfile: React.FC<FindUserProfileProps> = ({findUserId, user}) => 
     return null;
 }
 
-const FindFriendWindow: React.FC = () => {
+const FindFriendWindow: React.FC<ModalProps> = (props) => {
+    const {visible, overlayClose ,open } = props;
     const MAX_LEN = 20;
     const [userId, setUserId] = useState("");
     const [foundUser, setFoundUser] = useState<UserResponseDto|undefined|null>();
@@ -156,8 +142,7 @@ const FindFriendWindow: React.FC = () => {
         await setFindUserId (userId);
     }
     return(
-        <React.Fragment>
-            <Overlay/>
+        <Modal visible={visible} overlayClose={overlayClose} open={open}>
             <Wrapper>
                 <CancelIcon className="fas fa-times" />
                 <h4>친구 추가</h4>
@@ -173,7 +158,7 @@ const FindFriendWindow: React.FC = () => {
                 </form>
                 <FindUserProfile findUserId={findUserId} user= {foundUser}/>
             </Wrapper>
-        </React.Fragment>
+        </Modal>
     )
 }
 
