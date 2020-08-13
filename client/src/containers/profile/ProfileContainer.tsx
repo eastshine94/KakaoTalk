@@ -51,9 +51,9 @@ class ProfileContainer extends Component<Props> {
         const { profileState } = this.props;
         const { hideProfile, changeProfile } = this.props.profileActions;
         const setBackground = profileState.background_img_url ? <img src={profileState.background_img_url} alt="bg_image"/> : "";
-
+        if(!profileState.isProfileShown) return null;
         return(
-            <Modal visible={profileState.isProfileShown} onClose={hideProfile}>
+            <Modal onClose={hideProfile}>
                 <Wrapper>
                     <BackgroundBase>
                         {setBackground}

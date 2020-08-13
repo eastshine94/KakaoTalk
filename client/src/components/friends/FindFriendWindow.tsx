@@ -119,7 +119,7 @@ const FindUserProfile: React.FC<FindUserProfileProps> = ({findUserId, user}) => 
 }
 
 const FindFriendWindow: React.FC<ModalProps> = (props) => {
-    const {visible, overlayClose ,onClose } = props;
+    const { overlayClose ,onClose } = props;
     const MAX_LEN = 20;
     const [userId, setUserId] = useState("");
     const [foundUser, setFoundUser] = useState<UserResponseDto|undefined|null>();
@@ -142,7 +142,7 @@ const FindFriendWindow: React.FC<ModalProps> = (props) => {
         await setFindUserId (userId);
     }
     return(
-        <Modal visible={visible} overlayClose={overlayClose} onClose={onClose}>
+        <Modal overlayClose={overlayClose} onClose={onClose}>
             <Wrapper>
                 <CancelIcon className="fas fa-times" onClick={onClose}/>
                 <h4>친구 추가</h4>

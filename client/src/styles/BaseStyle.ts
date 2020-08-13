@@ -2,6 +2,8 @@ import styled from 'styled-components'
 
 export const SideBar = styled.aside`
     position: fixed;
+    top: 0;
+    left: 0;
     width: 100px;
     height: 100%;
     min-height: 100vh;

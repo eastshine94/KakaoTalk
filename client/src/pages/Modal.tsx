@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {createPortal } from 'react-dom';
 import styled from 'styled-components';
 
@@ -23,7 +23,6 @@ const Wrapper = styled.div`
 `;
 
 export interface ModalProps{
-    visible: boolean;
     overlayClose?: boolean;
     onClose(): void;
 }
@@ -33,25 +32,32 @@ const Portal:React.FC = ({children}) => {
     return createPortal(children, rootElement);
 }
 
-const Modal: React.FC<ModalProps> = ({visible, overlayClose = true, onClose, children}) => {
+const Modal: React.FC<ModalProps> = ({overlayClose = true, onClose, children}) => {
+    useEffect(() => {
+        console.log("useEffect");
+        document.body.style.cssText = `position: fixed; top: -${window.scrollY}px`
+        return () => {
+            console.log("clean up");
+            const scrollY = document.body.style.top
+            document.body.style.cssText = `position: ""; top: "";`
+            window.scrollTo(0, parseInt(scrollY || '0') * -1)
+        }
+      }, [])
     const onOverlayClick = () => {
         if(overlayClose){
             onClose();
         }
     }
     
-    if(visible){
-        return (
-            <Portal>
-                <Overlay onClick={onOverlayClick}/>
-                <Wrapper>
-                    {children}
-                </Wrapper>
-            </Portal>
-        )
-    }
-    return null;
-    
+    return (
+        <Portal>
+            <Overlay onClick={onOverlayClick}/>
+            <Wrapper>
+                {children}
+            </Wrapper>
+        </Portal>
+    )
+
 }
 
 export default Modal;

@@ -4,10 +4,10 @@ import { FindFriendWindow } from '~/components/friends';
 
 const Header: React.FC = () => {
     const [isopenFindFriend, openFindFriend] = useState(false);
-    
+    const showFindFriend = isopenFindFriend ? <FindFriendWindow onClose={()=>openFindFriend(false)} overlayClose={false}/>:null;
     return(
         <React.Fragment>
-            <FindFriendWindow visible={isopenFindFriend} onClose={()=>openFindFriend(false)} overlayClose={false}/>
+            {showFindFriend}
             <MainHeader>
                 <TitleBlock>
                     <h2>친구</h2>
