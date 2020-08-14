@@ -5,7 +5,10 @@ export enum UserTypes {
     FETCH_USER_SUCCESS= "user/FETCH_USER_SUCCESS",
     FETCH_USER_FAILUER= "user/FETCH_USER_FAILUER",
     CHANGE_PROFILE = "user/CHANGE_PROFILE",
-    ADD_FRIEND = "friend/ADD_FRIEND",
+    ADD_FRIEND = "user/ADD_FRIEND",
+    FETCH_FRIENDS_REQUEST= 'user/FETCH_FRIENDS_REQUEST',
+    FETCH_FRIENDS_SUCCESS= 'user/FETCH_FRIENDS_SUCCESS',
+    FETCH_FRIENDS_FAILUER= 'user/FETCH_FRIENDS_FAILUER',
 }
 
 export interface FetchUserAction {
@@ -29,24 +32,42 @@ export interface AddFriendAction {
     payload: UserResponseDto,
 }
 
+export interface FetchFriendsAction {
+    type: UserTypes.FETCH_FRIENDS_REQUEST,
+    payload: number,
+}
+
+export interface FetchFriendsSuccessAction {
+    type: UserTypes.FETCH_FRIENDS_SUCCESS,
+    payload: Array<UserResponseDto>,    
+}
+
 export type UserActionTypes = FetchUserAction
 | FetchUserSuccessAction
 | FetchUserFailureAction
 | ChangeProfileAction
-| AddFriendAction;
+| AddFriendAction
+| FetchFriendsAction
+| FetchFriendsSuccessAction;
 
 export const fetchUser = (userId: string) => ({
     type: UserTypes.FETCH_USER_REQUEST,
     payload: userId
-})
+});
 
 
 export const addFriend = (friend: UserResponseDto) => ({
     type: UserTypes.ADD_FRIEND,
     payload: friend,
-})
+});
+
+export const fetchFriends = (id: number) => ({
+    type: UserTypes.FETCH_FRIENDS_REQUEST,
+    payload: id
+});
 
 export const UserActions = {
     fetchUser,
-    addFriend
+    addFriend,
+    fetchFriends
 }

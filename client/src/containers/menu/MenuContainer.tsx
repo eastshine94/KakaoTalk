@@ -26,6 +26,7 @@ class MenuContainer extends Component<Props> {
         const auth: Auth|undefined = this.props.rootState.auth.auth;
         if(auth){
             props.userActions.fetchUser(auth.user_id);
+            props.userActions.fetchFriends(auth.id);
         }
     }
     render() {

@@ -36,6 +36,11 @@ const userReducer = (state=initialState, action:UserActionTypes) => {
                     action.payload
                 ]
             }
+        case UserTypes.FETCH_FRIENDS_SUCCESS :
+            return {
+                ...state,
+                friends_list: action.payload
+            }
         default: 
             return state
     }

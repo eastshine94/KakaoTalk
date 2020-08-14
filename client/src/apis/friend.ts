@@ -9,7 +9,7 @@ export const addFriendRequest = async(request: AddFriendRequest) => {
     return addedFriend.data.data;
 }
 
-export const fecthFriendList = async(id: number) => {
+export const fecthFriendsRequest = async(id: number) => {
     const friends:ApiResponse<Array<UserResponseDto>> = await axios.get(`${API_HOST}/friend/${id}`);
     return friends.data.data;
 }

@@ -56,7 +56,6 @@ router.get("/:id", async(req, res) => {
             msg: "친구 목록 불러옴",
         })
     }catch(err){
-        console.log(err);
         return res.status(400).json({
             data: false,
             msg: "친구 목록을 불러오지 못했습니다."
