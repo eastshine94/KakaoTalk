@@ -1,7 +1,7 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 import styled from 'styled-components';
 import { findUser } from '~/apis/user';
-import { UserData, UserResponseDto } from '~/types/user';
+import { UserResponseDto } from '~/types/user';
 import Modal, {ModalProps} from '~/pages/Modal';
 import FoundFriendProfile from './FoundFriendProfile';
 
@@ -61,12 +61,11 @@ const CancelIcon = styled.i`
 
 
 interface Props extends ModalProps{
-    userData: UserData;
+
 }
 
-
 const FindFriendWindow: React.FC<Props> = (props) => {
-    const { userData, overlayClose ,onClose } = props;
+    const { overlayClose , onClose } = props;
     const MAX_LEN = 20;
     const [userId, setUserId] = useState("");
     const [foundUser, setFoundUser] = useState<UserResponseDto|undefined|null>();
@@ -103,7 +102,7 @@ const FindFriendWindow: React.FC<Props> = (props) => {
                     />
                     <span>{`${userId.length}/${MAX_LEN}`}</span>
                 </form>
-                <FoundFriendProfile userData={userData} findUserId={findUserId} foundUser= {foundUser}/>
+                <FoundFriendProfile findUserId={findUserId} foundUser= {foundUser} onClose={onClose}/>
             </Wrapper>
         </Modal>
     )

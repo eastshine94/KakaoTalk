@@ -23,7 +23,7 @@ class FriendsContainer extends Component<Props> {
             <React.Fragment>
                 <ProfileContainer/>
                 <Main>
-                    <Header userData={userState}/>
+                    <Header/>
                     <Content userData={userState} showProfile={showProfile}/>
                 </Main>
             </React.Fragment>

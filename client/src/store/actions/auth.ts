@@ -28,7 +28,7 @@ export interface LogoutAction {
   type: AuthTypes.LOGOUT;
 }
 
-export interface ReturnAuthInitState{
+export interface ReturnAuthInitStateAction{
   type: AuthTypes.RETURN_AUTH_INIT_STATE;
 }
 
@@ -36,7 +36,7 @@ export type AuthActionTypes = LoginAction
   | LoginSuccessAction
   | LoginFailureAction
   | LogoutAction
-  | ReturnAuthInitState
+  | ReturnAuthInitStateAction
 
 export const login = (loginData: LoginData): LoginAction => ({
   type: AuthTypes.LOGIN_REQUEST,
@@ -46,7 +46,7 @@ export const login = (loginData: LoginData): LoginAction => ({
 export const logout = (): LogoutAction => ({
   type: AuthTypes.LOGOUT,
 })
-export const returnAuthInitState = (): ReturnAuthInitState => ({
+export const returnAuthInitState = (): ReturnAuthInitStateAction => ({
   type: AuthTypes.RETURN_AUTH_INIT_STATE,
 })
 export const AuthActions = {

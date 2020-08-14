@@ -1,7 +1,14 @@
-import React from 'react';
+import React, {MouseEvent} from 'react';
 import styled from 'styled-components';
-import { UserData, UserResponseDto } from '~/types/user';
+import { connect } from 'react-redux';
+import { Dispatch, bindActionCreators } from 'redux';
+import { UserResponseDto } from '~/types/user';
 import {BASE_IMG_URL} from '~/constants';
+import { addFriendRequest } from '~/apis/friend';
+import { AddFriendRequest } from '~/types/friend';
+import { UserActions } from '~/store/actions/user';
+import { RootState } from '../../store/reducers';
+import { UserState } from '../../store/reducers/user';
 
 const FoundUserProfile = styled.div`
     margin-top: 50px;
@@ -42,14 +49,28 @@ const Button = styled.button`
 interface Props {
     findUserId: string;
     foundUser: UserResponseDto|undefined|null;
-    userData: UserData;
+    onClose(): void
+    userData: UserState;
+    userActions: typeof UserActions;
 }
 
-const FoundFriendProfile: React.FC<Props> = ({findUserId, foundUser, userData}) => {
+const FoundFriendProfile: React.FC<Props> = ({findUserId, foundUser, onClose, userData, userActions}) => {
     if(foundUser){
-        const friends = userData.friends_list;
-        const existFriend = friends.find(friend => friend.user_id === findUserId);
-        const isMe = findUserId === userData.user_id;
+        const my_id = userData.id;
+        const friend_id = foundUser.id;
+        const friend_name = foundUser.name;
+        const friendsList = userData.friends_list;
+        const existFriend = friendsList.find(friend => friend.id === friend_id);
+        const isMe = my_id === friend_id;
+        const { addFriend } = userActions;
+        const onAddFriendClick = async(event: MouseEvent<HTMLButtonElement>) => {
+            event.preventDefault();
+            const request: AddFriendRequest = { my_id, friend_id, friend_name };
+            await addFriendRequest(request);
+            await addFriend(foundUser);
+            await onClose();
+        }
+
         if(existFriend || isMe){
             return(
                 <FoundUserProfile>
@@ -63,7 +84,7 @@ const FoundFriendProfile: React.FC<Props> = ({findUserId, foundUser, userData}) 
             <FoundUserProfile>
                 <img src={foundUser.profile_img_url || BASE_IMG_URL} alt="profile_img"/>
                 <p>{foundUser.name}</p>
-                <Button>친구 추가</Button>
+                <Button onClick={onAddFriendClick}>친구 추가</Button>
             </FoundUserProfile>
         )
     }
@@ -77,4 +98,15 @@ const FoundFriendProfile: React.FC<Props> = ({findUserId, foundUser, userData}) 
     return null;
 }
 
-export default FoundFriendProfile;
+const mapStateToProps = (state: RootState) => ({
+    userData: state.user,
+});
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+    userActions: bindActionCreators(UserActions, dispatch),
+});
+
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(FoundFriendProfile);

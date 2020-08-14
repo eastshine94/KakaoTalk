@@ -1,17 +1,16 @@
 import React, {useState} from 'react';
 import {  MainHeader, TitleBlock } from '~/styles/BaseStyle';
 import { FindFriendWindow } from '~/components/friends';
-import { UserData } from '~/types/user';
 
 interface Props {
-    userData: UserData;
+
 }
 
 
-const Header: React.FC<Props> = ({userData}) => {
+const Header: React.FC<Props> = () => {
     const [isopenFindFriend, openFindFriend] = useState(false);
     const showFindFriend = isopenFindFriend ? 
-        <FindFriendWindow userData={userData} onClose={()=>openFindFriend(false)} overlayClose={false}/>:null;
+        <FindFriendWindow onClose={()=>openFindFriend(false)} overlayClose={false}/>:null;
     return(
         <React.Fragment>
             {showFindFriend}

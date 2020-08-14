@@ -28,6 +28,14 @@ const userReducer = (state=initialState, action:UserActionTypes) => {
                 ...state,
                 ...action.payload
             }
+        case UserTypes.ADD_FRIEND :
+            return {
+                ...state,
+                friends_list : [
+                    ...state.friends_list,
+                    action.payload
+                ]
+            }
         default: 
             return state
     }

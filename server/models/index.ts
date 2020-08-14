@@ -109,7 +109,13 @@ export function init(): Sequelize {
         tableName: 'friend',
         engine: 'InnoDB',
         charset: 'utf8',
-        freezeTableName: true
+        freezeTableName: true,
+        indexes: [
+            {
+                unique: true,
+                fields: ['my_id', 'friend_id']
+            }
+        ]
     })
     User.hasMany(Friend, {
         foreignKey: 'my_id',

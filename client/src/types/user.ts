@@ -17,3 +17,6 @@ export interface UserResponseDto {
     profile_img_url: string,
     background_img_url: string
 }
+
+
+
