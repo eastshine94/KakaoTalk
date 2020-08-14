@@ -9,6 +9,7 @@ export enum UserTypes {
     FETCH_FRIENDS_REQUEST= 'user/FETCH_FRIENDS_REQUEST',
     FETCH_FRIENDS_SUCCESS= 'user/FETCH_FRIENDS_SUCCESS',
     FETCH_FRIENDS_FAILUER= 'user/FETCH_FRIENDS_FAILUER',
+    RESET_USER = 'user/RESET_USER',
 }
 
 export interface FetchUserAction {
@@ -42,13 +43,18 @@ export interface FetchFriendsSuccessAction {
     payload: Array<UserResponseDto>,    
 }
 
+export interface ResetUserAction {
+    type: UserTypes.RESET_USER
+}
+
 export type UserActionTypes = FetchUserAction
 | FetchUserSuccessAction
 | FetchUserFailureAction
 | ChangeProfileAction
 | AddFriendAction
 | FetchFriendsAction
-| FetchFriendsSuccessAction;
+| FetchFriendsSuccessAction
+| ResetUserAction;
 
 export const fetchUser = (userId: string) => ({
     type: UserTypes.FETCH_USER_REQUEST,

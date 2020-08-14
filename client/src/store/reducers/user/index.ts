@@ -45,6 +45,17 @@ const userReducer = (state=initialState, action:UserActionTypes) => {
                     return a.name > b.name ? 1 : (a.name === b.name ? 0 : -1);
                 })
             }
+        case UserTypes.RESET_USER :
+            return {
+                ...state,
+                id: -1,
+                user_id: "",
+                name: "",
+                status_msg: "",
+                profile_img_url: "",
+                background_img_url: "",
+                friends_list: []
+            }
         default: 
             return state
     }

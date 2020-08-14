@@ -36,7 +36,7 @@ const authReducer = (state = initialState, action: AuthActionTypes )=> {
         token: null,
         auth: undefined,
       };
-    case AuthTypes.RETURN_AUTH_INIT_STATE :
+    case AuthTypes.RESET_MESSAGE :
       return {
         ...state,
         loginFailuerMsg: "",

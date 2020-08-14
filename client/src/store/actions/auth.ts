@@ -5,7 +5,7 @@ export enum AuthTypes {
   LOGIN_SUCCESS = 'auth/LOGIN_SUCCESS',
   LOGIN_FAILURE =  'auth/LOGIN_FAILURE',
   LOGOUT = 'auth/LOGOUT',
-  RETURN_AUTH_INIT_STATE = "auth/RETURN_AUTH_INIT_STATE",
+  RESET_MESSAGE = "auth/RESET_MESSAGE",
 };
 
 export interface LoginAction {
@@ -28,15 +28,15 @@ export interface LogoutAction {
   type: AuthTypes.LOGOUT;
 }
 
-export interface ReturnAuthInitStateAction{
-  type: AuthTypes.RETURN_AUTH_INIT_STATE;
+export interface ResetMessageAction{
+  type: AuthTypes.RESET_MESSAGE;
 }
 
 export type AuthActionTypes = LoginAction
   | LoginSuccessAction
   | LoginFailureAction
   | LogoutAction
-  | ReturnAuthInitStateAction
+  | ResetMessageAction
 
 export const login = (loginData: LoginData): LoginAction => ({
   type: AuthTypes.LOGIN_REQUEST,
@@ -46,11 +46,11 @@ export const login = (loginData: LoginData): LoginAction => ({
 export const logout = (): LogoutAction => ({
   type: AuthTypes.LOGOUT,
 })
-export const returnAuthInitState = (): ReturnAuthInitStateAction => ({
-  type: AuthTypes.RETURN_AUTH_INIT_STATE,
+export const resetMessage = (): ResetMessageAction => ({
+  type: AuthTypes.RESET_MESSAGE,
 })
 export const AuthActions = {
     login,
     logout,
-    returnAuthInitState,
+    resetMessage,
 }

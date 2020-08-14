@@ -23,7 +23,7 @@ interface Props {
 class LoginContainer extends Component<Props> {
     
     componentWillUnmount() {
-        this.props.authActions.returnAuthInitState();
+        this.props.authActions.resetMessage();
     }
 
     render() {

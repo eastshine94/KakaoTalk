@@ -1,6 +1,7 @@
 import { all, put, call, takeLatest} from 'redux-saga/effects';
 import jwtDecode from 'jwt-decode';
 import { AuthTypes, LoginAction } from '~/store/actions/auth';
+import { UserTypes } from '~/store/actions/user';
 import * as authApi from '~/apis/auth';
 
 export default function* authSaga() {
@@ -31,4 +32,7 @@ function* login$(action: LoginAction){
 
 function* logout$() {
     yield call(authApi.logout);
+    yield put({
+        type: UserTypes.RESET_USER
+    })
 }
