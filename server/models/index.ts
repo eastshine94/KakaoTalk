@@ -120,10 +120,12 @@ export function init(): Sequelize {
     User.hasMany(Friend, {
         foreignKey: 'my_id',
         as: "friends"
-      })
+      });
+    
     User.hasMany(Friend, {
         foreignKey: 'friend_id',
-    })
+    });
+    Friend.belongsTo(User);
     return sequelize;
 }
 
