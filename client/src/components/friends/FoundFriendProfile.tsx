@@ -66,9 +66,13 @@ const FoundFriendProfile: React.FC<Props> = ({findUserId, foundUser, onClose, us
         const onAddFriendClick = async(event: MouseEvent<HTMLButtonElement>) => {
             event.preventDefault();
             const request: AddFriendRequest = { my_id, friend_id, friend_name };
-            await addFriendRequest(request);
-            await addFriend(foundUser);
-            await onClose();
+            try {
+                await addFriendRequest(request);
+                await addFriend(foundUser);
+                await onClose();
+            }catch(err) {
+                alert("친구 추가 실패");
+            }
         }
 
         if(existFriend || isMe){
