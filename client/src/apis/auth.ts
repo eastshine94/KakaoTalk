@@ -16,7 +16,6 @@ interface LoginResponseDto {
 const API_HOST = process.env.API_HOST || 'http://localhost:3001/api';
 
 export const signup = async(signupData: SignupData) => {
-    console.log("signup");
     const signupRequest: SignupRequestDto = {
         user_id: signupData.userId,
         password: signupData.password,

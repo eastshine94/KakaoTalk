@@ -6,7 +6,7 @@ import { ProfileChangeRequestDto } from '../types/profile';
 const API_HOST = process.env.API_HOST || 'http://localhost:3001/api';
 
 export const findUser = async(userId: string) => {
-    const foundUser: ApiResponse<UserResponseDto> = await axios.post(`${API_HOST}/user/find`, {user_id: userId});
+    const foundUser: ApiResponse<UserResponseDto> = await axios.get(`${API_HOST}/user/${userId}`);
     return foundUser.data.data;
 }
 

@@ -5,8 +5,8 @@ import * as multer from 'multer';
 const upload = multer({dest:"uploads/"})
 const router = express.Router();
 
-router.post("/find", async(req, res) => {
-  const { user_id } = req.body;
+router.get("/:user_id", async(req, res) => {
+  const user_id = req.params.user_id;
   try {
     const user = await User.findOne({
       attributes: ["id", "user_id", "name", "status_msg", "profile_img_url", "background_img_url"],
