@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import {  MainContent } from '~/styles/BaseStyle';
-import {UserData} from '~/types/user';
+import { UserData, UserResponseDto } from '~/types/user';
 import { BASE_IMG_URL } from '~/constants';
 
 const MyProfileBlock = styled.div`
@@ -46,18 +46,20 @@ const FriendsBorder = styled.div`
 
 interface Props {
     userData: UserData;
-    showProfile(userData: UserData): void;
+    showProfile(userData: UserResponseDto): void;
 }
 interface FriendRowProps {
     name: string;
     status_msg: string;
     profile_img_url: string,
+    profileImgClick(): void,
 }
 const FriendRow:React.FC<FriendRowProps> = (props) => {
     const {name, status_msg, profile_img_url} = props
+    const {profileImgClick} = props
     return(
         <li>
-            <img src={profile_img_url||BASE_IMG_URL} alt="profile Image"/>
+            <img src={profile_img_url||BASE_IMG_URL} alt="profile Image" onClick={profileImgClick}/>
             <p><b>{name}</b></p>
             <p>{status_msg}</p>
         </li>
@@ -67,7 +69,7 @@ const FriendRow:React.FC<FriendRowProps> = (props) => {
 
 const Content: React.FC<Props> = ({userData, showProfile}) => {
     const friendsList = userData.friends_list;
-    const renderFriends = friendsList.map(friend => <FriendRow {...friend} key={friend.id}/>)
+    const renderFriends = friendsList.map(friend => <FriendRow {...friend} key={friend.id} profileImgClick={() => showProfile(friend)}/>)
     return(
         <MainContent>
             <MyProfileBlock>

@@ -19,13 +19,17 @@ const Wrapper = styled.section`
     }
 `;
 
-const Menu: React.FC = () => {
+interface Props{
+    isMe: boolean;
+}
+
+const Menu: React.FC<Props> = ({isMe}) => {
 
     return(
         <Wrapper>
             <div>
                 <i className="fas fa-comment"/>
-                <p>1:1 채팅</p>
+                <p>{isMe ? "나와의 채팅": "1:1 채팅"}</p>
             </div>
         </Wrapper>
     )

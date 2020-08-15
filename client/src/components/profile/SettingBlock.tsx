@@ -122,6 +122,17 @@ export const ProfileImageSetting: React.FC<SettingProps> = ({userData, isShowSet
     )
 }
 
+export const FriendProfileImage: React.FC<{ userData: UserResponseDto }> = ({userData}) => {
+    return(
+        <ProfileImageSettingWrapper>
+            <img 
+                src={userData.profile_img_url || BASE_IMG_URL} 
+                alt="profile_image"
+            />
+        </ProfileImageSettingWrapper>
+    )
+}
+
 const Setting: React.FC<SettingBlockProps> = ({className, showSetting, changeImage, changeToInitImage}) => {
     const settingName = className === "bgSetting" ? "배경 변경" : "사진 변경";
     const validFileType = ["image/bmp","image/png","image/jpg","image/jpeg"];

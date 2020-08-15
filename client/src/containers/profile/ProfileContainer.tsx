@@ -4,7 +4,6 @@ import { UserProfile, Menu } from '~/components/profile';
 import {connect} from 'react-redux';
 import { Dispatch, bindActionCreators } from 'redux';
 import { RootState } from '~/store/reducers';
-import { ProfileState } from '~/store/reducers/profile';
 import { ProfileActions } from '~/store/actions/profile';
 import { Modal } from '~/pages';
 
@@ -42,13 +41,16 @@ const CancelIcon = styled.i`
 `
 
 interface Props {
-    profileState: ProfileState;
+    rootState: RootState;
     profileActions: typeof ProfileActions;
 }
 
 class ProfileContainer extends Component<Props> {
     render(){
-        const { profileState } = this.props;
+        const profileState = this.props.rootState.profile;
+        const userState = this.props.rootState.user;
+        const isMe = profileState.id === userState.id;
+
         const { hideProfile, changeProfile } = this.props.profileActions;
         const setBackground = profileState.background_img_url ? <img src={profileState.background_img_url} alt="bg_image"/> : "";
         if(!profileState.isProfileShown) return null;
@@ -59,8 +61,8 @@ class ProfileContainer extends Component<Props> {
                         {setBackground}
                     </BackgroundBase>
                     <CancelIcon className="fas fa-times" onClick={hideProfile}/>
-                    <UserProfile userData={ profileState } changeProfile={changeProfile}/>
-                    <Menu/>
+                    <UserProfile isMe={isMe} userData={ profileState } changeProfile={changeProfile}/>
+                    <Menu isMe={isMe}/>
                 </Wrapper>
             </Modal>
         )
@@ -68,7 +70,7 @@ class ProfileContainer extends Component<Props> {
 }
 
 const mapStateToProps = (state: RootState) => ({
-    profileState: state.profile,
+    rootState: state,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({

@@ -72,6 +72,7 @@ export const MainContent = styled.section`
             width: 45px;
             height: 45px;
             border-radius: 15px;
+            cursor: pointer;
         }
         & p {
             color: #707070;
