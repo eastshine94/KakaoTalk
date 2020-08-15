@@ -28,6 +28,11 @@ const ProfileImageSettingWrapper = styled.div`
         cursor: pointer;
     }   
 `;
+const FriendProfileImageWrapper = styled(ProfileImageSettingWrapper)`
+    & img{
+        cursor: auto;
+    }
+`
 const SettingBlock = styled.div`
     position: absolute;
     width: 130px;
@@ -124,12 +129,12 @@ export const ProfileImageSetting: React.FC<SettingProps> = ({userData, isShowSet
 
 export const FriendProfileImage: React.FC<{ userData: UserResponseDto }> = ({userData}) => {
     return(
-        <ProfileImageSettingWrapper>
+        <FriendProfileImageWrapper>
             <img 
                 src={userData.profile_img_url || BASE_IMG_URL} 
                 alt="profile_image"
             />
-        </ProfileImageSettingWrapper>
+        </FriendProfileImageWrapper>
     )
 }
 

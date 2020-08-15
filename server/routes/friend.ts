@@ -14,16 +14,6 @@ interface FriendResponseDto {
 
 const router = express.Router();
 
-router.post("/add", async(req, res) => {
-    const { my_id, friend_id, friend_name } = req.body;
-    try {
-        await Friend.create({my_id, friend_id, friend_name});
-        return res.json({data: true, msg: "친구 추가 성공"});
-    } catch (err) {
-        return res.status(400).json({data: false, msg: "친구 추가 실패"});
-    }
-});
-
 router.get("/:id", async(req, res) => {
     const id = req.params.id;
     try{
@@ -63,5 +53,28 @@ router.get("/:id", async(req, res) => {
     }
 })
 
+
+router.post("/add", async(req, res) => {
+    const { my_id, friend_id, friend_name } = req.body;
+    try {
+        await Friend.create({my_id, friend_id, friend_name});
+        return res.json({data: true, msg: "친구 추가 성공"});
+    } catch (err) {
+        return res.status(400).json({data: false, msg: "친구 추가 실패"});
+    }
+});
+
+router.post("/profile/change", async(req, res) => {
+    const { my_id, friend_id, friend_name } = req.body;
+    try {
+        await Friend.update({friend_name},
+            {
+                where: {my_id, friend_id}
+            });
+        return res.json({data: true, msg: "친구 이름 변경 성공"});
+    } catch (err) {
+        return res.status(400).json({data: false, msg: "친구 이름 변경 실패"});
+    }
+})
 
 export default router;

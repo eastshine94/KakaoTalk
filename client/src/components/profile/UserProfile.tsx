@@ -1,8 +1,10 @@
 import React,{ useState } from 'react';
 import styled from 'styled-components';
+import {connect} from 'react-redux';
+import { Dispatch, bindActionCreators } from 'redux';
+import { RootState } from '~/store/reducers';
+import { ProfileActions } from '~/store/actions/profile';
 import ProfileInputWindow from './ProfileInputWindow';
-import { UserResponseDto } from '~/types/user';
-import {ProfileChangeRequestDto} from '~/types/profile';
 import { BgImageSetting, ProfileImageSetting, FriendProfileImage } from './SettingBlock';
 
 const Wrapper = styled.section`
@@ -43,12 +45,15 @@ const SettingOverlay = styled.div`
 `;
 
 interface Props {
-    isMe: boolean;
-    userData: UserResponseDto;
-    changeProfile(profileData: ProfileChangeRequestDto): void;
+    rootState: RootState;
+    profileActions: typeof ProfileActions,
 }
 
-const UserProfile: React.FC<Props> = ({isMe, userData, changeProfile}) => {
+const UserProfile: React.FC<Props> = ( props ) => {
+    const {changeProfile, changeFriendName} = props.profileActions;
+    const loginUserData = props.rootState.user;
+    const profileData = props.rootState.profile;
+    const isMe =  loginUserData.id === profileData.id;
     const [isShowBgSetting, showBgSetting] = useState(false);
     const [isShowProfileSetting, showProfileSetting] = useState(false);
     const [isShowNameChange, showNameChange] = useState(false);
@@ -60,23 +65,26 @@ const UserProfile: React.FC<Props> = ({isMe, userData, changeProfile}) => {
     }
     const showSettinOverlay = isShowBgSetting || isShowProfileSetting ? <SettingOverlay onClick={onSettingBgClick}/>:""
     const showProfileInputWindow = () => {
-        const id = userData.id;
+        const user_profile_id = profileData.id;
         const changeName = async(name: string) => {
             if(name){
                 if(isMe){
-                    await changeProfile({id, name});
+                    await changeProfile({id: user_profile_id, name});
+                }
+                else {
+                    await changeFriendName({my_id: loginUserData.id, friend_id: user_profile_id, friend_name: name});
                 }
             }
         }
         const changeStatusMsg = async(msg:string) => {
-            await changeProfile({id, status_msg: msg});
+            await changeProfile({id:user_profile_id, status_msg: msg});
         }
         
         if(isShowNameChange){
-            return <ProfileInputWindow currentValue={userData.name || ""} maxLength={20} showWindow={showNameChange} changeProfile={changeName}/>
+            return <ProfileInputWindow currentValue={profileData.name || ""} maxLength={20} showWindow={showNameChange} changeProfile={changeName}/>
         }
         else if(isShowStatusMsgChange){
-            return <ProfileInputWindow currentValue={userData.status_msg || ""} maxLength={60} showWindow={showStatusMsgChange} changeProfile={changeStatusMsg}/>
+            return <ProfileInputWindow currentValue={profileData.status_msg || ""} maxLength={60} showWindow={showStatusMsgChange} changeProfile={changeStatusMsg}/>
         }
         return ""
     }
@@ -85,15 +93,15 @@ const UserProfile: React.FC<Props> = ({isMe, userData, changeProfile}) => {
             {showSettinOverlay}
             {showProfileInputWindow()}
             <Wrapper>
-                {isMe ? <BgImageSetting userData={userData} changeProfile={changeProfile} isShowSetting={isShowBgSetting} showSetting={showBgSetting}/>:null}
-                {isMe ? <ProfileImageSetting userData={userData} changeProfile={changeProfile} isShowSetting={isShowProfileSetting} showSetting={showProfileSetting}/> : <FriendProfileImage userData={userData}/>}
+                {isMe ? <BgImageSetting userData={profileData} changeProfile={changeProfile} isShowSetting={isShowBgSetting} showSetting={showBgSetting}/>:null}
+                {isMe ? <ProfileImageSetting userData={profileData} changeProfile={changeProfile} isShowSetting={isShowProfileSetting} showSetting={showProfileSetting}/> : <FriendProfileImage userData={profileData}/>}
                    
                 <ProfileText>
-                    <p><b>{userData.name}</b></p>
+                    <p><b>{profileData.name}</b></p>
                     <i className="fas fa-pen" onClick={() => showNameChange(true)}/>
                 </ProfileText>
                 <ProfileText>
-                    <p>{userData.status_msg}</p>
+                    <p>{profileData.status_msg}</p>
                     {isMe? <i className="fas fa-pen" onClick={() => showStatusMsgChange(true)}/>:null}
                 </ProfileText>
             </Wrapper>
@@ -101,4 +109,16 @@ const UserProfile: React.FC<Props> = ({isMe, userData, changeProfile}) => {
     )
 }
 
-export default UserProfile;
+
+const mapStateToProps = (state: RootState) => ({
+    rootState: state,
+});
+
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+    profileActions: bindActionCreators(ProfileActions, dispatch),
+});
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(UserProfile);

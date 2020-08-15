@@ -28,6 +28,18 @@ const userReducer = (state=initialState, action:UserActionTypes) => {
                 ...state,
                 ...action.payload
             }
+        case UserTypes.CHANGE_FRIEND_NAME :
+            return {
+                ...state,
+                friends_list : state.friends_list.map(friend => {
+                    if(friend.id === action.payload.friend_id){
+                        return {...friend, name: action.payload.friend_name}
+                    }
+                    return friend
+                }).sort((a,b)=>{
+                    return a.name > b.name ? 1 : (a.name === b.name ? 0 : -1);
+                }),
+            }
         case UserTypes.ADD_FRIEND :
             return {
                 ...state,

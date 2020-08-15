@@ -35,9 +35,8 @@ router.post("/profile/change", async(req, res) => {
   try{
     await User.update({...body},
     {
-        where: {
-            id: body.id
-    }})
+        where: {id: body.id}
+    })
     return res.json({data: true, msg: "프로필 변경 완료."})
   }catch(err){
     return res.status(400).json({data: false, msg: err.message});

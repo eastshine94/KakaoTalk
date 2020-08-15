@@ -11,7 +11,6 @@ import { Modal } from '~/pages';
 const Wrapper = styled.main`
     width: 360px;
     height: 580px;
-    border: 1px solid #646464;
     margin: auto;
     color: #fff; 
     text-align: center;
@@ -51,7 +50,7 @@ class ProfileContainer extends Component<Props> {
         const userState = this.props.rootState.user;
         const isMe = profileState.id === userState.id;
 
-        const { hideProfile, changeProfile } = this.props.profileActions;
+        const { hideProfile } = this.props.profileActions;
         const setBackground = profileState.background_img_url ? <img src={profileState.background_img_url} alt="bg_image"/> : "";
         if(!profileState.isProfileShown) return null;
         return(
@@ -61,7 +60,7 @@ class ProfileContainer extends Component<Props> {
                         {setBackground}
                     </BackgroundBase>
                     <CancelIcon className="fas fa-times" onClick={hideProfile}/>
-                    <UserProfile isMe={isMe} userData={ profileState } changeProfile={changeProfile}/>
+                    <UserProfile/>
                     <Menu isMe={isMe}/>
                 </Wrapper>
             </Modal>

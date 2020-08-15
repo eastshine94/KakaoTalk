@@ -40,6 +40,11 @@ const profileReducer = (state = initialState, action:ProfileActionTypes ) => {
                 ...state,
                 ...action.payload,
             }
+        case ProfileTypes.CHANGE_FRIEND_NAME_SUCCESS :
+            return {
+                ...state,
+                name: action.payload
+            }
         default :
             return state;
     }
