@@ -45,6 +45,7 @@ const FriendsBorder = styled.div`
 `;
 
 interface Props {
+    search: string;
     userData: UserData;
     showProfile(userData: UserResponseDto): void;
 }
@@ -67,18 +68,26 @@ const FriendRow:React.FC<FriendRowProps> = (props) => {
 }
 
 
-const Content: React.FC<Props> = ({userData, showProfile}) => {
-    const friendsList = userData.friends_list;
-    const renderFriends = friendsList.map(friend => <FriendRow {...friend} key={friend.id} profileImgClick={() => showProfile(friend)}/>)
+const Content: React.FC<Props> = ({search, userData, showProfile}) => {
+    const searchRemoveBlank = search.replace(/ /g,"");
+    const reg_exp = new RegExp(`^.*${searchRemoveBlank}.*$`);
+    const friendsList = userData.friends_list.sort((a,b)=>{
+        return a.name > b.name ? 1 : (a.name === b.name ? 0 : -1);
+    });
+    const searchedFriends = friendsList.filter(friend => {
+        return friend.name.replace(/ /g,"").match(reg_exp);
+    });
+    const renderFriends = searchedFriends.map(friend => <FriendRow {...friend} key={friend.id} profileImgClick={() => showProfile(friend)}/>)
     return(
         <MainContent>
-            <MyProfileBlock>
-                <img src={userData.profile_img_url||BASE_IMG_URL} alt="profile Image" onClick={() => showProfile(userData)}/>
-                <p><b>{userData.name}</b></p>
-                <p>{userData.status_msg}</p>
-            </MyProfileBlock>
+            {search ? null : 
+                <MyProfileBlock>
+                    <img src={userData.profile_img_url||BASE_IMG_URL} alt="profile Image" onClick={() => showProfile(userData)}/>
+                    <p><b>{userData.name}</b></p>
+                    <p>{userData.status_msg}</p>
+                </MyProfileBlock>}
             <FriendsBorder>
-                <p>{`친구 ${friendsList.length}`}</p>
+                <p>{`친구 ${renderFriends.length}`}</p>
             </FriendsBorder>
             <ul>
                 {renderFriends}

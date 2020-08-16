@@ -16,15 +16,24 @@ interface Props{
 
 
 class FriendsContainer extends Component<Props> {
+    state = {
+        search: "", 
+    }
     render() {
         const userState = this.props.rootState.user;
         const { showProfile } = this.props.profileActions;
+        const changeSearch = (param: string) => {
+            this.setState({
+                ...this.state,
+                search: param
+            })
+        }
         return(
             <React.Fragment>
                 <ProfileContainer/>
                 <Main>
-                    <Header/>
-                    <Content userData={userState} showProfile={showProfile}/>
+                    <Header changeSearch={changeSearch}/>
+                    <Content search={this.state.search}userData={userState} showProfile={showProfile}/>
                 </Main>
             </React.Fragment>
             

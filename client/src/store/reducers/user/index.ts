@@ -36,8 +36,6 @@ const userReducer = (state=initialState, action:UserActionTypes) => {
                         return {...friend, name: action.payload.friend_name}
                     }
                     return friend
-                }).sort((a,b)=>{
-                    return a.name > b.name ? 1 : (a.name === b.name ? 0 : -1);
                 }),
             }
         case UserTypes.ADD_FRIEND :
@@ -46,16 +44,12 @@ const userReducer = (state=initialState, action:UserActionTypes) => {
                 friends_list : [
                     ...state.friends_list,
                     action.payload
-                ].sort((a,b)=>{
-                    return a.name > b.name ? 1 : (a.name === b.name ? 0 : -1);
-                }),
+                ],
             }
         case UserTypes.FETCH_FRIENDS_SUCCESS :
             return {
                 ...state,
-                friends_list: action.payload.sort((a,b)=>{
-                    return a.name > b.name ? 1 : (a.name === b.name ? 0 : -1);
-                })
+                friends_list: action.payload
             }
         case UserTypes.RESET_USER :
             return {
