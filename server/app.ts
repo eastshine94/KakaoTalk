@@ -29,7 +29,7 @@ const runServer = async() => {
         const fileName = req.params.fileName
         res.sendFile(path.join(__dirname, `../uploads/${fileName}`));
     });
-    const server = app.listen(app.get('port'), () => {
+    const server = http.createServer(app).listen(app.get('port'), () => {
         logger.info(`listening on port ${app.get('port')}...`);
     });
     await sequelize.authenticate()

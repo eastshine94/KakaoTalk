@@ -5,6 +5,7 @@ export enum PAGE_PATHS  {
     MENU = '/menu',
     FRIENDS = '/menu/friends',
     CHATTING = '/menu/chatting',
+    CHATTING_ROOM = '/room',
 }
 
 export const BASE_IMG_URL = '/asset/base_profile.jpg';
