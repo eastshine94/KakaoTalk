@@ -10,7 +10,7 @@ const Wrapper = styled.div`
 const Header = styled.header`
     width: 100%;
 	background-color: #a9bdce;
-	height: 10vh;
+	height: 50px;
     & span{
         display: inline-block;
         font-family: 'Roboto', sans-serif;
@@ -30,7 +30,11 @@ const Header = styled.header`
     }
 `
 const Content = styled.main`
-    min-height: 80vh;
+    position: absolute;
+	top: 50px;
+    bottom: 65px;
+	left: 0px;
+    right: 0px;
 	overflow: auto;
     width: 100%;
 
@@ -79,7 +83,13 @@ const LeftBlock = styled.div`
 
 
 const Footer = styled.footer`
-    min-height: 10vh;
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    min-height: 50px;
+    max-height: 200px;
+    overflow: auto;
     padding: 6px;
     z-index: 100;
     background-color: #eeeeee;
@@ -96,15 +106,13 @@ const Footer = styled.footer`
         & textarea {
             width: 100%;
             resize: none;
-            min-height: 50px;
-            max-height: 200px;
+            height: 100%;
             margin: 0;
             padding: 5px 20px;
         }
         & button {
             width: 50px;
             height: 40px;
-            padding: 10px;
             background: #ffeb33;
         }
     }
@@ -131,10 +139,23 @@ const ChattingRoom:React.FC = () => {
                         <div><Chat>채팅, 채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅</Chat></div>
                         <div><Chat>채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅</Chat></div>
                         <div><Chat>채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅</Chat></div>
-                     
+                        <div><Chat>채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅</Chat></div>
+                        <div><Chat>채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅</Chat></div>
+                        <div><Chat>채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅</Chat></div>
                     </LeftBlock>
                 </UserBlcok>
-
+                <UserBlcok>
+                    <RightBlock>
+                        <div><Chat>채팅, 채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅</Chat></div>
+                        <div><Chat>채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅</Chat></div>
+                    </RightBlock>
+                </UserBlcok>
+                <UserBlcok>
+                    <RightBlock>
+                        <div><Chat>채팅, 채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅</Chat></div>
+                        <div><Chat>채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅</Chat></div>
+                    </RightBlock>
+                </UserBlcok>
             </Content>
             <Footer>
                 <div>
