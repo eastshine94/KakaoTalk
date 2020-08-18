@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState, FormEvent, KeyboardEvent, ChangeEvent } from 'react';
 import styled from 'styled-components';
+import { MyChat, FriendChat, FriendChatWithThumbnail } from '~/components/chattingRoom/ChatBlock';
 
 const Wrapper = styled.div`
     width: 100%;
@@ -40,46 +41,6 @@ const Content = styled.main`
 
 `;
 
-const UserBlcok = styled.div`
-    margin-top: 10px;
-	margin-left: 10px;
-	margin-right: 10px;
-`;
-
-const Chat = styled.div`
-    display: inline-block;
-	padding: 7px 8px;
-	border-radius: 4px;
-	margin-bottom: 7px;
-	box-shadow: 0px 1px 2px 0px #8FABC7;
-    max-width: 70%;
-`;
-
-const RightBlock = styled.div`
-    text-align: right;
-    & ${Chat}{
-        background-color: #ffec42;
-        text-align: left;
-    }
-`;
-
-const LeftBlock = styled.div`
-    position: relative;
-    padding-left: 50px;
-    & ${Chat}{
-        background-color: #fff;
-    }
-    & img {
-        position: absolute;
-        top: 3px;
-        left: 0;
-        height: 40px;
-        width: 40px;
-        border-radius: 20px;
-        float: left;
-    }
-`;
-
 
 
 const Footer = styled.footer`
@@ -118,7 +79,65 @@ const Footer = styled.footer`
     }
     
 `;
+
+interface ChatProps {
+    sendUserId : number;
+    msg : string;
+}
+
 const ChattingRoom:React.FC = () => {
+    const [ message, setMessage ] = useState(""); 
+    const chatList:Array<ChatProps> = [
+        {
+            sendUserId: 1, msg:"채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅"
+        },
+        {
+            sendUserId: 1, msg:"채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅"
+        },
+        {
+            sendUserId: 2, msg:"채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅"
+        },
+        {
+            sendUserId: 2, msg:"채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅"
+        },
+        {
+            sendUserId: 1, msg:"채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅"
+        },
+        {
+            sendUserId: 2, msg:"채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅"
+        },
+    ]
+    const [ chatting, setChatting ] = useState(chatList);
+
+    var prevSend = -1;
+    const renderChatting = chatting.map(chat => {
+        const isPrevSending = prevSend === chat.sendUserId;
+        prevSend = chat.sendUserId;
+        if(chat.sendUserId === 1){
+            return <MyChat msg={chat.msg}/>;
+        }
+        if(isPrevSending){
+            return <FriendChat msg={chat.msg}/>;
+        }
+        return <FriendChatWithThumbnail msg={chat.msg}/>;
+    })
+    
+    const onMessageChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+        event.preventDefault();
+        setMessage(event.target.value);
+    }
+
+    const onSubmit = (event: FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        setChatting([...chatting, {sendUserId: 1, msg: message}]);
+        setMessage("");
+    }
+    const onCtrlEnterPress = (event: KeyboardEvent<HTMLTextAreaElement>) => {
+        if(event.ctrlKey){
+            setChatting([...chatting, {sendUserId: 2, msg: message}]);
+            setMessage("");
+        }
+    }
     return(
         <Wrapper>
             <Header>
@@ -126,42 +145,13 @@ const ChattingRoom:React.FC = () => {
                 <span>Web Kakao Interface</span>
             </Header>
             <Content>
-                <UserBlcok>
-                    <RightBlock>
-                        <div><Chat>채팅, 채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅</Chat></div>
-                        <div><Chat>채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅</Chat></div>
-                    </RightBlock>
-                </UserBlcok>
-                <UserBlcok>
-                    <LeftBlock>
-                        <img src="/asset/base_profile.jpg" alt="thumbnail"/>
-                        <div>홍길동</div>
-                        <div><Chat>채팅, 채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅</Chat></div>
-                        <div><Chat>채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅</Chat></div>
-                        <div><Chat>채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅</Chat></div>
-                        <div><Chat>채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅</Chat></div>
-                        <div><Chat>채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅</Chat></div>
-                        <div><Chat>채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅</Chat></div>
-                    </LeftBlock>
-                </UserBlcok>
-                <UserBlcok>
-                    <RightBlock>
-                        <div><Chat>채팅, 채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅</Chat></div>
-                        <div><Chat>채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅</Chat></div>
-                    </RightBlock>
-                </UserBlcok>
-                <UserBlcok>
-                    <RightBlock>
-                        <div><Chat>채팅, 채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅</Chat></div>
-                        <div><Chat>채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅</Chat></div>
-                    </RightBlock>
-                </UserBlcok>
+                {renderChatting}
             </Content>
             <Footer>
                 <div>
-                    <form>
-                        <textarea autoFocus={true} />
-                        <button type="button">전송</button>
+                    <form onSubmit={onSubmit}>
+                        <textarea value={message} autoFocus={true} onChange={onMessageChange} onKeyPress={onCtrlEnterPress}/>
+                        <button type="submit">전송</button>
                     </form>
                 </div>
             </Footer>
