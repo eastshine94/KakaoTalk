@@ -19,6 +19,7 @@ class FriendsContainer extends Component<Props> {
     state = {
         search: "", 
     }
+    
     render() {
         const userState = this.props.rootState.user;
         const { showProfile } = this.props.profileActions;
