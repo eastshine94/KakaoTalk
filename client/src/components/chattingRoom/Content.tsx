@@ -24,12 +24,12 @@ const Content: React.FC<Props> = ({chattingList}) => {
         const isPrevSending = prevSend === chat.send_user_id;
         prevSend = chat.send_user_id;
         if(chat.send_user_id === 1){
-            return <MyChat msg={chat.message}/>;
+            return <MyChat msg={chat.message} key={chat.id}/>;
         }
         if(isPrevSending){
-            return <FriendChat msg={chat.message}/>;
+            return <FriendChat msg={chat.message} key={chat.id}/>;
         }
-        return <FriendChatWithThumbnail msg={chat.message}/>;
+        return <FriendChatWithThumbnail msg={chat.message} key={chat.id}/>;
     })
     return(
         <Wrapper>

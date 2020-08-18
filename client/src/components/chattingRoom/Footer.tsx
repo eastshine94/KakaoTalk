@@ -33,6 +33,15 @@ const Wrapper = styled.footer`
             width: 50px;
             height: 40px;
             background: #ffeb33;
+            &.canSubmit {
+                cursor: pointer;
+                pointer-events: all;
+                color: #000;
+            }
+            &.cannotSubmit {
+                pointer-events: none;
+                color: #b4b4b4;
+            }
         }
     }
     
@@ -44,28 +53,36 @@ interface Props {
 }
 const Footer: React.FC<Props> = ({chattingList, setChatting}) => {
     const [ message, setMessage ] = useState("");
-
+    const isCanSubmit = !!message.replace(/ |\n/g,"");
+    const btnClassName = isCanSubmit ? "canSubmit": "cannotSubmit";
     const onMessageChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
         event.preventDefault();
-        setMessage(event.target.value);
+        const value = event.target.value;
+        setMessage(value);
     }
-
+    const requestSubmit = () => {
+        if(isCanSubmit){
+            setChatting([...chattingList, {id: chattingList.length+1, send_user_id: 1, message}]);
+            setMessage("");
+        }
+    }
     const onSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        setChatting([...chattingList, {id: chattingList.length+1, send_user_id: 1, message}]);
-        setMessage("");
+        requestSubmit();
     }
     const onCtrlEnterPress = (event: KeyboardEvent<HTMLTextAreaElement>) => {
         if(event.ctrlKey){
-            setChatting([...chattingList, {id: chattingList.length+1, send_user_id: 2, message}]);
-            setMessage("");
+            if(isCanSubmit){
+                setChatting([...chattingList, {id: chattingList.length+1, send_user_id: 2, message}]);
+                setMessage("");
+            }
         }
     }
     return(
         <Wrapper>
             <form onSubmit={onSubmit}>
                 <textarea value={message} autoFocus={true} onChange={onMessageChange} onKeyPress={onCtrlEnterPress}/>
-                <button type="submit">전송</button>
+                <button className={btnClassName} type="submit">전송</button>
             </form>
         </Wrapper>
     )
