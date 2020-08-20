@@ -1,6 +1,5 @@
 {
-  "watch": ["src"],
+  "watch": ["server/app.ts"],
   "ext": "ts",
-  "ignore": ["src/client"],
   "exec": "NODE_ENV=development ts-node ./server/app.ts"
 }

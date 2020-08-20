@@ -3,6 +3,7 @@ import * as DB from './models';
 import * as cors from 'cors';
 import * as http from 'http';
 import * as path from 'path';
+import * as socketIO from 'socket.io';
 import { Sequelize } from 'sequelize/types';
 import logger from './logger';
 import authRouter from './routes/auth';
@@ -39,7 +40,25 @@ const runServer = async() => {
         throw e;
     });
     await sequelize.sync();
+    runSocketIo(server);
 };
+
+const runSocketIo = (server: http.Server) => {
+    const io = socketIO.listen(server);
+    io.on('connection', (socket) => {
+        socket.on('disconnect', () => {
+            logger.info("소켓 연결 해제");
+        });
+        socket.on('login', (id: number) => {
+            socket.client.id = id.toString();
+            socket.id = id.toString();
+            logger.info(`login ${socket.id}`);
+        });
+        socket.on('chat', () => {
+            
+        })
+    })
+}
 
 runServer();
 

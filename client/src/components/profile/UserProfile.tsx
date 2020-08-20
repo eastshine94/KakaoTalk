@@ -67,7 +67,9 @@ const UserProfile: React.FC<Props> = ( props ) => {
     const showProfileInputWindow = () => {
         const user_profile_id = profileData.id;
         const changeName = async(name: string) => {
-            if(name){
+            name = name.trim();
+            const isExistName = name.replace(/ /g,"");
+            if(isExistName){
                 if(isMe){
                     await changeProfile({id: user_profile_id, name});
                 }
@@ -77,6 +79,7 @@ const UserProfile: React.FC<Props> = ( props ) => {
             }
         }
         const changeStatusMsg = async(msg:string) => {
+            msg = msg.trim();
             await changeProfile({id:user_profile_id, status_msg: msg});
         }
         

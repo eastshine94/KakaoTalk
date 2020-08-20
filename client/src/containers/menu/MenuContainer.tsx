@@ -10,6 +10,7 @@ import { UserActions } from '~/store/actions/user';
 import { RootState } from '~/store/reducers';
 import { PAGE_PATHS } from '~/constants';
 import { Auth } from '~/types/auth';
+
 const Wrapper = styled.main`
     width: 100%;
     display: flex;
@@ -20,6 +21,7 @@ interface Props {
     authActions: typeof AuthActions;
     userActions: typeof UserActions;
 }
+
 class MenuContainer extends Component<Props> {
     constructor(props: Props) {
         super(props);
@@ -27,6 +29,7 @@ class MenuContainer extends Component<Props> {
         if(auth){
             props.userActions.fetchUser(auth.user_id);
             props.userActions.fetchFriends(auth.id);
+            props.rootState.auth.socket?.emit("login",auth.id);
         }
     }
     render() {

@@ -1,6 +1,8 @@
 import axios from 'axios';
+import {API_HOST} from '~/constants';
 import {LoginData, SignupData} from '~/types/auth';
 import { ApiResponse } from '~/types/base';
+
 
 interface SignupRequestDto {
     user_id: string; 
@@ -11,9 +13,6 @@ interface SignupRequestDto {
 interface LoginResponseDto {
     token: string;
 }
-
-
-const API_HOST = process.env.API_HOST || 'http://localhost:3001/api';
 
 export const signup = async(signupData: SignupData) => {
     const signupRequest: SignupRequestDto = {
