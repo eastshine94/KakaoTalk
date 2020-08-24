@@ -29,7 +29,10 @@ class MenuContainer extends Component<Props> {
         if(auth){
             props.userActions.fetchUser(auth.user_id);
             props.userActions.fetchFriends(auth.id);
-            props.rootState.auth.socket?.emit("login",auth.id);
+            props.rootState.auth.socket?.emit("join",auth.id.toString());
+            props.rootState.auth.socket?.on("message",(msg: string) => {
+                console.log(msg);
+            });
         }
     }
     render() {

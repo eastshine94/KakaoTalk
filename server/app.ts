@@ -46,16 +46,16 @@ const runServer = async() => {
 const runSocketIo = (server: http.Server) => {
     const io = socketIO.listen(server);
     io.on('connection', (socket) => {
+        
         socket.on('disconnect', () => {
             logger.info("소켓 연결 해제");
         });
-        socket.on('login', (id: number) => {
-            socket.client.id = id.toString();
-            socket.id = id.toString();
-            logger.info(`login ${socket.id}`);
-        });
-        socket.on('chat', () => {
-            
+        socket.on('join', (room_id: string) => {
+            socket.join(room_id);
+            logger.info(`${room_id}에 들어감`);
+        })
+        socket.on('message', (room_id: number, msg: string) => {
+            io.to(room_id.toString()).emit('message', msg);
         })
     })
 }
