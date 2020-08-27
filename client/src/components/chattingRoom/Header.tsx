@@ -1,7 +1,5 @@
 import React, {MouseEvent} from 'react';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
 import styled from 'styled-components';
-import { PAGE_PATHS } from '~/constants';
 const Wrapper = styled.header`
     width: 100%;
 	background-color: #a9bdce;
@@ -25,11 +23,15 @@ const Wrapper = styled.header`
     }
 `
 
-const Header: React.FC<RouteComponentProps> = (props) => {
-    const {history} = props;
+interface Props {
+    hideRoom(): void;
+}
+
+const Header: React.FC<Props> = (props) => {
+    const { hideRoom } = props;
     const onBackBtnClick = (event: MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
-        history.replace(PAGE_PATHS.CHATTING);
+        hideRoom();
     }
     return(
         <Wrapper>
@@ -39,4 +41,4 @@ const Header: React.FC<RouteComponentProps> = (props) => {
     )
 }
 
-export default withRouter(Header);
+export default Header;

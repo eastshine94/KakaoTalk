@@ -10,7 +10,7 @@ import { UserActions } from '~/store/actions/user';
 import { RootState } from '~/store/reducers';
 import { PAGE_PATHS } from '~/constants';
 import { Auth } from '~/types/auth';
-
+import { ProfileContainer, ChattingRoomContainer } from '~/containers';
 const Wrapper = styled.main`
     width: 100%;
     display: flex;
@@ -44,10 +44,14 @@ class MenuContainer extends Component<Props> {
         }
 
         return (
-            <Wrapper>
-                <MenuSideBar logout={logout}/>
-                <MenuRoute/>
-            </Wrapper>
+            <React.Fragment>
+                <ProfileContainer/>
+                <ChattingRoomContainer/>
+                <Wrapper>
+                    <MenuSideBar logout={logout}/>
+                    <MenuRoute/>
+                </Wrapper>
+            </React.Fragment>
         );
     }
 }

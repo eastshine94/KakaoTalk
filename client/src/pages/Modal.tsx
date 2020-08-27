@@ -27,12 +27,7 @@ export interface ModalProps{
     onClose(): void;
 }
 
-const Portal:React.FC = ({children}) => {
-    const rootElement = document.getElementById("modal") as Element;   
-    return createPortal(children, rootElement);
-}
-
-const Modal: React.FC<ModalProps> = ({overlayClose = true, onClose, children}) => {
+export const Portal:React.FC = ({children}) => {
     useEffect(() => {
         document.body.style.cssText = `position: fixed; top: -${window.scrollY}px`;
         return () => {
@@ -40,14 +35,17 @@ const Modal: React.FC<ModalProps> = ({overlayClose = true, onClose, children}) =
             document.body.style.cssText = `position: ""; top: "";`;
             window.scrollTo(0, parseInt(scrollY || '0') * -1);
         }
-      }, []);
+    }, []);
+    const rootElement = document.getElementById("modal") as Element;   
+    return createPortal(children, rootElement);
+}
 
+const Modal: React.FC<ModalProps> = ({overlayClose = true, onClose, children}) => {
     const onOverlayClick = () => {
         if(overlayClose){
             onClose();
         }
     }
-    
     return (
         <Portal>
             <Overlay onClick={onOverlayClick}/>
@@ -56,7 +54,8 @@ const Modal: React.FC<ModalProps> = ({overlayClose = true, onClose, children}) =
             </Wrapper>
         </Portal>
     )
-
 }
+
+
 
 export default Modal;

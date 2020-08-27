@@ -11,11 +11,21 @@ const Wrapper = styled(MainContent)`
     }
 `;
 
-const Content: React.FC = () => {
+interface Props {
+    intoRoom(): void;
+}
+
+const Content: React.FC<Props> = (props) => {
+    const {intoRoom} = props;
+    
+    const onDoubleClick = () => {
+        console.log("더블 클릭");
+        intoRoom();
+    }
     return(
         <Wrapper>
             <ul>
-                <li>
+                <li onDoubleClick={onDoubleClick}>
                     <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSoy3heSU-2SeFekCWTQ2mgw-WfCzV8DJYdtg&usqp=CAU" alt="profile Image"/>
                     <p><b>방 이름</b></p>
                     <p className="preview">대화 내용</p>

@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { RootState } from '~/store/reducers';
 import { UserActions } from '~/store/actions/user';
 import { ProfileActions } from '~/store/actions/profile';
-import { ProfileContainer } from '~/containers';
+
 
 interface Props{
     rootState: RootState;
@@ -33,15 +33,11 @@ class FriendsContainer extends Component<Props> {
                 search: param
             })
         }
-        return(
-            <React.Fragment>
-                <ProfileContainer/>
-                <Main>
-                    <Header changeSearch={changeSearch}/>
-                    <Content search={this.state.search}userData={userState} showProfile={showProfile}/>
-                </Main>
-            </React.Fragment>
-            
+        return(  
+            <Main>
+                <Header changeSearch={changeSearch}/>
+                <Content search={this.state.search}userData={userState} showProfile={showProfile}/>
+            </Main>
         )
     }
 }

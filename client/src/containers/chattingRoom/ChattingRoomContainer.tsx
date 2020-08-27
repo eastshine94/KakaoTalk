@@ -1,15 +1,32 @@
 import React, {Component} from 'react';
 import styled from 'styled-components';
+import { Dispatch, bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import { Header, Content, Footer} from '~/components/chattingRoom';
 import { ChattingResponseDto } from '~/types/chatting';
+import { Portal } from '~/pages/Modal';
+import { RootState } from '~/store/reducers';
+import { ChatActions } from '~/store/actions/chat';
+
+
 const Wrapper = styled.div`
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    z-index: 99;
     width: 100%;
     min-height: 100vh;
     height: 100%;
     background: #b2c7d9;
 `;
 
-class ChattingRoomContainer extends Component {
+interface Props {
+    rootState: RootState;
+    chatActions: typeof ChatActions;
+}
+
+
+class ChattingRoomContainer extends Component<Props> {
     state = {
         chattingList: [
             {
@@ -58,16 +75,34 @@ class ChattingRoomContainer extends Component {
                 chattingList: param
             })
         }
+        const chatState = this.props.rootState.chat;
+        const { hideChattingRoom } = this.props.chatActions;
+        if(!chatState.isChattingRoomShown) return null;
+
         return(
-            <Wrapper>
-                <Header/>
-                <Content chattingList={this.state.chattingList}/>
-                <Footer chattingList={this.state.chattingList} setChatting={setChatting}/>
-            </Wrapper>
+            <Portal>
+                <Wrapper>
+                    <Header hideRoom={ hideChattingRoom }/>
+                    <Content chattingList={this.state.chattingList}/>
+                    <Footer chattingList={this.state.chattingList} setChatting={setChatting}/>
+                </Wrapper>
+            </Portal>
         )
     }
 }
 
-export default ChattingRoomContainer;
+const mapStateToProps = (state: RootState) => ({
+    rootState: state,
+})
+
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+    chatActions: bindActionCreators(ChatActions, dispatch),
+})
+
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(ChattingRoomContainer);
 
 
