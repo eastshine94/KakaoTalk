@@ -11,7 +11,6 @@ const Wrapper = styled.main`
     right: 0px;
 	overflow: auto;
     width: 100%;
-
 `;
 
 interface Props {

@@ -15,8 +15,7 @@ const Wrapper = styled.div`
     left: 0px;
     z-index: 99;
     width: 100%;
-    min-height: 100vh;
-    height: 100%;
+    height: 100vh;
     background: #b2c7d9;
 `;
 

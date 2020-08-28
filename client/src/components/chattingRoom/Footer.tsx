@@ -6,6 +6,7 @@ const Wrapper = styled.footer`
     bottom: 0px;
     left: 0px;
     right: 0px;
+    width: 100%;
     min-height: 50px;
     max-height: 200px;
     overflow: auto;
@@ -70,8 +71,10 @@ const Footer: React.FC<Props> = ({chattingList, setChatting}) => {
         event.preventDefault();
         requestSubmit();
     }
-    const onCtrlEnterPress = (event: KeyboardEvent<HTMLTextAreaElement>) => {
-        if(event.ctrlKey){
+    const onEnterPress = (event: KeyboardEvent<HTMLTextAreaElement>) => {
+
+        if(!event.shiftKey && event.key === "Enter"){
+            event.preventDefault();
             if(isCanSubmit){
                 setChatting([...chattingList, {id: chattingList.length+1, send_user_id: 2, message}]);
                 setMessage("");
@@ -81,7 +84,7 @@ const Footer: React.FC<Props> = ({chattingList, setChatting}) => {
     return(
         <Wrapper>
             <form onSubmit={onSubmit}>
-                <textarea value={message} autoFocus={true} onChange={onMessageChange} onKeyPress={onCtrlEnterPress}/>
+                <textarea value={message} autoFocus={true} onChange={onMessageChange} onKeyPress={onEnterPress}/>
                 <button className={btnClassName} type="submit">전송</button>
             </form>
         </Wrapper>
