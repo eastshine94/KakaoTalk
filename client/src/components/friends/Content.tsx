@@ -101,11 +101,22 @@ const Content: React.FC<Props> = ({search, userData, showProfile, showChattingRo
                 onDoubleClick= {() => showChattingRoom(roomObj)}
             />
         )
-    })
+    });
+
+    const onMyBlockDoubleClick = () => {
+        const roomObj: ChattingDto = {
+            type: "individual",
+            room_name: userData.name,
+            identifier: `${userData.id}-${userData.id}`,
+            participant: [userData],
+            chatting: [],
+        }
+        showChattingRoom(roomObj);
+    }
     return(
         <MainContent>
             {search ? null : 
-                <MyProfileBlock>
+                <MyProfileBlock onDoubleClick={onMyBlockDoubleClick}>
                     <img src={userData.profile_img_url||BASE_IMG_URL} alt="profile Image" onClick={() => showProfile(userData)}/>
                     <p><b>{userData.name}</b></p>
                     <p>{userData.status_msg}</p>

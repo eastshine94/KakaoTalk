@@ -24,3 +24,8 @@ export interface ChattingResponseDto{
     send_user_id: number;
     message: string;
 }
+
+export interface ChattingRequestDto{
+    send_user_id: number;
+    message: string;
+}

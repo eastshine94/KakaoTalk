@@ -31,6 +31,14 @@ const chatReducer = (state = initialState, action: ChatActionTypes ) => {
                 chatting: [],
                 isChattingRoomShown: false
             };
+        case ChatTypes.ADD_CHATTING_SUCCESS :
+            return {
+                ...state,
+                chatting: [
+                    ...state.chatting,
+                    action.payload
+                ]
+            }
         default:
             return state;
     }

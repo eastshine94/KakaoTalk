@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { Dispatch, bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Header, Content, Footer} from '~/components/chattingRoom';
-import { ChattingResponseDto } from '~/types/chatting';
 import { Portal } from '~/pages/Modal';
 import { RootState } from '~/store/reducers';
 import { ChatActions } from '~/store/actions/chat';
@@ -26,64 +25,24 @@ interface Props {
 
 
 class ChattingRoomContainer extends Component<Props> {
-    state = {
-        chattingList: [
-            {
-                id: 1,
-                send_user_id: 1, message:"채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅"
-            },
-            {
-                id: 2,
-                send_user_id: 1, message:"채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅"
-            },
-            {
-                id: 3,
-                send_user_id: 1, message:"채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅"
-            },
-            {
-                id: 4,
-                send_user_id: 2, message:"채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅"
-            },
-            {
-                id: 5,
-                send_user_id: 2, message:"채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅"
-            },
-            {
-                id: 6,
-                send_user_id: 2, message:"채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅"
-            },
-            {
-                id: 7,
-                send_user_id: 1, message:"채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅"
-            },
-            {
-                id: 8,
-                send_user_id: 2, message:"채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅"
-            },
-            {
-                id: 9,
-                send_user_id: 2, message:"채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅채팅"
-            },
-        ]
-    }
-
+   
     render() {
-        const setChatting = (param: Array<ChattingResponseDto>) => {
-            this.setState({
-                ...this.state,
-                chattingList: param
+        const userState = this.props.rootState.user;
+        const chatState = this.props.rootState.chat;
+        const { hideChattingRoom, addChatting } = this.props.chatActions;
+        if(!chatState.isChattingRoomShown) return null;
+        const onChatSumbmit = (msg: string) => {
+            addChatting({
+                send_user_id: userState.id,
+                message: msg,
             })
         }
-        const chatState = this.props.rootState.chat;
-        const { hideChattingRoom } = this.props.chatActions;
-        if(!chatState.isChattingRoomShown) return null;
-
         return(
             <Portal>
                 <Wrapper>
                     <Header room_name={chatState.room_name} hideRoom={ hideChattingRoom }/>
-                    <Content chattingList={this.state.chattingList}/>
-                    <Footer chattingList={this.state.chattingList} setChatting={setChatting}/>
+                    <Content chattingList={chatState.chatting}/>
+                    <Footer onChatSumbmit={ onChatSumbmit }/>
                 </Wrapper>
             </Portal>
         )

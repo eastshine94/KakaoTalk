@@ -1,6 +1,6 @@
 import React, { useState, FormEvent, KeyboardEvent, ChangeEvent } from 'react';
 import styled from 'styled-components';
-import { ChattingResponseDto } from '~/types/chatting';
+
 const Wrapper = styled.footer`
     position: fixed;
     bottom: 0px;
@@ -49,10 +49,9 @@ const Wrapper = styled.footer`
 `;
 
 interface Props {
-    chattingList: Array<ChattingResponseDto>;
-    setChatting(param: Array<ChattingResponseDto>): void;
+    onChatSumbmit(msg: string): void;
 }
-const Footer: React.FC<Props> = ({chattingList, setChatting}) => {
+const Footer: React.FC<Props> = ({ onChatSumbmit }) => {
     const [ message, setMessage ] = useState("");
     const isCanSubmit = !!message.replace(/ |\n/g,"");
     const btnClassName = isCanSubmit ? "canSubmit": "cannotSubmit";
@@ -63,7 +62,7 @@ const Footer: React.FC<Props> = ({chattingList, setChatting}) => {
     }
     const requestSubmit = () => {
         if(isCanSubmit){
-            setChatting([...chattingList, {id: chattingList.length+1, send_user_id: 1, message}]);
+            onChatSumbmit(message);
             setMessage("");
         }
     }
@@ -76,8 +75,8 @@ const Footer: React.FC<Props> = ({chattingList, setChatting}) => {
         if(!event.shiftKey && event.key === "Enter"){
             event.preventDefault();
             if(isCanSubmit){
-                setChatting([...chattingList, {id: chattingList.length+1, send_user_id: 2, message}]);
                 setMessage("");
+                requestSubmit();
             }
         }
     }
