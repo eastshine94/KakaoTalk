@@ -14,10 +14,11 @@ interface Props {
 class ChattingContainer extends Component<Props> {
     render() {
         const { showChattingRoom } = this.props.chatActions;
+        const roomList = this.props.rootState.user.room_list;
         return(
             <Main>
                 <Header/>
-                <Content intoRoom={showChattingRoom}/>
+                <Content roomList={roomList} intoRoom={showChattingRoom}/>
             </Main>
         )
     }

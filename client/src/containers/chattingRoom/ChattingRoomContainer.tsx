@@ -81,7 +81,7 @@ class ChattingRoomContainer extends Component<Props> {
         return(
             <Portal>
                 <Wrapper>
-                    <Header hideRoom={ hideChattingRoom }/>
+                    <Header room_name={chatState.room_name} hideRoom={ hideChattingRoom }/>
                     <Content chattingList={this.state.chattingList}/>
                     <Footer chattingList={this.state.chattingList} setChatting={setChatting}/>
                 </Wrapper>

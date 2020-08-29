@@ -6,12 +6,14 @@ import { connect } from 'react-redux';
 import { RootState } from '~/store/reducers';
 import { UserActions } from '~/store/actions/user';
 import { ProfileActions } from '~/store/actions/profile';
+import { ChatActions } from '~/store/actions/chat';
 
 
 interface Props{
     rootState: RootState;
     userActions: typeof UserActions;
     profileActions: typeof ProfileActions;
+    chatActions: typeof ChatActions;
 }
 
 
@@ -27,6 +29,7 @@ class FriendsContainer extends Component<Props> {
     render() {
         const userState = this.props.rootState.user;
         const { showProfile } = this.props.profileActions;
+        const { showChattingRoom } = this.props.chatActions;
         const changeSearch = (param: string) => {
             this.setState({
                 ...this.state,
@@ -36,7 +39,7 @@ class FriendsContainer extends Component<Props> {
         return(  
             <Main>
                 <Header changeSearch={changeSearch}/>
-                <Content search={this.state.search}userData={userState} showProfile={showProfile}/>
+                <Content search={this.state.search}userData={userState} showProfile={showProfile} showChattingRoom={showChattingRoom}/>
             </Main>
         )
     }
@@ -47,7 +50,8 @@ const mapStateToProps = (state: RootState) => ({
 })
 const mapDispatchToProps = (dispatch: Dispatch) => ({
     userActions: bindActionCreators(UserActions, dispatch),
-    profileActions: bindActionCreators(ProfileActions, dispatch)
+    profileActions: bindActionCreators(ProfileActions, dispatch),
+    chatActions: bindActionCreators(ChatActions, dispatch),
 })
 
 export default connect(

@@ -13,6 +13,7 @@ const initialState: UserState = {
     profile_img_url: "",
     background_img_url: "",
     friends_list: [],
+    room_list: [],
 }
 
 

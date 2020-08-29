@@ -24,11 +24,12 @@ const Wrapper = styled.header`
 `
 
 interface Props {
+    room_name: string
     hideRoom(): void;
 }
 
 const Header: React.FC<Props> = (props) => {
-    const { hideRoom } = props;
+    const { room_name, hideRoom } = props;
     const onBackBtnClick = (event: MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
         hideRoom();
@@ -36,7 +37,7 @@ const Header: React.FC<Props> = (props) => {
     return(
         <Wrapper>
             <button type="button" onClick={onBackBtnClick}><i className="fas fa-arrow-left"/></button>
-            <span>Web Kakao Interface</span>
+            <span>{ room_name }</span>
         </Wrapper>
     )
 }

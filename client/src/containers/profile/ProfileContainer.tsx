@@ -5,7 +5,9 @@ import {connect} from 'react-redux';
 import { Dispatch, bindActionCreators } from 'redux';
 import { RootState } from '~/store/reducers';
 import { ProfileActions } from '~/store/actions/profile';
+import { ChatActions } from '~/store/actions/chat';
 import { Modal } from '~/pages';
+import { ChattingDto } from '~/types/chatting';
 
 
 const Wrapper = styled.main`
@@ -42,6 +44,7 @@ const CancelIcon = styled.i`
 interface Props {
     rootState: RootState;
     profileActions: typeof ProfileActions;
+    chatActions: typeof ChatActions;
 }
 
 class ProfileContainer extends Component<Props> {
@@ -51,8 +54,24 @@ class ProfileContainer extends Component<Props> {
         const isMe = profileState.id === userState.id;
 
         const { hideProfile } = this.props.profileActions;
+        const { showChattingRoom } = this.props.chatActions;
         const setBackground = profileState.background_img_url ? <img src={profileState.background_img_url} alt="bg_image"/> : "";
         if(!profileState.isProfileShown) return null;
+
+        const onChatClick = () => {
+            const myId = userState.id;
+            const friendId = profileState.id;
+            const identifier = myId < friendId ? `${myId}-${friendId}`:`${friendId}-${myId}`
+            const roomObj: ChattingDto = {
+                type: "individual",
+                room_name: profileState.name,
+                identifier,
+                participant: [profileState],
+                chatting: [],
+            }            
+            showChattingRoom(roomObj);
+            hideProfile();
+        }
         return(
             <Modal onClose={hideProfile}>
                 <Wrapper>
@@ -61,7 +80,7 @@ class ProfileContainer extends Component<Props> {
                     </BackgroundBase>
                     <CancelIcon className="fas fa-times" onClick={hideProfile}/>
                     <UserProfile/>
-                    <Menu isMe={isMe}/>
+                    <Menu isMe={isMe} onChatClick={onChatClick}/>
                 </Wrapper>
             </Modal>
         )
@@ -74,6 +93,7 @@ const mapStateToProps = (state: RootState) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
     profileActions: bindActionCreators(ProfileActions, dispatch),
+    chatActions: bindActionCreators(ChatActions, dispatch),
 });
 
 export default connect(

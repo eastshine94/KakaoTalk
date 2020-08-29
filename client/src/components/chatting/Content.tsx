@@ -1,7 +1,9 @@
 import React from 'react';
-import {  MainContent } from '~/styles/BaseStyle';
 import styled from 'styled-components'
-
+import {  MainContent } from '~/styles/BaseStyle';
+import { ChattingDto, RoomListDto, ChattingResponseDto } from '~/types/chatting';
+import { UserResponseDto } from '~/types/user';
+import { BASE_IMG_URL } from '~/constants';
 const Wrapper = styled(MainContent)`
     & .preview {
         white-space: pre-wrap;
@@ -12,25 +14,40 @@ const Wrapper = styled(MainContent)`
 `;
 
 interface Props {
-    intoRoom(): void;
+    roomList: Array<RoomListDto>;
+    intoRoom(param: ChattingDto): void;
+}
+
+interface RoomRowProps {
+    onDoubleClick(): void;
+    room_name: string;
+    roomImg: string;
+    last_chat: string;
+}
+
+const RoomRow: React.FC<RoomRowProps> = (props) => {
+    const {onDoubleClick, room_name, roomImg, last_chat} = props;
+    return (
+        <li onDoubleClick={onDoubleClick}>
+            <img src={roomImg || BASE_IMG_URL} alt="profile Image"/>
+            <p><b>{room_name}</b></p>
+            <p className="preview">{last_chat}</p>
+        </li>
+    )
 }
 
 const Content: React.FC<Props> = (props) => {
-    const {intoRoom} = props;
-    
-    const onDoubleClick = () => {
-        console.log("더블 클릭");
-        intoRoom();
+    const {intoRoom, roomList} = props;
+    const onDoubleClick = (room: RoomListDto) => {
+        const chatting:Array<ChattingResponseDto> = [];
+        const participant:Array<UserResponseDto> = [];
+        intoRoom({...room, participant, chatting});
     }
+    const renderRoomList = roomList.map(room => <RoomRow {...room} roomImg={BASE_IMG_URL} onDoubleClick={() => onDoubleClick(room)} key={room.identifier}/>)
+
     return(
         <Wrapper>
-            <ul>
-                <li onDoubleClick={onDoubleClick}>
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSoy3heSU-2SeFekCWTQ2mgw-WfCzV8DJYdtg&usqp=CAU" alt="profile Image"/>
-                    <p><b>방 이름</b></p>
-                    <p className="preview">대화 내용</p>
-                </li>
-            </ul>
+            {renderRoomList}
         </Wrapper>
     )
 }

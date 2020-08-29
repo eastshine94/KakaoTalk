@@ -21,13 +21,14 @@ const Wrapper = styled.section`
 
 interface Props{
     isMe: boolean;
+    onChatClick(): void;
 }
 
-const Menu: React.FC<Props> = ({isMe}) => {
+const Menu: React.FC<Props> = ({isMe,onChatClick}) => {
 
     return(
         <Wrapper>
-            <div>
+            <div onClick={onChatClick}>
                 <i className="fas fa-comment"/>
                 <p>{isMe ? "나와의 채팅": "1:1 채팅"}</p>
             </div>

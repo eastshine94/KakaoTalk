@@ -1,3 +1,5 @@
+import { RoomListDto } from './chatting';
+
 export interface UserData {
     id: number;
     user_id: string,
@@ -6,6 +8,7 @@ export interface UserData {
     profile_img_url: string,
     background_img_url: string,
     friends_list: Array<UserResponseDto>,
+    room_list: Array<RoomListDto>,
 }
 
 

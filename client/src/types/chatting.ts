@@ -1,6 +1,22 @@
-export interface RoomDto {
-    id: number;
-    participant:Array<number> ;
+import { UserResponseDto } from './user';
+
+export type RoomType = "individual" | "group";
+
+export interface ChattingDto {
+    type: RoomType | undefined;
+    identifier: string;
+    room_name: string;
+    participant: Array<UserResponseDto>;
+    chatting: Array<ChattingResponseDto>;
+}
+
+export interface RoomListDto {
+    type: RoomType;
+    identifier: string;
+    room_name: string;
+    participant:Array<number>;
+    last_chat: string;
+    updated_at: Date;
 }
 
 export interface ChattingResponseDto{

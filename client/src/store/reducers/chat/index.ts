@@ -1,18 +1,14 @@
 import { ChatTypes, ChatActionTypes } from '~/store/actions/chat';
-import { ChattingResponseDto } from '~/types/chatting';
-import { UserResponseDto } from '~/types/user';
+import { ChattingDto } from '~/types/chatting';
 
-export interface ChatState {
-    room_id: number,
-    identifier: string,
-    participant: Array<UserResponseDto>,
-    chatting: Array<ChattingResponseDto>;
+export interface ChatState extends ChattingDto {
     isChattingRoomShown: boolean;
 }
 
 const initialState: ChatState = {
-    room_id: -1,
+    type: undefined,
     identifier: "",
+    room_name: "",
     participant: [],
     chatting: [],
     isChattingRoomShown: false
@@ -23,11 +19,16 @@ const chatReducer = (state = initialState, action: ChatActionTypes ) => {
         case ChatTypes.SHOW_CHATTING_ROOM : 
             return{
                 ...state,
+                ...action.payload,
                 isChattingRoomShown: true,
             };
         case ChatTypes.HIDE_CHATTING_ROOM :
             return {
                 ...state,
+                type: undefined,
+                identifier: "",
+                participant: [],
+                chatting: [],
                 isChattingRoomShown: false
             };
         default:

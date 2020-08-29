@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import {  MainContent } from '~/styles/BaseStyle';
 import { UserData, UserResponseDto } from '~/types/user';
+import {ChattingDto} from '~/types/chatting';
 import { BASE_IMG_URL } from '~/constants';
 
 const MyProfileBlock = styled.div`
@@ -48,18 +49,20 @@ interface Props {
     search: string;
     userData: UserData;
     showProfile(userData: UserResponseDto): void;
+    showChattingRoom(param: ChattingDto): void;
 }
 interface FriendRowProps {
     name: string;
     status_msg: string;
     profile_img_url: string,
     profileImgClick(): void,
+    onDoubleClick(): void,
 }
 const FriendRow:React.FC<FriendRowProps> = (props) => {
-    const {name, status_msg, profile_img_url} = props
-    const {profileImgClick} = props
+    const {name, status_msg, profile_img_url} = props;
+    const {profileImgClick, onDoubleClick} = props;
     return(
-        <li>
+        <li onDoubleClick={onDoubleClick}>
             <img src={profile_img_url||BASE_IMG_URL} alt="profile Image" onClick={profileImgClick}/>
             <p><b>{name}</b></p>
             <p>{status_msg}</p>
@@ -68,7 +71,7 @@ const FriendRow:React.FC<FriendRowProps> = (props) => {
 }
 
 
-const Content: React.FC<Props> = ({search, userData, showProfile}) => {
+const Content: React.FC<Props> = ({search, userData, showProfile, showChattingRoom}) => {
     const searchRemoveBlank = search.replace(/ /g,"");
     const reg_exp = new RegExp(`^.*${searchRemoveBlank}.*$`);
     const friendsList = userData.friends_list.sort((a,b)=>{
@@ -77,7 +80,28 @@ const Content: React.FC<Props> = ({search, userData, showProfile}) => {
     const searchedFriends = friendsList.filter(friend => {
         return friend.name.replace(/ /g,"").match(reg_exp);
     });
-    const renderFriends = searchedFriends.map(friend => <FriendRow {...friend} key={friend.id} profileImgClick={() => showProfile(friend)}/>)
+    const renderFriends = searchedFriends.map(friend => {
+        const myId = userData.id;
+        const friendId = friend.id;
+        const identifier = myId < friendId ? `${myId}-${friendId}`:`${friendId}-${myId}`
+        
+        const roomObj: ChattingDto = {
+            type: "individual",
+            room_name: friend.name,
+            identifier,
+            participant: [friend],
+            chatting: [],
+        }
+        
+        return (
+            <FriendRow 
+                {...friend} 
+                key={friend.id} 
+                profileImgClick={() => showProfile(friend)} 
+                onDoubleClick= {() => showChattingRoom(roomObj)}
+            />
+        )
+    })
     return(
         <MainContent>
             {search ? null : 
