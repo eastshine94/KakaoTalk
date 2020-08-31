@@ -6,7 +6,7 @@ const Wrapper = styled.header`
 	height: 50px;
     & span{
         display: inline-block;
-        font-family: 'Roboto', sans-serif;
+        font-weight: bold;
         font-size: 20px;
         margin-left: 10px;
         margin-top: 10px;

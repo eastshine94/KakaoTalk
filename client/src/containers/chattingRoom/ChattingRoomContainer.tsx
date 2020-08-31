@@ -25,7 +25,17 @@ interface Props {
 
 
 class ChattingRoomContainer extends Component<Props> {
-   
+    
+    constructor(props: Props) {
+        super(props);
+        const roomList = props.rootState.user.room_list;
+        const identifier = props.rootState.chat.identifier;
+        const findRoom = roomList.find(room => room.identifier === identifier);
+        if(findRoom){
+            
+        }
+    }
+    
     render() {
         const userState = this.props.rootState.user;
         const chatState = this.props.rootState.chat;
@@ -33,6 +43,7 @@ class ChattingRoomContainer extends Component<Props> {
         if(!chatState.isChattingRoomShown) return null;
         const onChatSumbmit = (msg: string) => {
             addChatting({
+                room_id: chatState.room_id,
                 send_user_id: userState.id,
                 message: msg,
             })

@@ -75,7 +75,7 @@ const Content: React.FC<Props> = ({search, userData, showProfile, showChattingRo
     const searchRemoveBlank = search.replace(/ /g,"");
     const reg_exp = new RegExp(`^.*${searchRemoveBlank}.*$`);
     const friendsList = userData.friends_list.sort((a,b)=>{
-        return a.name > b.name ? 1 : (a.name === b.name ? 0 : -1);
+        return a.name.localeCompare(b.name);
     });
     const searchedFriends = friendsList.filter(friend => {
         return friend.name.replace(/ /g,"").match(reg_exp);
@@ -86,10 +86,11 @@ const Content: React.FC<Props> = ({search, userData, showProfile, showChattingRo
         const identifier = myId < friendId ? `${myId}-${friendId}`:`${friendId}-${myId}`
         
         const roomObj: ChattingDto = {
+            room_id: 0,
             type: "individual",
             room_name: friend.name,
             identifier,
-            participant: [friend],
+            participant: [{...friend}],
             chatting: [],
         }
         
@@ -105,10 +106,11 @@ const Content: React.FC<Props> = ({search, userData, showProfile, showChattingRo
 
     const onMyBlockDoubleClick = () => {
         const roomObj: ChattingDto = {
+            room_id: 0,
             type: "individual",
             room_name: userData.name,
             identifier: `${userData.id}-${userData.id}`,
-            participant: [userData],
+            participant: [{...userData}],
             chatting: [],
         }
         showChattingRoom(roomObj);

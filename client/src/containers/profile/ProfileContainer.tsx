@@ -63,10 +63,11 @@ class ProfileContainer extends Component<Props> {
             const friendId = profileState.id;
             const identifier = myId < friendId ? `${myId}-${friendId}`:`${friendId}-${myId}`
             const roomObj: ChattingDto = {
+                room_id: 0,
                 type: "individual",
                 room_name: profileState.name,
                 identifier,
-                participant: [profileState],
+                participant: [{...profileState}],
                 chatting: [],
             }            
             showChattingRoom(roomObj);

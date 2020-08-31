@@ -6,6 +6,7 @@ export interface ChatState extends ChattingDto {
 }
 
 const initialState: ChatState = {
+    room_id: -1,
     type: undefined,
     identifier: "",
     room_name: "",
@@ -25,6 +26,7 @@ const chatReducer = (state = initialState, action: ChatActionTypes ) => {
         case ChatTypes.HIDE_CHATTING_ROOM :
             return {
                 ...state,
+                room_id: -1,
                 type: undefined,
                 identifier: "",
                 participant: [],
