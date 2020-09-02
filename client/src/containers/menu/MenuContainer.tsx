@@ -38,7 +38,7 @@ class MenuContainer extends Component<Props> {
     render() {
         const { logout } = this.props.authActions;
         const { token } = this.props.rootState.auth;
-        
+        const chatState = this.props.rootState.chat;
         if(!token) {
             return <Redirect to={PAGE_PATHS.LOGIN}/>
         }
@@ -46,7 +46,7 @@ class MenuContainer extends Component<Props> {
         return (
             <React.Fragment>
                 <ProfileContainer/>
-                <ChattingRoomContainer/>
+                {chatState.isChattingRoomShown ? <ChattingRoomContainer/> : null}
                 <Wrapper>
                     <MenuSideBar logout={logout}/>
                     <MenuRoute/>

@@ -131,8 +131,16 @@ export function init(): Sequelize {
             allowNull: false,
         },
         identifier: {
-            type: new DataTypes.STRING(20),
+            type: new DataTypes.STRING(50),
             allowNull: false,
+        },
+        type: {
+            type: new DataTypes.STRING(15),
+            allowNull: false,
+        },
+        last_chat: {
+            type: DataTypes.TEXT,
+            allowNull: true,
         },
         createdAt: {
             type: DataTypes.DATE,
@@ -174,6 +182,10 @@ export function init(): Sequelize {
             type: DataTypes.INTEGER.UNSIGNED,
             allowNull: false,
         },
+        room_name: {
+            type: new DataTypes.STRING(20),
+            allowNull: true,
+        },
         createdAt: {
             type: DataTypes.DATE,
             field: 'created_at',
@@ -190,6 +202,12 @@ export function init(): Sequelize {
         engine: 'InnoDB',
         charset: 'utf8',
         freezeTableName: true,
+        indexes: [
+            {
+                unique: true,
+                fields: ['user_id', 'room_id']
+            }
+        ]
     });
 
     // chatting

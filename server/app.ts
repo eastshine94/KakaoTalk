@@ -9,6 +9,7 @@ import logger from './logger';
 import authRouter from './routes/auth';
 import userRouter from './routes/user';
 import friendRouter from './routes/friend';
+import chatRouter from './routes/chat';
 
 const stopServer = async (server: http.Server, sequelize: Sequelize, signal?: string) => {
     logger.info(`Stopping server with signal: ${signal}`);
@@ -26,6 +27,7 @@ const runServer = async() => {
     app.use('/api/auth', authRouter);
     app.use('/api/user', userRouter);
     app.use('/api/friend', friendRouter);
+    app.use('/api/chat', chatRouter);
     app.get('/uploads/:fileName', (req, res) => {
         const fileName = req.params.fileName
         res.sendFile(path.join(__dirname, `../uploads/${fileName}`));

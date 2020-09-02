@@ -34,3 +34,21 @@ export interface ChattingRequestDto{
     send_user_id: number;
     message: string;
 }
+
+
+export interface CreateRoomRequest {
+    type: RoomType;
+    identifier: string;
+    room_name: string;
+    participant:Array<UserResponseDto>;
+}
+
+export interface CreateRoomResponse {
+    room_id: number;
+    identifier: string;
+    type: RoomType;
+    room_name: string;
+    last_chat: string;
+    updated_at: Date;
+}
+

@@ -6,7 +6,8 @@ import { Header, Content, Footer} from '~/components/chattingRoom';
 import { Portal } from '~/pages/Modal';
 import { RootState } from '~/store/reducers';
 import { ChatActions } from '~/store/actions/chat';
-
+import { ChattingDto, CreateRoomRequest, RoomType } from '~/types/chatting';
+import { createRoom } from '~/apis/chat';
 
 const Wrapper = styled.div`
     position: fixed;
@@ -25,22 +26,51 @@ interface Props {
 
 
 class ChattingRoomContainer extends Component<Props> {
-    
+
     constructor(props: Props) {
         super(props);
-        const roomList = props.rootState.user.room_list;
-        const identifier = props.rootState.chat.identifier;
-        const findRoom = roomList.find(room => room.identifier === identifier);
+        const fetchChattingRoomInfo = props.chatActions.fetchChattingRoomInfo;
+        const userState = props.rootState.user;
+        const chatState = props.rootState.chat;
+        const roomList = userState.room_list;
+        const findRoom = roomList.find(room => room.identifier === chatState.identifier);
+        const participantWithoutMe = chatState.participant.length > 1 ? 
+        chatState.participant.filter(person => person.id !== userState.id) : 
+        chatState.participant;
         if(findRoom){
-            
+            const roomObj: ChattingDto = {
+                ...findRoom,
+                room_name: participantWithoutMe[0].name,
+                participant: participantWithoutMe,
+                chatting: []
+            }
+            fetchChattingRoomInfo(roomObj);
         }
+        else{
+            const createRoomObj: CreateRoomRequest = {
+                type: chatState.type as RoomType,
+                identifier: chatState.identifier,
+                room_name: "",
+                participant: chatState.participant,
+            }
+            createRoom(createRoomObj).then(val => {
+                const roomObj: ChattingDto = {
+                    ...val,
+                    room_name: participantWithoutMe[0].name,
+                    participant: participantWithoutMe,
+                    chatting: [],
+                }
+                fetchChattingRoomInfo(roomObj);
+            });
+        }
+
     }
-    
+
     render() {
         const userState = this.props.rootState.user;
         const chatState = this.props.rootState.chat;
         const { hideChattingRoom, addChatting } = this.props.chatActions;
-        if(!chatState.isChattingRoomShown) return null;
+   
         const onChatSumbmit = (msg: string) => {
             addChatting({
                 room_id: chatState.room_id,

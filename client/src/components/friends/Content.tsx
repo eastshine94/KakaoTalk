@@ -2,8 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 import {  MainContent } from '~/styles/BaseStyle';
 import { UserData, UserResponseDto } from '~/types/user';
-import {ChattingDto} from '~/types/chatting';
+import { CreateRoomRequest } from '~/types/chatting';
 import { BASE_IMG_URL } from '~/constants';
+
 
 const MyProfileBlock = styled.div`
     position: relative;
@@ -49,7 +50,7 @@ interface Props {
     search: string;
     userData: UserData;
     showProfile(userData: UserResponseDto): void;
-    showChattingRoom(param: ChattingDto): void;
+    showChattingRoom(param: CreateRoomRequest): void;
 }
 interface FriendRowProps {
     name: string;
@@ -84,14 +85,11 @@ const Content: React.FC<Props> = ({search, userData, showProfile, showChattingRo
         const myId = userData.id;
         const friendId = friend.id;
         const identifier = myId < friendId ? `${myId}-${friendId}`:`${friendId}-${myId}`
-        
-        const roomObj: ChattingDto = {
-            room_id: 0,
+        const roomObj: CreateRoomRequest = {
             type: "individual",
-            room_name: friend.name,
             identifier,
-            participant: [{...friend}],
-            chatting: [],
+            room_name: "",
+            participant: [{...friend}, {...userData}],
         }
         
         return (
@@ -105,13 +103,11 @@ const Content: React.FC<Props> = ({search, userData, showProfile, showChattingRo
     });
 
     const onMyBlockDoubleClick = () => {
-        const roomObj: ChattingDto = {
-            room_id: 0,
+        const roomObj: CreateRoomRequest = {
             type: "individual",
-            room_name: userData.name,
             identifier: `${userData.id}-${userData.id}`,
+            room_name: "",
             participant: [{...userData}],
-            chatting: [],
         }
         showChattingRoom(roomObj);
     }

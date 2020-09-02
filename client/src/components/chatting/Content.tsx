@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components'
 import {  MainContent } from '~/styles/BaseStyle';
-import { ChattingDto, RoomListDto, ChattingResponseDto } from '~/types/chatting';
+import { CreateRoomRequest, RoomListDto } from '~/types/chatting';
 import { UserResponseDto } from '~/types/user';
 import { BASE_IMG_URL } from '~/constants';
 const Wrapper = styled(MainContent)`
@@ -15,7 +15,7 @@ const Wrapper = styled(MainContent)`
 
 interface Props {
     roomList: Array<RoomListDto>;
-    intoRoom(param: ChattingDto): void;
+    intoRoom(param: CreateRoomRequest): void;
 }
 
 interface RoomRowProps {
@@ -39,9 +39,8 @@ const RoomRow: React.FC<RoomRowProps> = (props) => {
 const Content: React.FC<Props> = (props) => {
     const {intoRoom, roomList} = props;
     const onDoubleClick = (room: RoomListDto) => {
-        const chatting:Array<ChattingResponseDto> = [];
         const participant:Array<UserResponseDto> = [];
-        intoRoom({...room, participant, chatting});
+        intoRoom({...room, participant});
     }
     const renderRoomList = roomList.map(room => <RoomRow {...room} roomImg={BASE_IMG_URL} onDoubleClick={() => onDoubleClick(room)} key={room.identifier}/>)
 

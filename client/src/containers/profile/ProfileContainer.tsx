@@ -7,7 +7,7 @@ import { RootState } from '~/store/reducers';
 import { ProfileActions } from '~/store/actions/profile';
 import { ChatActions } from '~/store/actions/chat';
 import { Modal } from '~/pages';
-import { ChattingDto } from '~/types/chatting';
+import { CreateRoomRequest } from '~/types/chatting';
 
 
 const Wrapper = styled.main`
@@ -62,14 +62,13 @@ class ProfileContainer extends Component<Props> {
             const myId = userState.id;
             const friendId = profileState.id;
             const identifier = myId < friendId ? `${myId}-${friendId}`:`${friendId}-${myId}`
-            const roomObj: ChattingDto = {
-                room_id: 0,
+
+            const roomObj: CreateRoomRequest = {
                 type: "individual",
-                room_name: profileState.name,
                 identifier,
-                participant: [{...profileState}],
-                chatting: [],
-            }            
+                room_name: "",
+                participant: myId === friendId ?  [{...userState}] : [{...profileState}, {...userState}],
+            }
             showChattingRoom(roomObj);
             hideProfile();
         }
