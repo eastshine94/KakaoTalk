@@ -10,6 +10,8 @@ import authRouter from './routes/auth';
 import userRouter from './routes/user';
 import friendRouter from './routes/friend';
 import chatRouter from './routes/chat';
+import Chatting from './models/Chatting';
+
 
 const stopServer = async (server: http.Server, sequelize: Sequelize, signal?: string) => {
     logger.info(`Stopping server with signal: ${signal}`);
@@ -56,17 +58,29 @@ const runSocketIo = (server: http.Server) => {
             socket.join(room_id);
             logger.info(`${room_id}에 들어감`);
         })
-        socket.on('message', (messageObj:MessageRequest) => {
-            
+        socket.on('message', async(messageObj:MessageRequest) => {
+            const {room_id, send_user_id, message} = messageObj;
+            const savedMessage = await Chatting.create({
+                room_id,
+                send_user_id,
+                message
+            });
+            const messageResponse = {
+                id: savedMessage.id,
+                room_id: room_id,
+                send_user_id,
+                message,
+                created_at: savedMessage.created_at,
+            }
             if(messageObj.type === "individual"){
                 const me = messageObj.send_user_id.toString();
                 const target = messageObj.participant[0].id.toString();
-                io.to(me).emit('message', messageObj);
-                io.to(target).emit('message', messageObj);
+                io.to(me).emit('message', messageResponse);
+                io.to(target).emit('message', messageResponse);
             }
             else {
                 const roomId = messageObj.room_id.toString();
-                io.to(roomId).emit('message',messageObj);
+                io.to(roomId).emit('message',messageResponse);
             }
             
         })

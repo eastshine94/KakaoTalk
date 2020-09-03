@@ -6,7 +6,7 @@ import { Header, Content, Footer} from '~/components/chattingRoom';
 import { Portal } from '~/pages/Modal';
 import { RootState } from '~/store/reducers';
 import { ChatActions } from '~/store/actions/chat';
-import { ChattingDto, CreateRoomRequest, RoomType } from '~/types/chatting';
+import { ChattingDto, CreateRoomRequest, RoomType, ChattingRequestDto } from '~/types/chatting';
 import { createRoom } from '~/apis/chat';
 
 const Wrapper = styled.div`
@@ -73,13 +73,14 @@ class ChattingRoomContainer extends Component<Props> {
         const { hideChattingRoom } = this.props.chatActions;
    
         const onChatSumbmit = (msg: string) => {
-            authState.socket?.emit('message', {
+            const chattingRequset: ChattingRequestDto = {
                 room_id: chatState.room_id,
-                type: chatState.type,
+                type: chatState.type as RoomType,
                 participant: chatState.participant,
                 send_user_id: userState.id,
                 message: msg,
-            });
+            }
+            authState.socket?.emit('message', chattingRequset);
         }
         return(
             <Portal>
