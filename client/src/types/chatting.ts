@@ -21,18 +21,20 @@ export interface RoomListDto {
     updated_at: Date;
 }
 
+export interface ChattingRequestDto {
+    room_id: number;
+    type: RoomType;
+    participant: Array<UserResponseDto>;
+    send_user_id: number;
+    message: string;
+}
+
 export interface ChattingResponseDto{
     id: number;
     room_id: number;
     send_user_id: number;
     message: string;
     created_at: Date;
-}
-
-export interface ChattingRequestDto{
-    room_id: number;
-    send_user_id: number;
-    message: string;
 }
 
 

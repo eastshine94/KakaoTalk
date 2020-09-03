@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Dispatch, bindActionCreators} from 'redux';
+import { Socket } from 'socket.io-client';
 import { MenuRoute } from '~/routes';
 import { MenuSideBar } from '~/components/menu';
 import { AuthActions } from '~/store/actions/auth';
@@ -10,7 +11,10 @@ import { UserActions } from '~/store/actions/user';
 import { RootState } from '~/store/reducers';
 import { PAGE_PATHS } from '~/constants';
 import { Auth } from '~/types/auth';
+import { ChattingResponseDto } from '~/types/chatting';
 import { ProfileContainer, ChattingRoomContainer } from '~/containers';
+
+
 const Wrapper = styled.main`
     width: 100%;
     display: flex;
@@ -26,12 +30,18 @@ class MenuContainer extends Component<Props> {
     constructor(props: Props) {
         super(props);
         const auth: Auth|undefined = this.props.rootState.auth.auth;
+        const chatState = props.rootState.chat;
         if(auth){
+            const socket = props.rootState.auth.socket as typeof Socket;
             props.userActions.fetchUser(auth.user_id);
             props.userActions.fetchFriends(auth.id);
-            props.rootState.auth.socket?.emit("join",auth.id.toString());
-            props.rootState.auth.socket?.on("message",(msg: string) => {
-                console.log(msg);
+            socket.emit("join",auth.id.toString());
+            socket.on("message",(response: ChattingResponseDto) => {
+               console.log(response);
+               const currentRoomId =  chatState.room_id
+               if(response.room_id === currentRoomId){
+                   
+               }  
             });
         }
     }

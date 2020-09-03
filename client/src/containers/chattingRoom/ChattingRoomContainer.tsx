@@ -69,14 +69,17 @@ class ChattingRoomContainer extends Component<Props> {
     render() {
         const userState = this.props.rootState.user;
         const chatState = this.props.rootState.chat;
-        const { hideChattingRoom, addChatting } = this.props.chatActions;
+        const authState = this.props.rootState.auth;
+        const { hideChattingRoom } = this.props.chatActions;
    
         const onChatSumbmit = (msg: string) => {
-            addChatting({
+            authState.socket?.emit('message', {
                 room_id: chatState.room_id,
+                type: chatState.type,
+                participant: chatState.participant,
                 send_user_id: userState.id,
                 message: msg,
-            })
+            });
         }
         return(
             <Portal>

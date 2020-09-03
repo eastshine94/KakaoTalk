@@ -21,11 +21,7 @@ class FriendsContainer extends Component<Props> {
     state = {
         search: "", 
     }
-    constructor(props: Props) {
-        super(props);
-        props.rootState.auth.socket?.emit("message",2,"안녕안녕안녕");
-      
-    }
+  
     render() {
         const userState = this.props.rootState.user;
         const { showProfile } = this.props.profileActions;

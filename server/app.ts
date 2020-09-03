@@ -56,12 +56,39 @@ const runSocketIo = (server: http.Server) => {
             socket.join(room_id);
             logger.info(`${room_id}에 들어감`);
         })
-        socket.on('message', (room_id: number, msg: string) => {
-            io.to(room_id.toString()).emit('message', msg);
+        socket.on('message', (messageObj:MessageRequest) => {
+            
+            if(messageObj.type === "individual"){
+                const me = messageObj.send_user_id.toString();
+                const target = messageObj.participant[0].id.toString();
+                io.to(me).emit('message', messageObj);
+                io.to(target).emit('message', messageObj);
+            }
+            else {
+                const roomId = messageObj.room_id.toString();
+                io.to(roomId).emit('message',messageObj);
+            }
+            
         })
     })
 }
 
+interface MessageRequest {
+    room_id: number;
+    type: "individual" | "group";
+    participant: Array<UserResponseDto>;
+    send_user_id: number;
+    message: string;
+}
+
+interface UserResponseDto {
+    id: number;
+    user_id: string,
+    name: string,
+    status_msg: string;
+    profile_img_url: string,
+    background_img_url: string
+}
 runServer();
 
 
