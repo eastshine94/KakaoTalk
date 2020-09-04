@@ -8,11 +8,12 @@ import { MenuRoute } from '~/routes';
 import { MenuSideBar } from '~/components/menu';
 import { AuthActions } from '~/store/actions/auth';
 import { UserActions } from '~/store/actions/user';
+import { ChatActions } from '~/store/actions/chat';
 import { RootState } from '~/store/reducers';
 import { PAGE_PATHS } from '~/constants';
 import { Auth } from '~/types/auth';
 import { ProfileContainer, ChattingRoomContainer } from '~/containers';
-
+import { ChattingResponseDto } from '~/types/chatting';
 
 const Wrapper = styled.main`
     width: 100%;
@@ -23,6 +24,7 @@ interface Props {
     rootState: RootState;
     authActions: typeof AuthActions;
     userActions: typeof UserActions;
+    chatActions: typeof ChatActions;
 }
 
 class MenuContainer extends Component<Props> {
@@ -34,11 +36,24 @@ class MenuContainer extends Component<Props> {
             props.userActions.fetchUser(auth.user_id);
             props.userActions.fetchFriends(auth.id);
             socket.emit("join",auth.id.toString());
-            socket.on("message",() => {
-               console.log("menuContainer");
+            
+        }
+    }
+
+    async componentDidUpdate(prevProps: Props){
+        const chatState = this.props.rootState.chat;
+        const socket = this.props.rootState.auth.socket as typeof Socket;
+        const { addChatting } = this.props.chatActions;
+        if(prevProps.rootState.chat.room_id !== chatState.room_id){
+            await socket.off("message");
+            await socket.on("message",(response: ChattingResponseDto) => {
+                if(response.room_id === chatState.room_id){
+                    addChatting(response);
+                }  
             });
         }
     }
+
     render() {
         const { logout } = this.props.authActions;
         const { token } = this.props.rootState.auth;
@@ -66,6 +81,7 @@ const mapStateToProps = (state: RootState) => ({
 const mapDispatchToProps = (dispatch: Dispatch) => ({
     authActions: bindActionCreators(AuthActions, dispatch),
     userActions: bindActionCreators(UserActions, dispatch),
+    chatActions: bindActionCreators(ChatActions, dispatch),
 });
 
 export default connect(

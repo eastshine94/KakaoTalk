@@ -6,7 +6,7 @@ import { Header, Content, Footer} from '~/components/chattingRoom';
 import { Portal } from '~/pages/Modal';
 import { RootState } from '~/store/reducers';
 import { ChatActions } from '~/store/actions/chat';
-import { ChattingDto, CreateRoomRequest, RoomType, ChattingRequestDto,ChattingResponseDto } from '~/types/chatting';
+import { ChattingDto, CreateRoomRequest, RoomType, ChattingRequestDto } from '~/types/chatting';
 import { createRoom } from '~/apis/chat';
 
 const Wrapper = styled.div`
@@ -37,8 +37,7 @@ class ChattingRoomContainer extends Component<Props> {
         chatState.participant.filter(person => person.id !== userState.id) : 
         chatState.participant;
 
-        const { socket } = props.rootState.auth;
-        const { addChatting, fetchChattingRoomInfo } = props.chatActions;
+        const { fetchChattingRoomInfo } = props.chatActions;
     
         if(findRoom){
             const roomObj: ChattingDto = {
@@ -48,13 +47,7 @@ class ChattingRoomContainer extends Component<Props> {
                 chatting: []
             }
             fetchChattingRoomInfo(roomObj);
-            socket?.on("message",(response: ChattingResponseDto) => {
-                console.log(response.room_id, findRoom.room_id);
-                if(response.room_id === findRoom.room_id){
-                    console.log("들어옴");
-                    addChatting(response);
-                }  
-             });
+            
         }
         else{
             const createRoomObj: CreateRoomRequest = {
@@ -71,20 +64,8 @@ class ChattingRoomContainer extends Component<Props> {
                     chatting: [],
                 }
                 fetchChattingRoomInfo(roomObj);
-                socket?.on("message",(response: ChattingResponseDto) => {
-                    console.log(response.room_id, room.room_id);
-                    if(response.room_id === room.room_id){
-                        console.log("들어옴");
-                        addChatting(response);
-                    }  
-                 });
             });
         }
-    }
-
-    componentWillUnmount() {
-        const { socket } = this.props.rootState.auth;
-        socket?.off("message");
     }
 
     render() {

@@ -1,26 +1,10 @@
 import * as express from 'express';
 import Room from '../models/Room';
 import Participant from '../models/Participant';
+import { CreateRoomRequest } from '../types/chat';
 
 const router = express.Router();
 
-export type RoomType = "individual" | "group";
-
-export interface UserResponseDto {
-    id: number;
-    user_id: string,
-    name: string,
-    status_msg: string;
-    profile_img_url: string,
-    background_img_url: string
-}
-
-interface CreateRoomRequest {
-    type: RoomType;
-    identifier: string;
-    room_name: string;
-    participant:Array<UserResponseDto>;
-}
 router.post("/room/create", async(req, res) => {
     const { type, room_name, identifier, participant } = req.body as CreateRoomRequest;
     try {
