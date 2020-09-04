@@ -2,6 +2,7 @@ import React, {useRef, useEffect} from 'react';
 import styled from 'styled-components';
 import { MyChat, FriendChat, FriendChatWithThumbnail } from '~/components/chattingRoom/ChatBlock';
 import { ChattingResponseDto } from '~/types/chatting';
+import { UserData } from '~/types/user';
 
 const Wrapper = styled.main`
     position: absolute;
@@ -14,12 +15,12 @@ const Wrapper = styled.main`
 `;
 
 interface Props {
-    chattingList: Array<ChattingResponseDto>
+    userData: UserData;
+    chattingList: Array<ChattingResponseDto>;
 }
 
-
-
-const Content: React.FC<Props> = ({chattingList}) => {
+const Content: React.FC<Props> = (props) => {
+    const { userData, chattingList } = props;
     const messageRef = useRef<HTMLDivElement>(null);
     useEffect(() => {
         messageRef.current!.scrollTop = messageRef.current!.scrollHeight;
@@ -28,7 +29,7 @@ const Content: React.FC<Props> = ({chattingList}) => {
     const renderChatting = chattingList.map(chat => {
         const isPrevSending = prevSend === chat.send_user_id;
         prevSend = chat.send_user_id;
-        if(chat.send_user_id === 1){
+        if(chat.send_user_id === userData.id){
             return <MyChat msg={chat.message} key={chat.id}/>;
         }
         if(isPrevSending){

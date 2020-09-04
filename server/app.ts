@@ -75,7 +75,9 @@ const runSocketIo = (server: http.Server) => {
             if(messageObj.type === "individual"){
                 const me = messageObj.send_user_id.toString();
                 const target = messageObj.participant[0].id.toString();
-                io.to(me).emit('message', messageResponse);
+                if(me !== target){
+                    io.to(me).emit('message', messageResponse);    
+                }
                 io.to(target).emit('message', messageResponse);
             }
             else {

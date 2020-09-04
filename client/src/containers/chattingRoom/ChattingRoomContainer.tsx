@@ -6,7 +6,7 @@ import { Header, Content, Footer} from '~/components/chattingRoom';
 import { Portal } from '~/pages/Modal';
 import { RootState } from '~/store/reducers';
 import { ChatActions } from '~/store/actions/chat';
-import { ChattingDto, CreateRoomRequest, RoomType, ChattingRequestDto } from '~/types/chatting';
+import { ChattingDto, CreateRoomRequest, RoomType, ChattingRequestDto,ChattingResponseDto } from '~/types/chatting';
 import { createRoom } from '~/apis/chat';
 
 const Wrapper = styled.div`
@@ -29,7 +29,6 @@ class ChattingRoomContainer extends Component<Props> {
 
     constructor(props: Props) {
         super(props);
-        const fetchChattingRoomInfo = props.chatActions.fetchChattingRoomInfo;
         const userState = props.rootState.user;
         const chatState = props.rootState.chat;
         const roomList = userState.room_list;
@@ -37,6 +36,10 @@ class ChattingRoomContainer extends Component<Props> {
         const participantWithoutMe = chatState.participant.length > 1 ? 
         chatState.participant.filter(person => person.id !== userState.id) : 
         chatState.participant;
+
+        const { socket } = props.rootState.auth;
+        const { addChatting, fetchChattingRoomInfo } = props.chatActions;
+    
         if(findRoom){
             const roomObj: ChattingDto = {
                 ...findRoom,
@@ -45,6 +48,13 @@ class ChattingRoomContainer extends Component<Props> {
                 chatting: []
             }
             fetchChattingRoomInfo(roomObj);
+            socket?.on("message",(response: ChattingResponseDto) => {
+                console.log(response.room_id, findRoom.room_id);
+                if(response.room_id === findRoom.room_id){
+                    console.log("들어옴");
+                    addChatting(response);
+                }  
+             });
         }
         else{
             const createRoomObj: CreateRoomRequest = {
@@ -53,17 +63,28 @@ class ChattingRoomContainer extends Component<Props> {
                 room_name: "",
                 participant: chatState.participant,
             }
-            createRoom(createRoomObj).then(val => {
+            createRoom(createRoomObj).then(room => {
                 const roomObj: ChattingDto = {
-                    ...val,
+                    ...room,
                     room_name: participantWithoutMe[0].name,
                     participant: participantWithoutMe,
                     chatting: [],
                 }
                 fetchChattingRoomInfo(roomObj);
+                socket?.on("message",(response: ChattingResponseDto) => {
+                    console.log(response.room_id, room.room_id);
+                    if(response.room_id === room.room_id){
+                        console.log("들어옴");
+                        addChatting(response);
+                    }  
+                 });
             });
         }
+    }
 
+    componentWillUnmount() {
+        const { socket } = this.props.rootState.auth;
+        socket?.off("message");
     }
 
     render() {
@@ -71,7 +92,6 @@ class ChattingRoomContainer extends Component<Props> {
         const chatState = this.props.rootState.chat;
         const authState = this.props.rootState.auth;
         const { hideChattingRoom } = this.props.chatActions;
-   
         const onChatSumbmit = (msg: string) => {
             const chattingRequset: ChattingRequestDto = {
                 room_id: chatState.room_id,
@@ -86,7 +106,7 @@ class ChattingRoomContainer extends Component<Props> {
             <Portal>
                 <Wrapper>
                     <Header room_name={chatState.room_name} hideRoom={ hideChattingRoom }/>
-                    <Content chattingList={chatState.chatting}/>
+                    <Content userData= {userState} chattingList={chatState.chatting}/>
                     <Footer onChatSumbmit={ onChatSumbmit }/>
                 </Wrapper>
             </Portal>

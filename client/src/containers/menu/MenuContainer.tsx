@@ -11,7 +11,6 @@ import { UserActions } from '~/store/actions/user';
 import { RootState } from '~/store/reducers';
 import { PAGE_PATHS } from '~/constants';
 import { Auth } from '~/types/auth';
-import { ChattingResponseDto } from '~/types/chatting';
 import { ProfileContainer, ChattingRoomContainer } from '~/containers';
 
 
@@ -29,19 +28,14 @@ interface Props {
 class MenuContainer extends Component<Props> {
     constructor(props: Props) {
         super(props);
-        const auth: Auth|undefined = this.props.rootState.auth.auth;
-        const chatState = props.rootState.chat;
+        const auth: Auth|undefined = props.rootState.auth.auth;
         if(auth){
             const socket = props.rootState.auth.socket as typeof Socket;
             props.userActions.fetchUser(auth.user_id);
             props.userActions.fetchFriends(auth.id);
             socket.emit("join",auth.id.toString());
-            socket.on("message",(response: ChattingResponseDto) => {
-               console.log(response);
-               const currentRoomId =  chatState.room_id
-               if(response.room_id === currentRoomId){
-                   
-               }  
+            socket.on("message",() => {
+               console.log("menuContainer");
             });
         }
     }

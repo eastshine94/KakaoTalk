@@ -38,7 +38,7 @@ const chatReducer = (state = initialState, action: ChatActionTypes ) => {
                 ...state,
                 ...action.payload
             }
-        case ChatTypes.ADD_CHATTING_SUCCESS :
+        case ChatTypes.ADD_CHATTING :
             return {
                 ...state,
                 chatting: [
