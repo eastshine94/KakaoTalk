@@ -1,5 +1,7 @@
 import { UserResponseDto } from '~/types/user';
 import { ProfileChangeRequestDto, ChangeFriendNameRequestDto } from '~/types/profile';
+import { RoomListDto } from '~/types/chatting';
+
 export enum UserTypes {
     FETCH_USER_REQUEST= "user/FETCH_USER_REQUEST",
     FETCH_USER_SUCCESS= "user/FETCH_USER_SUCCESS",
@@ -7,6 +9,9 @@ export enum UserTypes {
     FETCH_FRIENDS_REQUEST= 'user/FETCH_FRIENDS_REQUEST',
     FETCH_FRIENDS_SUCCESS= 'user/FETCH_FRIENDS_SUCCESS',
     FETCH_FRIENDS_FAILUER= 'user/FETCH_FRIENDS_FAILUER',
+    FETCH_ROOMLIST_REQUEST= 'user/FETCH_ROOMLIST_REQUEST',
+    FETCH_ROOMLIST_SUCCESS= 'user/FETCH_ROOMLIST_SUCCESS',
+    FETCH_ROOMLIST_FAILUER= 'user/FETCH_ROOMLIST_FAILUER',
     CHANGE_PROFILE = "user/CHANGE_PROFILE",
     ADD_FRIEND = "user/ADD_FRIEND",
     CHANGE_FRIEND_NAME = "user/CHANGE_FRIEND_NAME",
@@ -27,32 +32,42 @@ export interface FetchUserFailureAction {
 }
 
 export interface FetchFriendsAction {
-    type: UserTypes.FETCH_FRIENDS_REQUEST,
-    payload: number,
+    type: UserTypes.FETCH_FRIENDS_REQUEST;
+    payload: number;
 }
 
 export interface FetchFriendsSuccessAction {
-    type: UserTypes.FETCH_FRIENDS_SUCCESS,
-    payload: Array<UserResponseDto>,    
+    type: UserTypes.FETCH_FRIENDS_SUCCESS;
+    payload: Array<UserResponseDto>;
+}
+
+export interface FetchRoomListAction {
+    type: UserTypes.FETCH_ROOMLIST_REQUEST;
+    payload: number;
+}
+
+export interface FetchRoomListSuccesssAction {
+    type: UserTypes.FETCH_ROOMLIST_SUCCESS;
+    payload: Array<RoomListDto>
 }
 
 export interface ChangeProfileAction {
     type: UserTypes.CHANGE_PROFILE;
-    payload: ProfileChangeRequestDto
+    payload: ProfileChangeRequestDto;
 }
 
 export interface ChangeFriendNameAction {
-    type: UserTypes.CHANGE_FRIEND_NAME,
-    payload: ChangeFriendNameRequestDto
+    type: UserTypes.CHANGE_FRIEND_NAME;
+    payload: ChangeFriendNameRequestDto;
 }
 
 export interface AddFriendAction {
-    type: UserTypes.ADD_FRIEND,
-    payload: UserResponseDto,
+    type: UserTypes.ADD_FRIEND;
+    payload: UserResponseDto;
 }
 
 export interface ResetUserAction {
-    type: UserTypes.RESET_USER
+    type: UserTypes.RESET_USER;
 }
 
 export type UserActionTypes = FetchUserAction
@@ -60,6 +75,8 @@ export type UserActionTypes = FetchUserAction
 | FetchUserFailureAction
 | FetchFriendsAction
 | FetchFriendsSuccessAction
+| FetchRoomListAction
+| FetchRoomListSuccesssAction
 | ChangeProfileAction
 | ChangeFriendNameAction
 | AddFriendAction
@@ -81,8 +98,15 @@ export const fetchFriends = (id: number) => ({
     payload: id
 });
 
+export const fetchRoomList = (id: number) => ({
+    type: UserTypes.FETCH_ROOMLIST_REQUEST,
+    payload: id
+})
+
+
 export const UserActions = {
     fetchUser,
     addFriend,
-    fetchFriends
+    fetchFriends,
+    fetchRoomList
 }

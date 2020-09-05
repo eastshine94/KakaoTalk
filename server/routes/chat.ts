@@ -61,13 +61,8 @@ router.post("/room/create", async(req, res) => {
 })
 
 
-const getParticipant = async(room_id: number) => {
-
-}
-
 router.get("/roomList/:user_id", async(req,res) =>{
     const user_id = req.params.user_id;
-    console.log(user_id);
     try {
         const roomData = await Participant.findAll({
             attributes: ["room_id", "room_name"],
@@ -75,9 +70,16 @@ router.get("/roomList/:user_id", async(req,res) =>{
                 model: Room,
                 attributes: ["identifier", "type", "last_chat", "updated_at"],
                 required: true,
-                on: Sequelize.where(Sequelize.col("Participant.room_id"),"=",Sequelize.col("Room.id"))
+                on: Sequelize.where(Sequelize.col("Participant.room_id"),"=",Sequelize.col("Room.id")),
+                where: {
+                    last_chat: {
+                        [Sequelize.Op.ne]: "",
+                    }
+                }
             }],
-            where: { user_id }
+            where: { 
+                user_id,
+             }
         })
         
         const response: Array<RoomListDto> = await Promise.all(
@@ -89,13 +91,15 @@ router.get("/roomList/:user_id", async(req,res) =>{
                     acc.push(curr.user_id);
                     return acc;
                 },[] as Array<number>);
+
                 const roomRow = val.Room as Room;
+
                 return {
                     room_id: val.room_id,
                     room_name: val.room_name,
                     type: roomRow.type,
                     identifier: roomRow.identifier,
-                    participant: participant ,
+                    participant,
                     last_chat: roomRow.last_chat,
                     updated_at: roomRow.updated_at
                 };
@@ -106,7 +110,6 @@ router.get("/roomList/:user_id", async(req,res) =>{
             msg: "채팅방 리스트 불러옴"
         })
     } catch (err) {
-        console.log(err);
         return res.status(400).json({
             data: false,
             msg: "채팅방 리스트를 불러오지 못했습니다."

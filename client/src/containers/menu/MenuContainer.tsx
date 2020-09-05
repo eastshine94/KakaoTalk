@@ -35,8 +35,8 @@ class MenuContainer extends Component<Props> {
             const socket = props.rootState.auth.socket as typeof Socket;
             props.userActions.fetchUser(auth.user_id);
             props.userActions.fetchFriends(auth.id);
+            props.userActions.fetchRoomList(auth.id);
             socket.emit("join",auth.id.toString());
-            
         }
     }
 

@@ -52,6 +52,11 @@ const userReducer = (state=initialState, action:UserActionTypes) => {
                 ...state,
                 friends_list: action.payload
             }
+        case UserTypes.FETCH_ROOMLIST_SUCCESS : 
+            return {
+                ...state,
+                room_list: action.payload
+            }
         case UserTypes.RESET_USER :
             return {
                 ...state,
