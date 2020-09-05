@@ -1,6 +1,7 @@
 import * as http from 'http';
 import * as socketIO from 'socket.io';
 import Chatting from '../models/Chatting';
+import Room from '../models/Room';
 import logger from '../logger';
 import { MessageRequest } from '../types/chat';
 
@@ -34,6 +35,11 @@ const message = (socket: socketIO.Socket, io: socketIO.Server) => {
             send_user_id,
             message
         });
+        await Room.update({
+            last_chat: message,
+        },{
+            where: {id: room_id}
+        })
         const messageResponse = {
             id: savedMessage.id,
             room_id: room_id,

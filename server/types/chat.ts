@@ -24,3 +24,13 @@ export interface MessageRequest {
     send_user_id: number;
     message: string;
 }
+
+export interface RoomListDto {
+    room_id: number;
+    type: RoomType;
+    identifier: string;
+    room_name: string;
+    participant:Array<number>;
+    last_chat: string;
+    updated_at: Date;
+}
