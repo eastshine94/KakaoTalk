@@ -25,7 +25,7 @@ export interface MessageRequest {
     message: string;
 }
 
-export interface RoomListDto {
+export interface RoomListResponse {
     room_id: number;
     type: RoomType;
     identifier: string;

@@ -11,12 +11,22 @@ export interface ChattingDto {
     chatting: Array<ChattingResponseDto>;
 }
 
-export interface RoomListDto {
+export interface RoomListResponse {
     room_id: number;
     type: RoomType;
     identifier: string;
     room_name: string;
     participant:Array<number>;
+    last_chat: string;
+    updated_at: Date;
+}
+
+export interface RoomListDto {
+    room_id: number;
+    type: RoomType;
+    identifier: string;
+    room_name: string;
+    participant:Array<UserResponseDto>;
     last_chat: string;
     updated_at: Date;
 }

@@ -27,7 +27,24 @@ router.get("/:user_id", async(req, res) => {
       msg: "서버 문제로 인해 찾을 수 없습니다."
     })
   }
-  
+});
+
+router.get("/find/:id", async(req, res) => {
+  const id = req.params.id;
+  try {
+    const user = await User.findOne({
+      attributes: ["id", "user_id", "name", "status_msg", "profile_img_url", "background_img_url"],
+      where: { id },
+    });
+    return res.json({
+      data: user,
+      msg: "사용자를 찾았습니다.",
+    });
+  } catch (err) {
+    return res.status(500).json({
+      msg: "서버 문제로 인해 찾을 수 없습니다."
+    })
+  }
 });
 
 router.post("/profile/change", async(req, res) => {

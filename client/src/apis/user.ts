@@ -10,6 +10,11 @@ export const findUser = async(userId: string) => {
     return foundUser.data.data;
 }
 
+export const findUserUsingId = async(id: number) => {
+    const foundUser: ApiResponse<UserResponseDto> = await axios.get(`${API_HOST}/user/find/${id}`);
+    return foundUser.data.data;
+}
+
 export const changeProfile = async(profileData: ProfileChangeRequestDto) => {
     await axios.post(`${API_HOST}/user/profile/change`, profileData);
     return profileData;

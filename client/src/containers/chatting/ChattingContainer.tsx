@@ -13,12 +13,12 @@ interface Props {
 
 class ChattingContainer extends Component<Props> {
     render() {
+        const userState = this.props.rootState.user;
         const { showChattingRoom } = this.props.chatActions;
-        const roomList = this.props.rootState.user.room_list;
         return(
             <Main>
                 <Header/>
-                <Content roomList={roomList} intoRoom={showChattingRoom}/>
+                <Content userState={userState} intoRoom={showChattingRoom}/>
             </Main>
         )
     }

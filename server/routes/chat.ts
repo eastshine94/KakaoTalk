@@ -2,7 +2,7 @@ import * as express from 'express';
 import * as Sequelize from 'sequelize';
 import Room from '../models/Room';
 import Participant from '../models/Participant';
-import { CreateRoomRequest, RoomListDto } from '../types/chat';
+import { CreateRoomRequest, RoomListResponse } from '../types/chat';
 
 const router = express.Router();
 
@@ -82,7 +82,7 @@ router.get("/roomList/:user_id", async(req,res) =>{
              }
         })
         
-        const response: Array<RoomListDto> = await Promise.all(
+        const response: Array<RoomListResponse> = await Promise.all(
             roomData.map(async(val) => {
                 const participant = await Participant.findAll({
                     attributes: ["user_id"],

@@ -1,4 +1,4 @@
-import { RoomListDto } from './chatting';
+import { RoomListResponse } from './chatting';
 
 export interface UserData {
     id: number;
@@ -8,7 +8,7 @@ export interface UserData {
     profile_img_url: string,
     background_img_url: string,
     friends_list: Array<UserResponseDto>,
-    room_list: Array<RoomListDto>,
+    room_list: Array<RoomListResponse>,
 }
 
 

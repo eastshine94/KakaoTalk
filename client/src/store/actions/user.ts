@@ -1,6 +1,6 @@
 import { UserResponseDto } from '~/types/user';
 import { ProfileChangeRequestDto, ChangeFriendNameRequestDto } from '~/types/profile';
-import { RoomListDto } from '~/types/chatting';
+import { RoomListResponse } from '~/types/chatting';
 
 export enum UserTypes {
     FETCH_USER_REQUEST= "user/FETCH_USER_REQUEST",
@@ -48,7 +48,7 @@ export interface FetchRoomListAction {
 
 export interface FetchRoomListSuccesssAction {
     type: UserTypes.FETCH_ROOMLIST_SUCCESS;
-    payload: Array<RoomListDto>
+    payload: Array<RoomListResponse>
 }
 
 export interface ChangeProfileAction {
