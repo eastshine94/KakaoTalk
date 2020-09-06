@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components'
 import {  MainContent } from '~/styles/BaseStyle';
 import { CreateRoomRequest, RoomListDto } from '~/types/chatting';
-import { UserData } from '~/types/user';
+import { UserData, UserResponseDto } from '~/types/user';
 import { BASE_IMG_URL } from '~/constants';
 import { findUserUsingId } from '~/apis/user';
 
@@ -18,20 +18,22 @@ const Wrapper = styled(MainContent)`
 interface Props {
     userState: UserData;
     intoRoom(param: CreateRoomRequest): void;
+    showProfile(userData: UserResponseDto): void;
 }
 
 interface RoomRowProps {
     onDoubleClick(): void;
+    onImgClick(): void;
     room_name: string;
     roomImg: string;
     last_chat: string;
 }
 
 const RoomRow: React.FC<RoomRowProps> = (props) => {
-    const { onDoubleClick, room_name, roomImg, last_chat } = props;
+    const { onImgClick, onDoubleClick, room_name, roomImg, last_chat } = props;
     return (
         <li onDoubleClick={onDoubleClick}>
-            <img src={roomImg} alt="profile Image"/>
+            <img src={roomImg} alt="profile Image" onClick={onImgClick}/>
             <p><b>{room_name}</b></p>
             <p className="preview">{last_chat}</p>
         </li>
@@ -39,7 +41,7 @@ const RoomRow: React.FC<RoomRowProps> = (props) => {
 }
 
 const Content: React.FC<Props> = (props) => {
-    const {intoRoom, userState} = props;
+    const {intoRoom, showProfile, userState} = props;
     const roomList = userState.room_list;
     const friendList = userState.friends_list;
     
@@ -66,16 +68,21 @@ const Content: React.FC<Props> = (props) => {
         intoRoom({...room});
     }
     const renderRoomList = rooms.map(room => {
-        const participantWithoutMe = room.participant.length > 1 ? 
-        room.participant.filter(person => person.id !== userState.id) : 
-        room.participant;
-        return <RoomRow 
-            room_name={ room.room_name || participantWithoutMe[0].name} 
-            roomImg={participantWithoutMe[0].profile_img_url||BASE_IMG_URL}
-            last_chat={room.last_chat} 
-            onDoubleClick={() => onDoubleClick(room)} key={room.room_id}
-        />
-    
+        if(room.type==="individual"){
+            const participantWithoutMe = room.participant.length > 1 ? 
+            room.participant.filter(person => person.id !== userState.id) : 
+            room.participant;
+            return <RoomRow 
+                room_name={ room.room_name || participantWithoutMe[0].name} 
+                roomImg={participantWithoutMe[0].profile_img_url||BASE_IMG_URL}
+                last_chat={room.last_chat} 
+                onImgClick={() => showProfile(participantWithoutMe[0])}
+                onDoubleClick={() => onDoubleClick(room)} 
+                key={room.room_id}
+                
+            />
+        }
+        return null;
     })
 
     return(
