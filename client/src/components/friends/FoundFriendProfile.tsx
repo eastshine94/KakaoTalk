@@ -8,7 +8,9 @@ import { addFriendRequest } from '~/apis/friend';
 import { AddFriendRequest } from '~/types/friend';
 import { UserActions } from '~/store/actions/user';
 import { RootState } from '../../store/reducers';
-import { UserState } from '../../store/reducers/user';
+import { CreateRoomRequest } from '~/types/chatting';
+import { ChatActions } from '~/store/actions/chat';
+
 
 const FoundUserProfile = styled.div`
     margin-top: 50px;
@@ -50,11 +52,14 @@ interface Props {
     findUserId: string;
     foundUser: UserResponseDto|undefined|null;
     onClose(): void
-    userData: UserState;
+    rootState: RootState;
     userActions: typeof UserActions;
+    chatActions: typeof ChatActions;
 }
 
-const FoundFriendProfile: React.FC<Props> = ({findUserId, foundUser, onClose, userData, userActions}) => {
+const FoundFriendProfile: React.FC<Props> = (props) => {
+    const {findUserId, foundUser, onClose, rootState, userActions} = props;
+    const userData = rootState.user;
     if(foundUser){
         const my_id = userData.id;
         const friend_id = foundUser.id;
@@ -76,11 +81,26 @@ const FoundFriendProfile: React.FC<Props> = ({findUserId, foundUser, onClose, us
         }
 
         if(existFriend || isMe){
+            const {showChattingRoom} = props.chatActions;
+            const onChatClick = () => {
+                const myId = userData.id;
+                const friendId = foundUser.id;
+                const identifier = myId < friendId ? `${myId}-${friendId}`:`${friendId}-${myId}`
+    
+                const roomObj: CreateRoomRequest = {
+                    type: "individual",
+                    identifier,
+                    room_name: "",
+                    participant: isMe ?  [{...userData}] : [{...foundUser}, {...userData}],
+                }
+                showChattingRoom(roomObj);
+                onClose();
+            }
             return(
                 <FoundUserProfile>
                     <img src={foundUser.profile_img_url || BASE_IMG_URL} alt="profile_img"/>
                     <p>{existFriend?.name || foundUser.name}</p>
-                    <Button>1:1 채팅</Button>
+                    <Button onClick={onChatClick}>1:1 채팅</Button>
                 </FoundUserProfile>
             )
         } 
@@ -103,10 +123,11 @@ const FoundFriendProfile: React.FC<Props> = ({findUserId, foundUser, onClose, us
 }
 
 const mapStateToProps = (state: RootState) => ({
-    userData: state.user,
+    rootState: state,
 });
 const mapDispatchToProps = (dispatch: Dispatch) => ({
     userActions: bindActionCreators(UserActions, dispatch),
+    chatActions: bindActionCreators(ChatActions, dispatch),
 });
 
 
