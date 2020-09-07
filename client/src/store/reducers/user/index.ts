@@ -66,7 +66,8 @@ const userReducer = (state=initialState, action:UserActionTypes) => {
                 status_msg: "",
                 profile_img_url: "",
                 background_img_url: "",
-                friends_list: []
+                friends_list: [],
+                room_list: [],
             }
         default: 
             return state

@@ -92,8 +92,7 @@ router.get("/roomList/:user_id", async(req,res) =>{
                     return acc;
                 },[] as Array<number>);
 
-                const roomRow = val.Room as Room;
-
+                const roomRow = val.Room?.toJSON() as Room;
                 return {
                     room_id: val.room_id,
                     room_name: val.room_name,

@@ -7,11 +7,23 @@ import { BASE_IMG_URL } from '~/constants';
 import { findUserUsingId } from '~/apis/user';
 
 const Wrapper = styled(MainContent)`
+    & li {
+        padding: 20px 20px 20px 80px;
+    }
     & .preview {
         white-space: pre-wrap;
         display: -webkit-box;
         -webkit-line-clamp: 2; 
         -webkit-box-orient: vertical;
+        padding-right: 80px;
+    }
+    & .room-block-top{
+        position: relative;
+        & span{
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
     }
 `;
 
@@ -26,15 +38,30 @@ interface RoomRowProps {
     onImgClick(): void;
     room_name: string;
     roomImg: string;
+    updated_at: Date;
     last_chat: string;
 }
 
 const RoomRow: React.FC<RoomRowProps> = (props) => {
-    const { onImgClick, onDoubleClick, room_name, roomImg, last_chat } = props;
+    const { onImgClick, onDoubleClick, room_name, updated_at, roomImg, last_chat } = props;
+    const getUpdatetAt = (date: Date) => {
+        const today = new Date();
+        const updateDate = new Date(date);
+        const localeDate = updateDate.toLocaleDateString();
+        if(today.toLocaleDateString() === localeDate){
+            const localeTime = updateDate.toLocaleTimeString();
+            return localeTime.substring(0,localeTime.length-3);
+        }
+        return localeDate;
+    } 
+    getUpdatetAt(updated_at);
     return (
         <li onDoubleClick={onDoubleClick}>
             <img src={roomImg} alt="profile Image" onClick={onImgClick}/>
-            <p><b>{room_name}</b></p>
+            <p className="room-block-top">
+                <b>{room_name}</b>
+                <span>{getUpdatetAt(updated_at)}</span>
+            </p>
             <p className="preview">{last_chat}</p>
         </li>
     )
@@ -42,7 +69,7 @@ const RoomRow: React.FC<RoomRowProps> = (props) => {
 
 const Content: React.FC<Props> = (props) => {
     const {intoRoom, showProfile, userState} = props;
-    const roomList = userState.room_list;
+    const roomList = userState.room_list.sort((a,b) => b.updated_at.toLocaleString().localeCompare(a.updated_at.toLocaleString()));
     const friendList = userState.friends_list;
     
     let [rooms, setRooms] = useState([] as Array<RoomListDto>);
@@ -75,6 +102,7 @@ const Content: React.FC<Props> = (props) => {
             return <RoomRow 
                 room_name={ room.room_name || participantWithoutMe[0].name} 
                 roomImg={participantWithoutMe[0].profile_img_url||BASE_IMG_URL}
+                updated_at={room.updated_at}
                 last_chat={room.last_chat} 
                 onImgClick={() => showProfile(participantWithoutMe[0])}
                 onDoubleClick={() => onDoubleClick(room)} 

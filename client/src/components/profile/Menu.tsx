@@ -30,7 +30,7 @@ const Menu: React.FC<Props> = (props) => {
     const { isMe, isFriend, onChatClick, onAddFriendClick } = props;
     return(
         <Wrapper>
-            { isFriend? 
+            { isFriend || isMe ? 
                 <div onClick={onChatClick}>
                     <i className="fas fa-comment"/>
                     <p>{isMe ? "나와의 채팅": "1:1 채팅"}</p>
