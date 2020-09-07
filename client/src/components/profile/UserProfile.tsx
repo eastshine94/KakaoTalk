@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import { Dispatch, bindActionCreators } from 'redux';
 import { RootState } from '~/store/reducers';
 import { ProfileActions } from '~/store/actions/profile';
+import { UserActions } from '~/store/actions/user';
 import ProfileInputWindow from './ProfileInputWindow';
 import { BgImageSetting, ProfileImageSetting, FriendProfileImage } from './SettingBlock';
 
@@ -46,11 +47,13 @@ const SettingOverlay = styled.div`
 
 interface Props {
     rootState: RootState;
-    profileActions: typeof ProfileActions,
+    profileActions: typeof ProfileActions;
+    userActions: typeof UserActions;
 }
 
 const UserProfile: React.FC<Props> = ( props ) => {
-    const {changeProfile, changeFriendName} = props.profileActions;
+    const { changeProfile, changeFriendName } = props.profileActions;
+    const { fetchRoomList } = props.userActions;
     const loginUserData = props.rootState.user;
     const profileData = props.rootState.profile;
     const isMe =  loginUserData.id === profileData.id;
@@ -76,6 +79,7 @@ const UserProfile: React.FC<Props> = ( props ) => {
                 else {
                     await changeFriendName({my_id: loginUserData.id, friend_id: user_profile_id, friend_name: name});
                 }
+                await fetchRoomList(loginUserData.id);
             }
         }
         const changeStatusMsg = async(msg:string) => {
@@ -119,6 +123,7 @@ const mapStateToProps = (state: RootState) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
     profileActions: bindActionCreators(ProfileActions, dispatch),
+    userActions: bindActionCreators(UserActions, dispatch)
 });
 
 export default connect(

@@ -78,7 +78,6 @@ class ProfileContainer extends Component<Props> {
         }
 
         const onAddFriendClick = async() => {
-            
             const my_id = userState.id;
             const friend_id = profileState.id;
             const friend_name = profileState.name;

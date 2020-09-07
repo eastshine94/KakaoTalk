@@ -38,7 +38,7 @@ const MyProfileBlock = styled.div`
 
 const FriendsBorder = styled.div`
     border-top: 0.5px solid #dcdcdc;
-    margin: 0 20px;
+    margin: 10px 20px 0 20px;
     padding-top: 10px;
     & p {
         font-size: 12px;
