@@ -36,20 +36,27 @@ class MenuContainer extends Component<Props> {
             props.userActions.fetchUser(auth.user_id);
             props.userActions.fetchFriends(auth.id);
             props.userActions.fetchRoomList(auth.id);
+            const { fetchRoomList } = this.props.userActions;
             socket.emit("join",auth.id.toString());
+            socket.on("message", () => {
+                fetchRoomList(auth.id);
+            });
         }
     }
 
     async componentDidUpdate(prevProps: Props){
         const chatState = this.props.rootState.chat;
-        const socket = this.props.rootState.auth.socket as typeof Socket;
-        const { addChatting } = this.props.chatActions;
         if(prevProps.rootState.chat.room_id !== chatState.room_id){
+            const userState = this.props.rootState.user;
+            const socket = this.props.rootState.auth.socket as typeof Socket;
+            const { addChatting } = this.props.chatActions;
+            const { fetchRoomList } = this.props.userActions;
             await socket.off("message");
-            await socket.on("message",(response: ChattingResponseDto) => {
+            await socket.on("message", async(response: ChattingResponseDto) => {
                 if(response.room_id === chatState.room_id){
-                    addChatting(response);
-                }  
+                    await addChatting(response);
+                }
+                await fetchRoomList(userState.id);
             });
         }
     }
