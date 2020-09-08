@@ -6,6 +6,7 @@ import { Header, Content, Footer} from '~/components/chattingRoom';
 import { Portal } from '~/pages/Modal';
 import { RootState } from '~/store/reducers';
 import { ChatActions } from '~/store/actions/chat';
+import { ProfileActions } from '~/store/actions/profile';
 import { ChattingDto, CreateRoomRequest, RoomType, ChattingRequestDto } from '~/types/chatting';
 import { createRoom } from '~/apis/chat';
 
@@ -22,6 +23,7 @@ const Wrapper = styled.div`
 interface Props {
     rootState: RootState;
     chatActions: typeof ChatActions;
+    profileActions : typeof ProfileActions;
 }
 
 
@@ -73,6 +75,7 @@ class ChattingRoomContainer extends Component<Props> {
         const chatState = this.props.rootState.chat;
         const authState = this.props.rootState.auth;
         const { hideChattingRoom } = this.props.chatActions;
+        const { showProfile } = this.props.profileActions;
         const onChatSumbmit = (msg: string) => {
             const chattingRequset: ChattingRequestDto = {
                 room_id: chatState.room_id,
@@ -87,7 +90,7 @@ class ChattingRoomContainer extends Component<Props> {
             <Portal>
                 <Wrapper>
                     <Header room_name={chatState.room_name} hideRoom={ hideChattingRoom }/>
-                    <Content userData= {userState} chattingList={chatState.chatting}/>
+                    <Content myId= {userState.id} participant= {chatState.participant} chattingList={chatState.chatting} showProfile={showProfile}/>
                     <Footer onChatSumbmit={ onChatSumbmit }/>
                 </Wrapper>
             </Portal>
@@ -101,6 +104,7 @@ const mapStateToProps = (state: RootState) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
     chatActions: bindActionCreators(ChatActions, dispatch),
+    profileActions: bindActionCreators(ProfileActions, dispatch),
 })
 
 

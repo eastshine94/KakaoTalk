@@ -2,7 +2,7 @@ import React, {useRef, useEffect} from 'react';
 import styled from 'styled-components';
 import { MyChat, FriendChat, FriendChatWithThumbnail } from '~/components/chattingRoom/ChatBlock';
 import { ChattingResponseDto } from '~/types/chatting';
-import { UserData } from '~/types/user';
+import { UserResponseDto } from '~/types/user';
 
 const Wrapper = styled.main`
     position: absolute;
@@ -15,27 +15,31 @@ const Wrapper = styled.main`
 `;
 
 interface Props {
-    userData: UserData;
+    myId: number;
+    participant: Array<UserResponseDto>;
     chattingList: Array<ChattingResponseDto>;
+    showProfile(userData: UserResponseDto): void;
 }
 
 const Content: React.FC<Props> = (props) => {
-    const { userData, chattingList } = props;
+    const { myId, chattingList, participant, showProfile } = props;
     const messageRef = useRef<HTMLDivElement>(null);
     useEffect(() => {
         messageRef.current!.scrollTop = messageRef.current!.scrollHeight;
     },[chattingList])
-    var prevSend = -1;
+    let prevSend = -1;
     const renderChatting = chattingList.map(chat => {
-        const isPrevSending = prevSend === chat.send_user_id;
-        prevSend = chat.send_user_id;
-        if(chat.send_user_id === userData.id){
+        const senderId = chat.send_user_id;
+        const isPrevSending = prevSend === senderId;
+        prevSend = senderId;
+        if(senderId === myId){
             return <MyChat msg={chat.message} key={chat.id}/>;
         }
         if(isPrevSending){
             return <FriendChat msg={chat.message} key={chat.id}/>;
         }
-        return <FriendChatWithThumbnail msg={chat.message} key={chat.id}/>;
+        const sender = participant.find(person => person.id === senderId) as UserResponseDto;
+        return <FriendChatWithThumbnail msg={chat.message} user={sender} onImgClick={ () => showProfile(sender)} key={chat.id}/>;
     })
     return(
         <Wrapper ref={messageRef}>

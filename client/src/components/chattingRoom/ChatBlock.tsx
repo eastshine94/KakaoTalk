@@ -54,8 +54,9 @@ interface ChatProps {
 }
 
 interface FriendChatProps {
-    user?: UserResponseDto;
+    user: UserResponseDto;
     msg: string;
+    onImgClick():void;
 }
 
 
@@ -75,11 +76,11 @@ export const FriendChat:React.FC<ChatProps> = ({msg}) => {
     )
 }
 
-export const FriendChatWithThumbnail: React.FC<FriendChatProps> = ({msg}) => {
+export const FriendChatWithThumbnail: React.FC<FriendChatProps> = ({user, msg, onImgClick}) => {
     return(
         <LeftBlock>
-            <img src={ BASE_IMG_URL } alt="thumbnail"/>
-            <NameBlock>홍길동</NameBlock>
+            <img src={ user.profile_img_url || BASE_IMG_URL } alt="thumbnail" onClick={onImgClick}/>
+            <NameBlock>{user.name}</NameBlock>
             <div><Chat>{msg}</Chat></div>
         </LeftBlock>
     )

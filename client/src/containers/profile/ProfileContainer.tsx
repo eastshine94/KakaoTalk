@@ -54,15 +54,16 @@ class ProfileContainer extends Component<Props> {
     render(){
         const profileState = this.props.rootState.profile;
         const userState = this.props.rootState.user;
+        const chatState = this.props.rootState.chat;
         const isMe = profileState.id === userState.id;
         const isFriend = !!userState.friends_list.find(friend => friend.id === profileState.id);
 
         const { hideProfile } = this.props.profileActions;
-        const { showChattingRoom } = this.props.chatActions;
+        const { showChattingRoom, hideChattingRoom } = this.props.chatActions;
         const setBackground = profileState.background_img_url ? <img src={profileState.background_img_url} alt="bg_image"/> : "";
         if(!profileState.isProfileShown) return null;
 
-        const onChatClick = () => {
+        const onChatClick = async() => {
             const myId = userState.id;
             const friendId = profileState.id;
             const identifier = myId < friendId ? `${myId}-${friendId}`:`${friendId}-${myId}`
@@ -73,8 +74,11 @@ class ProfileContainer extends Component<Props> {
                 room_name: "",
                 participant: myId === friendId ?  [{...userState}] : [{...profileState}, {...userState}],
             }
-            showChattingRoom(roomObj);
-            hideProfile();
+            await hideProfile();
+            if(chatState.isChattingRoomShown){
+                await hideChattingRoom()
+            }
+            await showChattingRoom(roomObj);
         }
 
         const onAddFriendClick = async() => {
