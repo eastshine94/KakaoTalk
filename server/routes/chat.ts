@@ -1,6 +1,7 @@
 import * as express from 'express';
 import * as Sequelize from 'sequelize';
 import Room from '../models/Room';
+import Chatting from '../models/Chatting';
 import Participant from '../models/Participant';
 import { CreateRoomRequest, RoomListResponse } from '../types/chat';
 
@@ -60,6 +61,34 @@ router.post("/room/create", async(req, res) => {
     }
 })
 
+router.get("/room", async(req,res) => {
+    const room_id: number = Number(req.query.room_id);
+    if(!room_id){
+        throw new Error();
+    }
+    const cursor: number = Number(req.query.cursor) || 9999999999;
+    const offset: number = 15 * (Number(req.query.offset) - 1) || 0;
+    try {
+        const chatting = await Chatting.findAll({
+            where:{
+                id: { [Sequelize.Op.lte]: cursor },
+                room_id
+            },
+            order: [["id", "DESC"]],
+            limit: 15,
+        })
+
+        return res.json({
+            data: chatting.reverse(),
+            msg: "채팅 목록을 불러왔습니다."
+        })
+    } catch (err) {
+        return res.status(400).json({
+            data: false,
+            msg: "채팅 목록을 불러오지 못했습니다."
+        })
+    }
+})
 
 router.get("/roomList/:user_id", async(req,res) =>{
     const user_id = req.params.user_id;

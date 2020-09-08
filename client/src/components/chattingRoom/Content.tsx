@@ -19,6 +19,7 @@ interface Props {
     participant: Array<UserResponseDto>;
     chattingList: Array<ChattingResponseDto>;
     showProfile(userData: UserResponseDto): void;
+    fetchChatting(offset: number):void;
 }
 
 const Content: React.FC<Props> = (props) => {
@@ -26,7 +27,7 @@ const Content: React.FC<Props> = (props) => {
     const messageRef = useRef<HTMLDivElement>(null);
     useEffect(() => {
         messageRef.current!.scrollTop = messageRef.current!.scrollHeight;
-    },[chattingList])
+    },[chattingList]);
     let prevSend = -1;
     const renderChatting = chattingList.map(chat => {
         const senderId = chat.send_user_id;

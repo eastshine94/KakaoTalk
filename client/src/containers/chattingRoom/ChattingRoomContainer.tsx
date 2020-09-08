@@ -7,7 +7,7 @@ import { Portal } from '~/pages/Modal';
 import { RootState } from '~/store/reducers';
 import { ChatActions } from '~/store/actions/chat';
 import { ProfileActions } from '~/store/actions/profile';
-import { ChattingDto, CreateRoomRequest, RoomType, ChattingRequestDto } from '~/types/chatting';
+import { ChattingDto, CreateRoomRequest, RoomType, ChattingRequestDto, FetchChattingRequest } from '~/types/chatting';
 import { createRoom } from '~/apis/chat';
 
 const Wrapper = styled.div`
@@ -39,7 +39,7 @@ class ChattingRoomContainer extends Component<Props> {
         chatState.participant.filter(person => person.id !== userState.id) : 
         chatState.participant;
 
-        const { fetchChattingRoomInfo } = props.chatActions;
+        const { fetchChattingRoomInfo, fetchChatting } = props.chatActions;
     
         if(findRoom){
             const roomObj: ChattingDto = {
@@ -49,7 +49,11 @@ class ChattingRoomContainer extends Component<Props> {
                 chatting: []
             }
             fetchChattingRoomInfo(roomObj);
-            
+            fetchChatting({
+                room_id: findRoom.room_id,
+                cursor: null,
+                offset: 1,
+            });
         }
         else{
             const createRoomObj: CreateRoomRequest = {
@@ -74,7 +78,7 @@ class ChattingRoomContainer extends Component<Props> {
         const userState = this.props.rootState.user;
         const chatState = this.props.rootState.chat;
         const authState = this.props.rootState.auth;
-        const { hideChattingRoom } = this.props.chatActions;
+        const { hideChattingRoom, fetchChatting } = this.props.chatActions;
         const { showProfile } = this.props.profileActions;
         const onChatSumbmit = (msg: string) => {
             const chattingRequset: ChattingRequestDto = {
@@ -86,11 +90,21 @@ class ChattingRoomContainer extends Component<Props> {
             }
             authState.socket?.emit('message', chattingRequset);
         }
+
+        const fetchChattingList = (offset: number) => {
+            const chatting = chatState.chatting;
+            const requestObj: FetchChattingRequest = {
+                room_id: chatState.room_id,
+                offset,
+                cursor: chatting[0].id
+            }
+            fetchChatting(requestObj);
+        }
         return(
             <Portal>
                 <Wrapper>
                     <Header room_name={chatState.room_name} hideRoom={ hideChattingRoom }/>
-                    <Content myId= {userState.id} participant= {chatState.participant} chattingList={chatState.chatting} showProfile={showProfile}/>
+                    <Content myId= {userState.id} participant= {chatState.participant} chattingList={chatState.chatting} showProfile={showProfile} fetchChatting={fetchChattingList}/>
                     <Footer onChatSumbmit={ onChatSumbmit }/>
                 </Wrapper>
             </Portal>

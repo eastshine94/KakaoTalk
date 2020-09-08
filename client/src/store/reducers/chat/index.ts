@@ -46,6 +46,14 @@ const chatReducer = (state = initialState, action: ChatActionTypes ) => {
                     action.payload
                 ]
             }
+        case ChatTypes.FETCH_CHATTING_SUCCESS :
+            return {
+                ...state,
+                chatting: [
+                    ...action.payload,
+                    ...state.chatting
+                ]
+            }
         default:
             return state;
     }

@@ -31,6 +31,22 @@ export interface RoomListDto {
     updated_at: Date;
 }
 
+export interface CreateRoomRequest {
+    type: RoomType;
+    identifier: string;
+    room_name: string;
+    participant:Array<UserResponseDto>;
+}
+
+export interface CreateRoomResponse {
+    room_id: number;
+    identifier: string;
+    type: RoomType;
+    room_name: string;
+    last_chat: string;
+    updated_at: Date;
+}
+
 export interface ChattingRequestDto {
     room_id: number;
     type: RoomType;
@@ -47,20 +63,10 @@ export interface ChattingResponseDto{
     created_at: Date;
 }
 
-
-export interface CreateRoomRequest {
-    type: RoomType;
-    identifier: string;
-    room_name: string;
-    participant:Array<UserResponseDto>;
-}
-
-export interface CreateRoomResponse {
+export interface FetchChattingRequest {
     room_id: number;
-    identifier: string;
-    type: RoomType;
-    room_name: string;
-    last_chat: string;
-    updated_at: Date;
+    cursor: number | null;
+    offset: number;
 }
+
 

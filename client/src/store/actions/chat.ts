@@ -1,4 +1,4 @@
-import { CreateRoomRequest, ChattingDto, ChattingResponseDto } from '~/types/chatting';
+import { CreateRoomRequest, ChattingDto, ChattingResponseDto, FetchChattingRequest } from '~/types/chatting';
 
 
 export enum ChatTypes {
@@ -6,6 +6,9 @@ export enum ChatTypes {
     HIDE_CHATTING_ROOM = "chat/HIDE_CHATTING_ROOM",
     FETCH_CHATTING_ROOM_INFO = "chat/FETCH_CHATTING_ROOM_INFO",
     ADD_CHATTING = "chat/ADD_CHATTING",
+    FETCH_CHATTING_REQUEST= 'user/FETCH_CHATTING_REQUEST',
+    FETCH_CHATTING_SUCCESS= 'user/FETCH_CHATTING_SUCCESS',
+    FETCH_CHATTING_FAILUER= 'user/FETCH_CHATTING_FAILUER',
 }
 
 export interface ShowChattingRoomAction {
@@ -27,11 +30,22 @@ export interface AddChattingAction {
     payload: ChattingResponseDto
 }
 
+export interface FetchChattingAction {
+    type: ChatTypes.FETCH_CHATTING_REQUEST;
+    payload: FetchChattingRequest;
+}
+
+export interface FectchChattingSuccessAction {
+    type: ChatTypes.FETCH_CHATTING_SUCCESS;
+    payload: Array<ChattingResponseDto>;
+}
 
 export type ChatActionTypes = ShowChattingRoomAction
 | HideChattingRoomAction
 | FetchChattingRoomInfoAction
 | AddChattingAction
+| FetchChattingAction
+| FectchChattingSuccessAction
 
 export const showChattingRoom = (param: CreateRoomRequest):ShowChattingRoomAction => ({
     type: ChatTypes.SHOW_CHATTING_ROOM,
@@ -52,9 +66,15 @@ export const addChatting = (chat: ChattingResponseDto): AddChattingAction => ({
     payload: chat
 });
 
+export const fetchChatting = (param: FetchChattingRequest) => ({
+    type: ChatTypes.FETCH_CHATTING_REQUEST,
+    payload: param,
+})
+
 export const ChatActions = {
     showChattingRoom,
     hideChattingRoom,
     fetchChattingRoomInfo,
-    addChatting
+    addChatting,
+    fetchChatting
 }
