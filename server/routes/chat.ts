@@ -71,7 +71,7 @@ router.get("/room", async(req,res) => {
     try {
         const chatting = await Chatting.findAll({
             where:{
-                id: { [Sequelize.Op.lte]: cursor },
+                id: { [Sequelize.Op.lt]: cursor },
                 room_id
             },
             order: [["id", "DESC"]],

@@ -42,6 +42,7 @@ const LeftBlock = styled.div`
         width: 45px;
         border-radius: 20px;
         float: left;
+        cursor: pointer;
     }
 `;
 

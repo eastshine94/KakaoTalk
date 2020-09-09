@@ -3,6 +3,7 @@ import { ChattingDto } from '~/types/chatting';
 
 export interface ChatState extends ChattingDto {
     isChattingRoomShown: boolean;
+    isFetchChattingLoading: boolean;
 }
 
 const initialState: ChatState = {
@@ -12,7 +13,8 @@ const initialState: ChatState = {
     room_name: "",
     participant: [],
     chatting: [],
-    isChattingRoomShown: false
+    isChattingRoomShown: false,
+    isFetchChattingLoading: false
 }
 
 const chatReducer = (state = initialState, action: ChatActionTypes ) => {
@@ -31,7 +33,8 @@ const chatReducer = (state = initialState, action: ChatActionTypes ) => {
                 identifier: "",
                 participant: [],
                 chatting: [],
-                isChattingRoomShown: false
+                isChattingRoomShown: false,
+                isFetchChattingLoading: false
             };
         case ChatTypes.FETCH_CHATTING_ROOM_INFO :
             return {
@@ -46,13 +49,25 @@ const chatReducer = (state = initialState, action: ChatActionTypes ) => {
                     action.payload
                 ]
             }
+        case ChatTypes.FETCH_CHATTING_REQUEST :
+            return {
+                ...state,
+                isFetchChattingLoading: true,
+            }
         case ChatTypes.FETCH_CHATTING_SUCCESS :
+            if(action.payload.length === 0){
+                return {
+                    ...state,
+                    isFetchChattingLoading: true,
+                }
+            }
             return {
                 ...state,
                 chatting: [
                     ...action.payload,
-                    ...state.chatting
-                ]
+                    ...state.chatting,
+                ],
+                isFetchChattingLoading: false,
             }
         default:
             return state;

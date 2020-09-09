@@ -71,13 +71,9 @@ const Footer: React.FC<Props> = ({ onChatSumbmit }) => {
         requestSubmit();
     }
     const onEnterPress = (event: KeyboardEvent<HTMLTextAreaElement>) => {
-
         if(!event.shiftKey && event.key === "Enter"){
             event.preventDefault();
-            if(isCanSubmit){
-                setMessage("");
-                requestSubmit();
-            }
+            requestSubmit();
         }
     }
     return(

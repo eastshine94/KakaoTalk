@@ -1,4 +1,4 @@
-import React, {useRef, useEffect} from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { MyChat, FriendChat, FriendChatWithThumbnail } from '~/components/chattingRoom/ChatBlock';
 import { ChattingResponseDto } from '~/types/chatting';
@@ -18,16 +18,13 @@ interface Props {
     myId: number;
     participant: Array<UserResponseDto>;
     chattingList: Array<ChattingResponseDto>;
+    messageRef: React.RefObject<HTMLDivElement>;
     showProfile(userData: UserResponseDto): void;
-    fetchChatting(offset: number):void;
 }
 
 const Content: React.FC<Props> = (props) => {
-    const { myId, chattingList, participant, showProfile } = props;
-    const messageRef = useRef<HTMLDivElement>(null);
-    useEffect(() => {
-        messageRef.current!.scrollTop = messageRef.current!.scrollHeight;
-    },[chattingList]);
+    const { myId, chattingList, participant, messageRef, showProfile } = props;
+
     let prevSend = -1;
     const renderChatting = chattingList.map(chat => {
         const senderId = chat.send_user_id;
