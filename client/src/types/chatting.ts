@@ -18,7 +18,7 @@ export interface RoomListResponse {
     room_name: string;
     participant:Array<number>;
     last_chat: string;
-    updated_at: Date;
+    updatedAt: Date;
 }
 
 export interface RoomListDto {
@@ -28,7 +28,7 @@ export interface RoomListDto {
     room_name: string;
     participant:Array<UserResponseDto>;
     last_chat: string;
-    updated_at: Date;
+    updatedAt: Date;
 }
 
 export interface CreateRoomRequest {
@@ -44,7 +44,7 @@ export interface CreateRoomResponse {
     type: RoomType;
     room_name: string;
     last_chat: string;
-    updated_at: Date;
+    updatedAt: Date;
 }
 
 export interface ChattingRequestDto {
@@ -60,7 +60,7 @@ export interface ChattingResponseDto{
     room_id: number;
     send_user_id: number;
     message: string;
-    created_at: Date;
+    createdAt: Date;
 }
 
 export interface FetchChattingRequest {

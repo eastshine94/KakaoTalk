@@ -26,13 +26,13 @@ const Content: React.FC<Props> = (props) => {
     const { myId, chattingList, participant, messageRef, showProfile } = props;
 
     const renderChatting = chattingList.map((chat,idx) => {
-        const createdAt = new Date(chat.created_at);
+        const createdAt = new Date(chat.createdAt);
         const localeTime = createdAt.toLocaleTimeString();
         const removeSecond = localeTime.substring(0,localeTime.length-3);
         const senderId = chat.send_user_id;
 
         const prevChat = idx >= 1 ? chattingList[idx-1] : undefined;
-        const prevCreatedAt = prevChat ? new Date(prevChat.created_at).toLocaleTimeString() : "";
+        const prevCreatedAt = prevChat ? new Date(prevChat.createdAt).toLocaleTimeString() : "";
         const prevRemoveSecond = prevChat? prevCreatedAt.substring(0, prevCreatedAt.length-3) : "";
         const isPrevSender = prevChat? prevChat.send_user_id === senderId : false;
         const sender = participant.find(person => person.id === senderId) as UserResponseDto;
@@ -47,7 +47,7 @@ const Content: React.FC<Props> = (props) => {
             return <FriendChatWithThumbnail msg={chat.message} user={sender} localeTime={removeSecond} onImgClick={ () => showProfile(sender)} key={chat.id}/>;
         }
         const afterSender = chattingList[idx+1];
-        const afterCreateAt = new Date(afterSender.created_at).toLocaleTimeString();
+        const afterCreateAt = new Date(afterSender.createdAt).toLocaleTimeString();
         const afterRemoveSecond = afterCreateAt.substring(0, afterCreateAt.length-3);
         const time = (afterSender.send_user_id !== senderId || !(afterRemoveSecond === removeSecond)) ? removeSecond : "";
         if(senderId === myId){

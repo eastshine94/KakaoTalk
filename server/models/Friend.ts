@@ -8,6 +8,6 @@ export default class Friend extends Model {
     public friend_name!: string;
     
     public readonly User?: User;
-    public readonly created_at!: Date;
-    public readonly updated_at!: Date;
+    public readonly createdAt!: Date;
+    public readonly updatedAt!: Date;
 }

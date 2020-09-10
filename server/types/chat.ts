@@ -29,7 +29,7 @@ export interface MessageResponse {
     room_id: number;
     send_user_id: number;
     message: string;
-    created_at: Date;
+    createdAt: Date;
 }
 
 export interface RoomListResponse {
@@ -39,5 +39,5 @@ export interface RoomListResponse {
     room_name: string;
     participant:Array<number>;
     last_chat: string;
-    updated_at: Date;
+    updatedAt: Date;
 }

@@ -20,7 +20,7 @@ router.post("/room/create", async(req, res) => {
                 type: findRoom.type,
                 room_name,
                 last_chat: findRoom.last_chat,
-                updated_at: findRoom.updated_at,
+                updatedAt: findRoom.updatedAt,
             };
             return res.json({
                 data,
@@ -46,7 +46,7 @@ router.post("/room/create", async(req, res) => {
                 type: room.type,
                 room_name,
                 last_chat: room.last_chat,
-                updated_at: room.updated_at,
+                updatedAt: room.updatedAt,
             };
             return res.json({
                 data,
@@ -70,7 +70,7 @@ router.get("/room", async(req,res) => {
     const offset: number = 15 * (Number(req.query.offset) - 1) || 0;
     try {
         const chatting = await Chatting.findAll({
-            attributes: ["id", "room_id", "send_user_id", "message", "created_at"],
+            attributes: ["id", "room_id", "send_user_id", "message", "createdAt"],
             where:{
                 id: { [Sequelize.Op.lt]: cursor },
                 room_id
@@ -98,7 +98,7 @@ router.get("/roomList/:user_id", async(req,res) =>{
             attributes: ["room_id", "room_name"],
             include: [{
                 model: Room,
-                attributes: ["identifier", "type", "last_chat", "updated_at"],
+                attributes: ["identifier", "type", "last_chat", "updatedAt"],
                 required: true,
                 on: Sequelize.where(Sequelize.col("Participant.room_id"),"=",Sequelize.col("Room.id")),
                 where: {
@@ -130,7 +130,7 @@ router.get("/roomList/:user_id", async(req,res) =>{
                     identifier: roomRow.identifier,
                     participant,
                     last_chat: roomRow.last_chat,
-                    updated_at: roomRow.updated_at
+                    updatedAt: roomRow.updatedAt
                 };
             })
           )

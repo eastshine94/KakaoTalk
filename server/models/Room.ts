@@ -7,6 +7,6 @@ export default class Room extends Model {
     public type!: "individual" | "group";
     public last_chat!: string;
     
-    public readonly created_at!: Date;
-    public readonly updated_at!: Date;
+    public readonly createdAt!: Date;
+    public readonly updatedAt!: Date;
 }

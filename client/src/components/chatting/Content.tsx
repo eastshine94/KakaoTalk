@@ -38,12 +38,12 @@ interface RoomRowProps {
     onImgClick(): void;
     room_name: string;
     roomImg: string;
-    updated_at: Date;
+    updatedAt: Date;
     last_chat: string;
 }
 
 const RoomRow: React.FC<RoomRowProps> = (props) => {
-    const { onImgClick, onDoubleClick, room_name, updated_at, roomImg, last_chat } = props;
+    const { onImgClick, onDoubleClick, room_name, updatedAt, roomImg, last_chat } = props;
     const getUpdatetAt = (date: Date) => {
         const today = new Date();
         const updateDate = new Date(date);
@@ -54,13 +54,13 @@ const RoomRow: React.FC<RoomRowProps> = (props) => {
         }
         return localeDate;
     } 
-    getUpdatetAt(updated_at);
+    getUpdatetAt(updatedAt);
     return (
         <li onDoubleClick={onDoubleClick}>
             <img src={roomImg} alt="profile Image" onClick={onImgClick}/>
             <p className="room-block-top">
                 <b>{room_name}</b>
-                <span>{getUpdatetAt(updated_at)}</span>
+                <span>{getUpdatetAt(updatedAt)}</span>
             </p>
             <p className="preview">{last_chat}</p>
         </li>
@@ -69,7 +69,7 @@ const RoomRow: React.FC<RoomRowProps> = (props) => {
 
 const Content: React.FC<Props> = (props) => {
     const {intoRoom, showProfile, userState} = props;
-    const roomList = userState.room_list.sort((a,b) => b.updated_at.toLocaleString().localeCompare(a.updated_at.toLocaleString()));
+    const roomList = userState.room_list.sort((a,b) => b.updatedAt.toLocaleString().localeCompare(a.updatedAt.toLocaleString()));
     const friendList = userState.friends_list;
     
     let [rooms, setRooms] = useState([] as Array<RoomListDto>);
@@ -102,7 +102,7 @@ const Content: React.FC<Props> = (props) => {
             return <RoomRow 
                 room_name={ room.room_name || participantWithoutMe[0].name} 
                 roomImg={participantWithoutMe[0].profile_img_url||BASE_IMG_URL}
-                updated_at={room.updated_at}
+                updatedAt={room.updatedAt}
                 last_chat={room.last_chat} 
                 onImgClick={() => showProfile(participantWithoutMe[0])}
                 onDoubleClick={() => onDoubleClick(room)} 

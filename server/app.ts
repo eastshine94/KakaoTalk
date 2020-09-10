@@ -42,7 +42,7 @@ const runServer = async() => {
         stopServer(server, sequelize);
         throw e;
     });
-    await sequelize.sync();
+    await sequelize.sync({force: true});
     runSocketIo(server);
 };
 

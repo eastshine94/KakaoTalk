@@ -40,12 +40,13 @@ const message = (socket: socketIO.Socket, io: socketIO.Server) => {
         },{
             where: {id: room_id}
         })
+
         const messageResponse: MessageResponse = {
             id: savedMessage.id,
             room_id,
             send_user_id,
             message,
-            created_at: savedMessage.createdAt,
+            createdAt: savedMessage.createdAt,
         }
         if(messageObj.type === "individual"){
             const me = messageObj.send_user_id.toString();

@@ -51,12 +51,10 @@ export function init(): Sequelize {
         },
         createdAt: {
             type: DataTypes.DATE,
-            field: 'created_at',
             allowNull: false,
         },
         updatedAt: {
             type: DataTypes.DATE,
-            field: 'updated_at',
             allowNull: false,
         },
     }, {
@@ -100,12 +98,10 @@ export function init(): Sequelize {
         },
         createdAt: {
             type: DataTypes.DATE,
-            field: 'created_at',
             allowNull: false,
         },
         updatedAt: {
             type: DataTypes.DATE,
-            field: 'updated_at',
             allowNull: false,
         },
     }, {
@@ -144,12 +140,10 @@ export function init(): Sequelize {
         },
         createdAt: {
             type: DataTypes.DATE,
-            field: 'created_at',
             allowNull: false,
         },
         updatedAt: {
             type: DataTypes.DATE,
-            field: 'updated_at',
             allowNull: false,
         },
     }, {
@@ -188,12 +182,10 @@ export function init(): Sequelize {
         },
         createdAt: {
             type: DataTypes.DATE,
-            field: 'created_at',
             allowNull: false,
         },
         updatedAt: {
             type: DataTypes.DATE,
-            field: 'updated_at',
             allowNull: false,
         },
     }, {
@@ -232,12 +224,10 @@ export function init(): Sequelize {
         },
         createdAt: {
             type: DataTypes.DATE,
-            field: 'created_at',
             allowNull: false,
         },
         updatedAt: {
             type: DataTypes.DATE,
-            field: 'updated_at',
             allowNull: false,
         },
     }, {

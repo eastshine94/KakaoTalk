@@ -53,7 +53,6 @@ class MenuContainer extends Component<Props> {
             const { fetchRoomList } = this.props.userActions;
             await socket.off("message");
             await socket.on("message", async(response: ChattingResponseDto) => {
-                console.log(response);
                 if(response.room_id === chatState.room_id){
                     await addChatting(response);
                 }
