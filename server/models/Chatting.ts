@@ -7,6 +7,6 @@ export default class Chatting extends Model {
     public send_user_id!: number;
     public message!: string;
     
-    public readonly created_at!: Date;
-    public readonly updated_at!: Date;
+    public readonly createdAt!: Date;
+    public readonly updatedAt!: Date;
 }

@@ -4,6 +4,7 @@ import {UserResponseDto} from '~/types/user';
 import { BASE_IMG_URL } from '~/constants';
 
 const Chat = styled.div`
+    position: relative;
     display: inline-block;
 	padding: 7px 8px;
 	border-radius: 4px;
@@ -22,6 +23,11 @@ const RightBlock = styled.div`
     & ${Chat}{
         background-color: #ffec42;
         text-align: left;
+        & span{
+            position: absolute;
+            bottom: 0;
+            left: -65px;
+        }
     }
 `;
 
@@ -33,6 +39,11 @@ const LeftBlock = styled.div`
     padding-left: 50px;
     & ${Chat}{
         background-color: #fff;
+        & span{
+            position: absolute;
+            bottom: 0;
+            right: -65px;
+        }
     }
     & img {
         position: absolute;
@@ -52,37 +63,55 @@ const NameBlock = styled.div`
 
 interface ChatProps {
     msg: string;
+    localeTime: string;
 }
 
 interface FriendChatProps {
     user: UserResponseDto;
     msg: string;
+    localeTime: string;
     onImgClick():void;
 }
 
 
-export const MyChat:React.FC<ChatProps> = ({msg}) => {
+export const MyChat:React.FC<ChatProps> = ({msg, localeTime}) => {
     return(
         <RightBlock>
-            <div><Chat>{msg}</Chat></div>
+            <div>
+                <Chat>
+                    {msg}
+                    <span>{localeTime}</span>
+                </Chat>
+            </div>
         </RightBlock>
     )
 }
 
-export const FriendChat:React.FC<ChatProps> = ({msg}) => {
+export const FriendChat:React.FC<ChatProps> = ({msg, localeTime}) => {
     return (
         <LeftBlock>
-            <div><Chat>{msg}</Chat></div>
+            <div>
+                <Chat>
+                    {msg}
+                    <span>{localeTime}</span>
+                </Chat>
+            </div>
         </LeftBlock>
     )
 }
 
-export const FriendChatWithThumbnail: React.FC<FriendChatProps> = ({user, msg, onImgClick}) => {
+export const FriendChatWithThumbnail: React.FC<FriendChatProps> = ({user, msg, localeTime, onImgClick}) => {
+
     return(
         <LeftBlock>
             <img src={ user.profile_img_url || BASE_IMG_URL } alt="thumbnail" onClick={onImgClick}/>
             <NameBlock>{user.name}</NameBlock>
-            <div><Chat>{msg}</Chat></div>
+            <div>
+                <Chat>
+                    {msg}
+                    <span>{localeTime}</span>
+                </Chat>
+            </div>
         </LeftBlock>
     )
 }

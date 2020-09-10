@@ -24,6 +24,13 @@ export interface MessageRequest {
     send_user_id: number;
     message: string;
 }
+export interface MessageResponse {
+    id: number;
+    room_id: number;
+    send_user_id: number;
+    message: string;
+    created_at: Date;
+}
 
 export interface RoomListResponse {
     room_id: number;

@@ -70,6 +70,7 @@ router.get("/room", async(req,res) => {
     const offset: number = 15 * (Number(req.query.offset) - 1) || 0;
     try {
         const chatting = await Chatting.findAll({
+            attributes: ["id", "room_id", "send_user_id", "message", "created_at"],
             where:{
                 id: { [Sequelize.Op.lt]: cursor },
                 room_id

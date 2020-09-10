@@ -110,17 +110,20 @@ class ChattingRoomContainer extends Component<Props> {
         const messageRef = this.messageRef.current!;
         const prevChattingLen = prevChatState.chatting.length;
         const currChattingLen = chatState.chatting.length;
+        const currScrollHeight = messageRef.scrollHeight;
         if(prevChattingLen === 0){
-            messageRef.scrollTop = messageRef.scrollHeight;
+            messageRef.scrollTop = currScrollHeight;
         }
         else if(prevChattingLen !== currChattingLen){
             const prevLastChat = prevChatState.chatting[prevChattingLen - 1];
             const currLastChat = chatState.chatting[currChattingLen-1]
             if(prevChatState.chatting[0].id !== chatState.chatting[0].id){
-                messageRef.scrollTop = messageRef.scrollHeight - scrollHeight;
+                messageRef.scrollTop = currScrollHeight - scrollHeight;
             }
-            else if(currLastChat.send_user_id === userState.id  && prevLastChat.id !== currLastChat.id){
-                messageRef.scrollTop = messageRef.scrollHeight;
+            else if(prevLastChat.id !== currLastChat.id){
+                if(currLastChat.send_user_id === userState.id  || currScrollHeight - messageRef.scrollTop < 800){
+                    messageRef.scrollTop = currScrollHeight;
+                }
             }
         }
     }

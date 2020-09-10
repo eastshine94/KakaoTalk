@@ -3,7 +3,7 @@ import * as socketIO from 'socket.io';
 import Chatting from '../models/Chatting';
 import Room from '../models/Room';
 import logger from '../logger';
-import { MessageRequest } from '../types/chat';
+import { MessageRequest, MessageResponse } from '../types/chat';
 
 const runSocketIo = (server: http.Server) => {
     const io = socketIO.listen(server);
@@ -40,12 +40,12 @@ const message = (socket: socketIO.Socket, io: socketIO.Server) => {
         },{
             where: {id: room_id}
         })
-        const messageResponse = {
+        const messageResponse: MessageResponse = {
             id: savedMessage.id,
-            room_id: room_id,
+            room_id,
             send_user_id,
             message,
-            created_at: savedMessage.created_at,
+            created_at: savedMessage.createdAt,
         }
         if(messageObj.type === "individual"){
             const me = messageObj.send_user_id.toString();

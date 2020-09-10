@@ -21,7 +21,11 @@ class FriendsContainer extends Component<Props> {
     state = {
         search: "", 
     }
-  
+    constructor(props: Props){
+        super(props);
+        const { hideChattingRoom } = props.chatActions;
+        hideChattingRoom();
+    }
     render() {
         const userState = this.props.rootState.user;
         const { showProfile } = this.props.profileActions;
