@@ -69,6 +69,11 @@ const chatReducer = (state = initialState, action: ChatActionTypes ) => {
                 ],
                 isFetchChattingLoading: false,
             }
+        case ChatTypes.UPDATE_PARTICIPANTS :
+            return {
+                ...state,
+                participant: action.payload
+            }
         default:
             return state;
     }

@@ -27,7 +27,8 @@ interface Props {
 }
 
 let offset = 2;
-let scrollHeight = 0;
+let prevScrollHeight = 0;
+
 class ChattingRoomContainer extends Component<Props> {
     messageRef: React.RefObject<HTMLDivElement>;
     
@@ -47,7 +48,6 @@ class ChattingRoomContainer extends Component<Props> {
         if(findRoom){
             const roomObj: ChattingDto = {
                 ...findRoom,
-                room_name: participantWithoutMe[0].name,
                 participant: participantWithoutMe,
                 chatting: []
             }
@@ -68,7 +68,6 @@ class ChattingRoomContainer extends Component<Props> {
             createRoom(createRoomObj).then(room => {
                 const roomObj: ChattingDto = {
                     ...room,
-                    room_name: participantWithoutMe[0].name,
                     participant: participantWithoutMe,
                     chatting: [],
                 }
@@ -84,7 +83,10 @@ class ChattingRoomContainer extends Component<Props> {
         this.messageRef.current!.removeEventListener("scroll", this.handleScroll);
         offset = 2;
     }
-      
+    componentDidUpdate(prevProps: Props) {
+        this.changeScroll(prevProps);
+        this.updateFriendList(prevProps);
+    }
     handleScroll = () => {
         const messageRef = this.messageRef.current!;
         const scrollTop = messageRef.scrollTop;
@@ -99,11 +101,11 @@ class ChattingRoomContainer extends Component<Props> {
             }
             fetchChatting(requestObj);
             offset++;
-            scrollHeight = messageRef.scrollHeight;
+            prevScrollHeight = messageRef.scrollHeight;
         }
     }
 
-    componentDidUpdate(prevProps: Props) {
+    changeScroll = (prevProps: Props) => {
         const prevChatState = prevProps.rootState.chat;
         const chatState = this.props.rootState.chat;
         const userState = this.props.rootState.user;
@@ -111,27 +113,46 @@ class ChattingRoomContainer extends Component<Props> {
         const prevChattingLen = prevChatState.chatting.length;
         const currChattingLen = chatState.chatting.length;
         const currScrollHeight = messageRef.scrollHeight;
-        if(prevChattingLen === 0){
-            messageRef.scrollTop = currScrollHeight;
-        }
-        else if(prevChattingLen !== currChattingLen){
-            const prevLastChat = prevChatState.chatting[prevChattingLen - 1];
-            const currLastChat = chatState.chatting[currChattingLen-1]
-            if(prevChatState.chatting[0].id !== chatState.chatting[0].id){
-                messageRef.scrollTop = currScrollHeight - scrollHeight;
+        if(prevChattingLen !== currChattingLen){
+            // 처음에 스크롤 가장 아래로
+            if(prevChattingLen === 0){
+                messageRef.scrollTop = currScrollHeight;
             }
-            else if(prevLastChat.id !== currLastChat.id){
-                if(currLastChat.send_user_id === userState.id  || currScrollHeight - messageRef.scrollTop < 800){
-                    messageRef.scrollTop = currScrollHeight;
+            else{
+                const prevLastChat = prevChatState.chatting[prevChattingLen - 1];
+                const currLastChat = chatState.chatting[currChattingLen-1]
+                // 무한 스크롤에서 스크롤 유지
+                if(prevChatState.chatting[0].id !== chatState.chatting[0].id){
+                    messageRef.scrollTop = currScrollHeight - prevScrollHeight;
+                }
+                // 메시지 송수신 시 스크롤 변화
+                else if(prevLastChat.id !== currLastChat.id){
+                    if(currLastChat.send_user_id === userState.id  || currScrollHeight - messageRef.scrollTop  <=  messageRef.clientHeight + 100){
+                        messageRef.scrollTop = currScrollHeight;
+                    }
                 }
             }
-        }
+        }  
     }
 
+    updateFriendList = (prevProps: Props) => {
+        const prevFriendList = prevProps.rootState.user.friends_list;
+        const currentFriendList = this.props.rootState.user.friends_list;
+        if(prevFriendList !== currentFriendList){
+            const chatState = this.props.rootState.chat;
+            const {updateParticipants} = this.props.chatActions;
+            const participants = chatState.participant.map(participant => {
+                const find = currentFriendList.find(friend => friend.id === participant.id);
+                return find || participant;
+            });
+            updateParticipants(participants);
+        }
+    }
     render() {
         const userState = this.props.rootState.user;
         const chatState = this.props.rootState.chat;
         const authState = this.props.rootState.auth;
+        const roomName = chatState.room_name || chatState.participant[0].name;
         const { hideChattingRoom } = this.props.chatActions;
         const { showProfile } = this.props.profileActions;
         const onChatSumbmit = (msg: string) => {
@@ -147,7 +168,7 @@ class ChattingRoomContainer extends Component<Props> {
         return(
             <Portal>
                 <Wrapper>
-                    <Header room_name={chatState.room_name} hideRoom={ hideChattingRoom }/>
+                    <Header room_name={roomName} hideRoom={ hideChattingRoom }/>
                     <Content myId= {userState.id} participant= {chatState.participant} chattingList={chatState.chatting} messageRef={this.messageRef} showProfile={showProfile}/>
                     <Footer onChatSumbmit={ onChatSumbmit }/>
                 </Wrapper>
