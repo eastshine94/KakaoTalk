@@ -57,6 +57,7 @@ const UserProfile: React.FC<Props> = ( props ) => {
     const loginUserData = props.rootState.user;
     const profileData = props.rootState.profile;
     const isMe =  loginUserData.id === profileData.id;
+    const isFriend = !!loginUserData.friends_list.find(friend => friend.id === profileData.id);
     const [isShowBgSetting, showBgSetting] = useState(false);
     const [isShowProfileSetting, showProfileSetting] = useState(false);
     const [isShowNameChange, showNameChange] = useState(false);
@@ -105,7 +106,7 @@ const UserProfile: React.FC<Props> = ( props ) => {
                    
                 <ProfileText>
                     <p><b>{profileData.name}</b></p>
-                    <i className="fas fa-pen" onClick={() => showNameChange(true)}/>
+                    {isMe || isFriend ? <i className="fas fa-pen" onClick={() => showNameChange(true)}/> : null}
                 </ProfileText>
                 <ProfileText>
                     <p>{profileData.status_msg}</p>
