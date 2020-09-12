@@ -13,7 +13,6 @@ const Chat = styled.div`
     max-width: 70%;
     white-space: pre-wrap;
 `;
-
 const RightBlock = styled.div`
     text-align: right;
     margin-top: 10px;
@@ -30,7 +29,6 @@ const RightBlock = styled.div`
         }
     }
 `;
-
 const LeftBlock = styled.div`
     position: relative;
     margin-top: 10px;
@@ -56,34 +54,64 @@ const LeftBlock = styled.div`
         cursor: pointer;
     }
 `;
-
 const NameBlock = styled.div`
     margin-bottom: 5px;
 `;
+const BorderBlock = styled.div`
+    position: relative;
+    text-align: center;
+    width: 100%;
+    padding: 13px 0;
+    & span {
+        position: relative;
+        display: inline-block;
+        background-color: #b2c7d9;
+        padding: 0 10px;
+    }
+    &:before {
+        content: "";
+        display: block;
+        position: absolute;
+        left: 2%;
+        top: 50%;
+        width : 96%;
+        height: 1px;
+        background-color: #727b83;
+    }
+`;
+
+
 
 interface ChatProps {
     msg: string;
     localeTime: string;
+    content?: string;
 }
 
 interface FriendChatProps {
     user: UserResponseDto;
     msg: string;
     localeTime: string;
+    content?: string;
     onImgClick():void;
 }
 
-
-export const MyChat:React.FC<ChatProps> = ({msg, localeTime}) => {
+interface BorderBlockProps {
+    content: string;
+}
+export const MyChat:React.FC<ChatProps> = ({msg, localeTime, content}) => {
     return(
-        <RightBlock>
-            <div>
-                <Chat>
-                    {msg}
-                    <span>{localeTime}</span>
-                </Chat>
-            </div>
-        </RightBlock>
+        <React.Fragment>
+            {content? <SeparationBlock content={content}/> : null}
+            <RightBlock>
+                <div>
+                    <Chat>
+                        {msg}
+                        <span>{localeTime}</span>
+                    </Chat>
+                </div>
+            </RightBlock>
+        </React.Fragment>
     )
 }
 
@@ -100,18 +128,28 @@ export const FriendChat:React.FC<ChatProps> = ({msg, localeTime}) => {
     )
 }
 
-export const FriendChatWithThumbnail: React.FC<FriendChatProps> = ({user, msg, localeTime, onImgClick}) => {
+export const FriendChatWithThumbnail: React.FC<FriendChatProps> = ({user, msg, localeTime, content, onImgClick}) => {
 
     return(
-        <LeftBlock>
-            <img src={ user.profile_img_url || BASE_IMG_URL } alt="thumbnail" onClick={onImgClick}/>
-            <NameBlock>{user.name}</NameBlock>
-            <div>
-                <Chat>
-                    {msg}
-                    <span>{localeTime}</span>
-                </Chat>
-            </div>
-        </LeftBlock>
+        <React.Fragment>
+            {content? <SeparationBlock content={content}/> : null}
+            <LeftBlock>
+                <img src={ user.profile_img_url || BASE_IMG_URL } alt="thumbnail" onClick={onImgClick}/>
+                <NameBlock>{user.name}</NameBlock>
+                <div>
+                    <Chat>
+                        {msg}
+                        <span>{localeTime}</span>
+                    </Chat>
+                </div>
+            </LeftBlock>
+        </React.Fragment>
+    )
+}
+
+
+export const SeparationBlock: React.FC<BorderBlockProps> = ({content}) => {
+    return(
+        <BorderBlock><span>{content}</span></BorderBlock>
     )
 }

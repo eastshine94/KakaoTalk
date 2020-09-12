@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Dispatch, bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Header, Content, Footer} from '~/components/chattingRoom';
+import { Header, Content, Footer } from '~/components/chattingRoom';
 import { Portal } from '~/pages/Modal';
 import { RootState } from '~/store/reducers';
 import { ChatActions } from '~/store/actions/chat';
