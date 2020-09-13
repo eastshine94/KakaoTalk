@@ -180,6 +180,14 @@ export function init(): Sequelize {
             type: new DataTypes.STRING(20),
             allowNull: true,
         },
+        not_read_chat: {
+            type: DataTypes.INTEGER.UNSIGNED,
+            allowNull: false,
+        },
+        last_read_chat_id: {
+            type: DataTypes.INTEGER.UNSIGNED,
+            allowNull: false,
+        },
         createdAt: {
             type: DataTypes.DATE,
             allowNull: false,
@@ -220,6 +228,10 @@ export function init(): Sequelize {
         },
         message: {
             type: DataTypes.TEXT,
+            allowNull: false,
+        },
+        not_read: {
+            type: DataTypes.INTEGER.UNSIGNED,
             allowNull: false,
         },
         createdAt: {

@@ -7,10 +7,12 @@ import { BASE_IMG_URL } from '~/constants';
 import { findUserUsingId } from '~/apis/user';
 
 const Wrapper = styled(MainContent)`
+    
     & li {
-        padding: 20px 20px 20px 80px;
+        padding: 10px 20px 10px 80px;
     }
     & .preview {
+        height: 40px;
         white-space: pre-wrap;
         display: -webkit-box;
         -webkit-line-clamp: 2; 
