@@ -29,11 +29,12 @@ const joinRoom = (socket: socketIO.Socket) => {
 
 const message = (socket: socketIO.Socket, io: socketIO.Server) => {
     socket.on('message', async(messageObj:MessageRequest) => {
-        const {room_id, send_user_id, message} = messageObj;
+        const {room_id, send_user_id, message, not_read} = messageObj;
         const savedMessage = await Chatting.create({
             room_id,
             send_user_id,
-            message
+            message,
+            not_read
         });
         await Room.update({
             last_chat: message,
@@ -46,6 +47,7 @@ const message = (socket: socketIO.Socket, io: socketIO.Server) => {
             room_id,
             send_user_id,
             message,
+            not_read,
             createdAt: savedMessage.createdAt,
         }
         if(messageObj.type === "individual"){

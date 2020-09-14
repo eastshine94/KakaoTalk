@@ -60,6 +60,7 @@ class ChattingRoomContainer extends Component<Props> {
         }
         else{
             const createRoomObj: CreateRoomRequest = {
+                my_id: userState.id,
                 type: chatState.type as RoomType,
                 identifier: chatState.identifier,
                 room_name: "",
@@ -153,6 +154,7 @@ class ChattingRoomContainer extends Component<Props> {
         const chatState = this.props.rootState.chat;
         const authState = this.props.rootState.auth;
         const roomName = chatState.room_name || chatState.participant[0].name;
+        const isMe = chatState.participant[0].id === userState.id;
         const { hideChattingRoom } = this.props.chatActions;
         const { showProfile } = this.props.profileActions;
         const onChatSumbmit = (msg: string) => {
@@ -162,6 +164,7 @@ class ChattingRoomContainer extends Component<Props> {
                 participant: chatState.participant,
                 send_user_id: userState.id,
                 message: msg,
+                not_read: isMe ? 0 : chatState.participant.length,
             }
             authState.socket?.emit('message', chattingRequset);
         }

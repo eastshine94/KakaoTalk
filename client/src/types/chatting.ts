@@ -18,6 +18,8 @@ export interface RoomListResponse {
     room_name: string;
     participant:Array<number>;
     last_chat: string;
+    not_read_chat: number;
+    last_read_chat_id: number;
     updatedAt: Date;
 }
 
@@ -28,10 +30,13 @@ export interface RoomListDto {
     room_name: string;
     participant:Array<UserResponseDto>;
     last_chat: string;
+    not_read_chat: number;
+    last_read_chat_id: number;
     updatedAt: Date;
 }
 
 export interface CreateRoomRequest {
+    my_id?: number;
     type: RoomType;
     identifier: string;
     room_name: string;
@@ -44,6 +49,8 @@ export interface CreateRoomResponse {
     type: RoomType;
     room_name: string;
     last_chat: string;
+    not_read_chat: number;
+    last_read_chat_id: number;
     updatedAt: Date;
 }
 
@@ -53,6 +60,7 @@ export interface ChattingRequestDto {
     participant: Array<UserResponseDto>;
     send_user_id: number;
     message: string;
+    not_read: number;
 }
 
 export interface ChattingResponseDto{
@@ -60,6 +68,7 @@ export interface ChattingResponseDto{
     room_id: number;
     send_user_id: number;
     message: string;
+    not_read: number;
     createdAt: Date;
 }
 

@@ -3,22 +3,27 @@ import * as Sequelize from 'sequelize';
 import Room from '../models/Room';
 import Chatting from '../models/Chatting';
 import Participant from '../models/Participant';
-import { CreateRoomRequest, RoomListResponse } from '../types/chat';
+import { CreateRoomRequest, RoomListResponse, CreateRoomResponse } from '../types/chat';
 
 const router = express.Router();
 
 router.post("/room/create", async(req, res) => {
-    const { type, room_name, identifier, participant } = req.body as CreateRoomRequest;
+    const { my_id, type, room_name, identifier, participant } = req.body as CreateRoomRequest;
     try {
         const findRoom = await Room.findOne({
             where: { identifier },
         });
         if(findRoom) {
-            const data = {
+            const findRoomInfo = await Participant.findOne({
+                where:{user_id: my_id, room_id: findRoom.id}
+            })
+            const data: CreateRoomResponse = {
                 room_id: findRoom.id,
                 identifier: findRoom.identifier,
                 type: findRoom.type,
-                room_name,
+                room_name: findRoomInfo!.room_name,
+                not_read_chat: findRoomInfo!.not_read_chat,
+                last_read_chat_id: findRoomInfo!.last_read_chat_id,
                 last_chat: findRoom.last_chat,
                 updatedAt: findRoom.updatedAt,
             };
@@ -37,15 +42,19 @@ router.post("/room/create", async(req, res) => {
                 Participant.create({
                     user_id: person.id,
                     room_id: room.id,
-                    room_name
+                    room_name,
+                    not_read_chat: 0,
+                    last_read_chat_id: 999999999,
                 })
             })
-            const data = {
+            const data: CreateRoomResponse = {
                 room_id: room.id,
                 identifier: room.identifier,
                 type: room.type,
                 room_name,
                 last_chat: room.last_chat,
+                not_read_chat: 0,
+                last_read_chat_id: 999999999,
                 updatedAt: room.updatedAt,
             };
             return res.json({
@@ -95,7 +104,7 @@ router.get("/roomList/:user_id", async(req,res) =>{
     const user_id = req.params.user_id;
     try {
         const roomData = await Participant.findAll({
-            attributes: ["room_id", "room_name"],
+            attributes: ["room_id", "room_name", "not_read_chat", "last_read_chat_id"],
             include: [{
                 model: Room,
                 attributes: ["identifier", "type", "last_chat", "updatedAt"],
@@ -130,6 +139,8 @@ router.get("/roomList/:user_id", async(req,res) =>{
                     identifier: roomRow.identifier,
                     participant,
                     last_chat: roomRow.last_chat,
+                    not_read_chat: val.not_read_chat,
+                    last_read_chat_id: val.last_read_chat_id,
                     updatedAt: roomRow.updatedAt
                 };
             })
