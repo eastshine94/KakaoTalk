@@ -17,8 +17,8 @@ export const fetchRoomList = async(userId: number) => {
 }
 
 export const fetchChatting = async(param: FetchChattingRequest) => {
-    const {room_id, offset, cursor} = param;
-    const chatting: ApiResponse<Array<ChattingResponseDto>> = await axios.get(`${API_HOST}/chat/room?room_id=${room_id}&offset=${offset}&cursor=${cursor}`);
+    const {room_id, cursor} = param;
+    const chatting: ApiResponse<Array<ChattingResponseDto>> = await axios.get(`${API_HOST}/chat/room?room_id=${room_id}&cursor=${cursor}`);
 
     return chatting.data.data;
 }

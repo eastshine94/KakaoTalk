@@ -3,11 +3,11 @@ export type RoomType = "individual" | "group";
 
 export interface UserResponseDto {
     id: number;
-    user_id: string,
-    name: string,
+    user_id: string;
+    name: string;
     status_msg: string;
-    profile_img_url: string,
-    background_img_url: string
+    profile_img_url: string;
+    background_img_url: string;
 }
 
 export interface CreateRoomRequest {
@@ -23,8 +23,8 @@ export interface CreateRoomResponse {
     type: RoomType;
     room_name: string;
     last_chat: string;
-    not_read_chat: number,
-    last_read_chat_id: number,
+    not_read_chat: number;
+    last_read_chat_id: number;
     updatedAt: Date;
 }
 
@@ -55,4 +55,13 @@ export interface RoomListResponse {
     not_read_chat: number;
     last_read_chat_id: number;
     updatedAt: Date;
+}
+
+
+export interface ReadChatRequest {
+    user_id: number;
+    room_id: number;
+    type: RoomType;
+    participant: Array<UserResponseDto>;
+    last_read_chat_id: number;
 }

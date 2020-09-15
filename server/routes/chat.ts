@@ -44,7 +44,7 @@ router.post("/room/create", async(req, res) => {
                     room_id: room.id,
                     room_name,
                     not_read_chat: 0,
-                    last_read_chat_id: 999999999,
+                    last_read_chat_id: 0,
                 })
             })
             const data: CreateRoomResponse = {
@@ -54,7 +54,7 @@ router.post("/room/create", async(req, res) => {
                 room_name,
                 last_chat: room.last_chat,
                 not_read_chat: 0,
-                last_read_chat_id: 999999999,
+                last_read_chat_id: 0,
                 updatedAt: room.updatedAt,
             };
             return res.json({
@@ -76,10 +76,10 @@ router.get("/room", async(req,res) => {
         throw new Error();
     }
     const cursor: number = Number(req.query.cursor) || 9999999999;
-    const offset: number = 15 * (Number(req.query.offset) - 1) || 0;
+
     try {
         const chatting = await Chatting.findAll({
-            attributes: ["id", "room_id", "send_user_id", "message", "createdAt"],
+            attributes: ["id", "room_id", "send_user_id", "message", "not_read", "createdAt"],
             where:{
                 id: { [Sequelize.Op.lt]: cursor },
                 room_id

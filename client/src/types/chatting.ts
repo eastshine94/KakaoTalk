@@ -75,7 +75,6 @@ export interface ChattingResponseDto{
 export interface FetchChattingRequest {
     room_id: number;
     cursor: number | null;
-    offset: number;
 }
 
 

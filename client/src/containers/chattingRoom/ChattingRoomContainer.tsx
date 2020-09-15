@@ -26,7 +26,6 @@ interface Props {
     profileActions : typeof ProfileActions;
 }
 
-let offset = 2;
 let prevScrollHeight = 0;
 
 class ChattingRoomContainer extends Component<Props> {
@@ -55,7 +54,6 @@ class ChattingRoomContainer extends Component<Props> {
             fetchChatting({
                 room_id: findRoom.room_id,
                 cursor: null,
-                offset: 1,
             });
         }
         else{
@@ -82,7 +80,6 @@ class ChattingRoomContainer extends Component<Props> {
     }
     componentWillUnmount() {
         this.messageRef.current!.removeEventListener("scroll", this.handleScroll);
-        offset = 2;
     }
     componentDidUpdate(prevProps: Props) {
         this.changeScroll(prevProps);
@@ -97,11 +94,9 @@ class ChattingRoomContainer extends Component<Props> {
         if(!chatState.isFetchChattingLoading && scrollTop === 0){
             const requestObj: FetchChattingRequest = {
                 room_id: chatState.room_id,
-                offset,
                 cursor: chatting[0].id
             }
             fetchChatting(requestObj);
-            offset++;
             prevScrollHeight = messageRef.scrollHeight;
         }
     }
