@@ -13,7 +13,7 @@ import { RootState } from '~/store/reducers';
 import { PAGE_PATHS } from '~/constants';
 import { Auth } from '~/types/auth';
 import { ProfileContainer, ChattingRoomContainer } from '~/containers';
-import { ChattingResponseDto } from '~/types/chatting';
+import { ChattingResponseDto, UpdateRoomListDto } from '~/types/chatting';
 
 const Wrapper = styled.main`
     width: 100%;
@@ -36,27 +36,43 @@ class MenuContainer extends Component<Props> {
             props.userActions.fetchUser(auth.user_id);
             props.userActions.fetchFriends(auth.id);
             props.userActions.fetchRoomList(auth.id);
-            const { fetchRoomList } = this.props.userActions;
             socket.emit("join",auth.id.toString());
-            socket.on("message", () => {
-                fetchRoomList(auth.id);
+            socket.on("message", (response: ChattingResponseDto) => {
+                this.updateRoomList(response);
             });
+        }
+    }
+
+    updateRoomList = async(response: ChattingResponseDto) => {
+        const userState = this.props.rootState.user;
+        const roomList = userState.room_list;
+        const { fetchRoomList, updateRoomList } = this.props.userActions;
+        
+        const findRoom = roomList.find(room => room.room_id === response.room_id);
+        if(findRoom){
+            const updateRoomObj: UpdateRoomListDto = {
+                room_id: response.room_id,
+                last_chat: response.message,
+                updatedAt: response.createdAt,
+                not_read_chat: findRoom.not_read_chat + 1
+            }
+            updateRoomList(updateRoomObj)
+        }else{
+            await fetchRoomList(userState.id);
         }
     }
 
     async componentDidUpdate(prevProps: Props){
         const chatState = this.props.rootState.chat;
         if(prevProps.rootState.chat.room_id !== chatState.room_id){
-            const userState = this.props.rootState.user;
             const socket = this.props.rootState.auth.socket as typeof Socket;
             const { addChatting } = this.props.chatActions;
-            const { fetchRoomList } = this.props.userActions;
             await socket.off("message");
             await socket.on("message", async(response: ChattingResponseDto) => {
                 if(response.room_id === chatState.room_id){
                     await addChatting(response);
                 }
-                await fetchRoomList(userState.id);
+                await this.updateRoomList(response);
             });
         }
     }

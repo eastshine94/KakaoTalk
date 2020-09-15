@@ -57,6 +57,18 @@ const userReducer = (state=initialState, action:UserActionTypes) => {
                 ...state,
                 room_list: action.payload
             }
+        case UserTypes.UPDATE_ROOMLIST :
+            const payload = action.payload;
+            const room_list = state.room_list
+            return{
+                ...state,
+                room_list: room_list.map(room => {
+                    if(room.room_id === payload.room_id){
+                        return {...room, ...payload}
+                    }
+                    return room;
+                })
+            }
         case UserTypes.RESET_USER :
             return {
                 ...state,

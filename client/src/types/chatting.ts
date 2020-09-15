@@ -54,6 +54,15 @@ export interface CreateRoomResponse {
     updatedAt: Date;
 }
 
+export interface UpdateRoomListDto {
+    room_id: number;
+    room_name?: string;
+    last_chat?: string;
+    not_read_chat?: number;
+    last_read_chat_id?: number;
+    updatedAt?: Date;
+}
+
 export interface ChattingRequestDto {
     room_id: number;
     type: RoomType;

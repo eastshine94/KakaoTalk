@@ -1,6 +1,6 @@
 import { UserResponseDto } from '~/types/user';
 import { ProfileChangeRequestDto, ChangeFriendNameRequestDto } from '~/types/profile';
-import { RoomListResponse } from '~/types/chatting';
+import { RoomListResponse, UpdateRoomListDto } from '~/types/chatting';
 
 export enum UserTypes {
     FETCH_USER_REQUEST= "user/FETCH_USER_REQUEST",
@@ -12,6 +12,7 @@ export enum UserTypes {
     FETCH_ROOMLIST_REQUEST= 'user/FETCH_ROOMLIST_REQUEST',
     FETCH_ROOMLIST_SUCCESS= 'user/FETCH_ROOMLIST_SUCCESS',
     FETCH_ROOMLIST_FAILUER= 'user/FETCH_ROOMLIST_FAILUER',
+    UPDATE_ROOMLIST = 'user/UPDATE_ROOMLIST',
     CHANGE_PROFILE = "user/CHANGE_PROFILE",
     ADD_FRIEND = "user/ADD_FRIEND",
     CHANGE_FRIEND_NAME = "user/CHANGE_FRIEND_NAME",
@@ -51,6 +52,11 @@ export interface FetchRoomListSuccesssAction {
     payload: Array<RoomListResponse>
 }
 
+export interface UpdateRoomListAction {
+    type: UserTypes.UPDATE_ROOMLIST;
+    payload: UpdateRoomListDto
+}
+
 export interface ChangeProfileAction {
     type: UserTypes.CHANGE_PROFILE;
     payload: ProfileChangeRequestDto;
@@ -77,6 +83,7 @@ export type UserActionTypes = FetchUserAction
 | FetchFriendsSuccessAction
 | FetchRoomListAction
 | FetchRoomListSuccesssAction
+| UpdateRoomListAction
 | ChangeProfileAction
 | ChangeFriendNameAction
 | AddFriendAction
@@ -103,10 +110,16 @@ export const fetchRoomList = (id: number) => ({
     payload: id
 })
 
+export const updateRoomList = (param: UpdateRoomListDto) => ({
+    type: UserTypes.UPDATE_ROOMLIST,
+    payload: param
+})
+
 
 export const UserActions = {
     fetchUser,
     addFriend,
     fetchFriends,
-    fetchRoomList
+    fetchRoomList,
+    updateRoomList
 }
