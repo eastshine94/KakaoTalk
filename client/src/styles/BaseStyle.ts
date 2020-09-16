@@ -92,3 +92,16 @@ export const MainContent = styled.section`
         }
     }
 `;
+
+export const Notification = styled.span`
+    position: absolute;
+    display: inline-block;
+    padding: 3px;
+    color: #fff;
+    background-color: #ff513d;
+    border: none;
+    border-radius: 20px;
+    font-weight: bold;
+    min-width: 25px;
+    text-align: center;
+`;

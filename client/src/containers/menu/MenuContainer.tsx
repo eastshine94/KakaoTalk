@@ -38,12 +38,12 @@ class MenuContainer extends Component<Props> {
             props.userActions.fetchRoomList(auth.id);
             socket.emit("join",auth.id.toString());
             socket.on("message", (response: ChattingResponseDto) => {
-                this.updateRoomList(response);
+                this.updateRooms(response);
             });
         }
     }
 
-    updateRoomList = async(response: ChattingResponseDto) => {
+    updateRooms = async(response: ChattingResponseDto) => {
         const userState = this.props.rootState.user;
         const roomList = userState.room_list;
         const { fetchRoomList, updateRoomList } = this.props.userActions;
@@ -72,7 +72,7 @@ class MenuContainer extends Component<Props> {
                 if(response.room_id === chatState.room_id){
                     await addChatting(response);
                 }
-                await this.updateRoomList(response);
+                await this.updateRooms(response);
             });
         }
     }
@@ -81,6 +81,8 @@ class MenuContainer extends Component<Props> {
         const { logout } = this.props.authActions;
         const { token } = this.props.rootState.auth;
         const chatState = this.props.rootState.chat;
+        const userState = this.props.rootState.user;
+        const roomList = userState.room_list;
         if(!token) {
             return <Redirect to={PAGE_PATHS.LOGIN}/>
         }
@@ -90,7 +92,7 @@ class MenuContainer extends Component<Props> {
                 <ProfileContainer/>
                 {chatState.isChattingRoomShown ? <ChattingRoomContainer/> : null}
                 <Wrapper>
-                    <MenuSideBar logout={logout}/>
+                    <MenuSideBar roomList={roomList} logout={logout}/>
                     <MenuRoute/>
                 </Wrapper>
             </React.Fragment>
