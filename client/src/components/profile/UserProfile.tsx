@@ -53,7 +53,6 @@ interface Props {
 
 const UserProfile: React.FC<Props> = ( props ) => {
     const { changeProfile, changeFriendName } = props.profileActions;
-    const { fetchRoomList } = props.userActions;
     const loginUserData = props.rootState.user;
     const profileData = props.rootState.profile;
     const isMe =  loginUserData.id === profileData.id;
@@ -80,7 +79,6 @@ const UserProfile: React.FC<Props> = ( props ) => {
                 else {
                     await changeFriendName({my_id: loginUserData.id, friend_id: user_profile_id, friend_name: name});
                 }
-                await fetchRoomList(loginUserData.id);
             }
         }
         const changeStatusMsg = async(msg:string) => {

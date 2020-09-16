@@ -69,29 +69,38 @@ const RoomRow: React.FC<RoomRowProps> = (props) => {
     )
 }
 
+
+
 const Content: React.FC<Props> = (props) => {
     const {intoRoom, showProfile, userState} = props;
     const roomList = userState.room_list.sort((a,b) => b.updatedAt.toLocaleString().localeCompare(a.updatedAt.toLocaleString()));
     const friendList = userState.friends_list;
     
     let [rooms, setRooms] = useState([] as Array<RoomListDto>);
+    let [notFriends, setNotFriends] = useState([] as Array<UserResponseDto>);
     useEffect(() => {
         const getParticipants = async() => {
             const getRoomList = await Promise.all(roomList.map(async(room) => {
                 const participant = await Promise.all(room.participant.map(async(val) => {
-                   const findParticipant = friendList.find(friend => friend.id === val);
-                   if(!findParticipant){
-                       const user = await findUserUsingId(val);
-                       return user;
-                   }
-                   return findParticipant;
+                    if(userState.id === val) return userState;
+                    const findParticipant = friendList.find(friend => friend.id === val);
+                    if(findParticipant){
+                        return findParticipant;    
+                    }
+                    const findNotFriends = notFriends.find(person => person.id === val);
+                    if(findNotFriends) {
+                        return findNotFriends;
+                    }
+                    const user = await findUserUsingId(val);
+                    await setNotFriends([...notFriends, user]);
+                    return user;
                 }))
                 return {...room, participant}
             }));
             await setRooms([...getRoomList]);
         }
         getParticipants();
-    },[roomList]);
+    },[userState]);
 
     const onDoubleClick = (room: RoomListDto) => {
         intoRoom({...room});
@@ -109,7 +118,6 @@ const Content: React.FC<Props> = (props) => {
                 onImgClick={() => showProfile(participantWithoutMe[0])}
                 onDoubleClick={() => onDoubleClick(room)} 
                 key={room.room_id}
-                
             />
         }
         return null;
