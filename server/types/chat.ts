@@ -65,3 +65,8 @@ export interface ReadChatRequest {
     participant: Array<UserResponseDto>;
     last_read_chat_id: number;
 }
+
+export interface ReadChatResponse{
+    room_id: number;
+    last_read_chat_id: number;
+}

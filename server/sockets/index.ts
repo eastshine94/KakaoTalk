@@ -5,7 +5,7 @@ import Chatting from '../models/Chatting';
 import Room from '../models/Room';
 import Participant from '../models/Participant';
 import logger from '../logger';
-import { MessageRequest, MessageResponse, ReadChatRequest } from '../types/chat';
+import { MessageRequest, MessageResponse, ReadChatRequest, ReadChatResponse } from '../types/chat';
 
 
 const runSocketIo = (server: http.Server) => {
@@ -57,10 +57,28 @@ const message = (socket: socketIO.Socket, io: socketIO.Server) => {
         if(messageObj.type === "individual"){
             const me = messageObj.send_user_id.toString();
             const target = messageObj.participant[0].id.toString();
-            if(me !== target){
-                io.to(me).emit('message', messageResponse);    
+            if(me === target){
+                io.to(me).emit('message', messageResponse);  
             }
-            io.to(target).emit('message', messageResponse);
+            else{
+                io.to(target).emit('message', messageResponse);
+                io.to(me).emit('message', messageResponse);
+                await Participant.increment(["not_read_chat"], {
+                    where: {
+                        user_id: messageObj.participant[0].id,
+                        room_id
+                    }
+                });
+            }
+            await Participant.update({
+                not_read_chat: 0,
+                last_read_chat_id: savedMessage.id
+            },{
+                where:{
+                    user_id: messageObj.send_user_id,
+                    room_id
+                }
+            })   
         }
         else {
             const roomId = messageObj.room_id.toString();
@@ -74,12 +92,12 @@ const message = (socket: socketIO.Socket, io: socketIO.Server) => {
 
 const readChat = (socket: socketIO.Socket, io: socketIO.Server) => {
     socket.on('readChat', async(req: ReadChatRequest) => {
-        const {user_id, room_id, last_read_chat_id} = req;
+        const {user_id, room_id, participant, last_read_chat_id} = req;
    
         const readChatting = await Chatting.findAll({
             where: {
-                id: {[Op.gt]: last_read_chat_id},
-                room_id
+                room_id,
+                id: {[Op.gt]: last_read_chat_id}
             }
         }).then(people => {
             people.forEach(person => {
@@ -99,17 +117,21 @@ const readChat = (socket: socketIO.Socket, io: socketIO.Server) => {
                 room_id
             }
         })
+
+        const readChatResponse: ReadChatResponse = {
+            room_id,
+            last_read_chat_id
+        }
         if(req.type === "individual"){
-            const me = req.user_id.toString();
-            const target = req.participant[0].id.toString();
+            const me = user_id.toString();
+            const target = participant[0].id.toString();
             if(me !== target){
-                io.to(me).emit('readChat', last_read_chat_id);    
+                io.to(target).emit('readChat', readChatResponse); 
             }
-            io.to(target).emit('readChat', last_read_chat_id);
         }
         else {
             const roomId = req.room_id.toString();
-            io.to(roomId).emit('readChat',last_read_chat_id);
+            io.to(roomId).emit('readChat',readChatResponse);
         }
     })
 }

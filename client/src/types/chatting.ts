@@ -9,6 +9,7 @@ export interface ChattingDto {
     room_name: string;
     participant: Array<UserResponseDto>;
     chatting: Array<ChattingResponseDto>;
+    last_read_chat_id: number;
 }
 
 export interface RoomListResponse {
@@ -86,4 +87,16 @@ export interface FetchChattingRequest {
     cursor: number | null;
 }
 
+export interface ReadChatRequest {
+    user_id: number;
+    room_id: number;
+    type: RoomType;
+    participant: Array<UserResponseDto>;
+    last_read_chat_id: number;
+}
+
+export interface ReadChatResponse{
+    room_id: number;
+    last_read_chat_id: number;
+}
 

@@ -45,16 +45,18 @@ class MenuContainer extends Component<Props> {
 
     updateRooms = async(response: ChattingResponseDto) => {
         const userState = this.props.rootState.user;
+        const chatState = this.props.rootState.chat;
         const roomList = userState.room_list;
         const { fetchRoomList, updateRoomList } = this.props.userActions;
         
         const findRoom = roomList.find(room => room.room_id === response.room_id);
         if(findRoom){
+            const notReadChat = (response.room_id === chatState.room_id) || (response.send_user_id === userState.id) ? 0 : findRoom.not_read_chat + 1;
             const updateRoomObj: UpdateRoomListDto = {
                 room_id: response.room_id,
                 last_chat: response.message,
                 updatedAt: response.createdAt,
-                not_read_chat: findRoom.not_read_chat + 1
+                not_read_chat: notReadChat
             }
             updateRoomList(updateRoomObj)
         }else{

@@ -7,7 +7,10 @@ import { Portal } from '~/pages/Modal';
 import { RootState } from '~/store/reducers';
 import { ChatActions } from '~/store/actions/chat';
 import { ProfileActions } from '~/store/actions/profile';
-import { ChattingDto, CreateRoomRequest, RoomType, ChattingRequestDto, FetchChattingRequest } from '~/types/chatting';
+import { ChattingDto, CreateRoomRequest, RoomType, 
+    ChattingRequestDto, FetchChattingRequest,
+    ReadChatRequest, ReadChatResponse
+} from '~/types/chatting';
 import { createRoom } from '~/apis/chat';
 
 const Wrapper = styled.div`
@@ -77,6 +80,43 @@ class ChattingRoomContainer extends Component<Props> {
     
     componentDidMount() {
         this.messageRef.current!.addEventListener("scroll", this.handleScroll);
+        
+        const socket = this.props.rootState.auth.socket;
+        const chatState = this.props.rootState.chat;
+        const userState = this.props.rootState.user;
+        const { fetchChattingRoomInfo } = this.props.chatActions;
+        const chatting = chatState.chatting;
+        const lastChatId = chatting[chatting.length-1].id;
+
+
+        if(lastChatId !== chatState.last_read_chat_id) {
+            const obj: ReadChatRequest = {
+                user_id: userState.id,
+                room_id: chatState.room_id,
+                type: chatState.type as RoomType,
+                participant: chatState.participant,
+                last_read_chat_id: chatState.last_read_chat_id,
+            }
+            
+            socket!.emit("readChat", obj);
+        }
+        
+        socket!.on("readChat", (res: ReadChatResponse)=>{
+            if(chatState.room_id === res.room_id){
+                const updatedChatting = chatting.map(chat => {
+                    if(chat.id > res.last_read_chat_id){
+                        return {...chat, not_read: chat.not_read - 1}
+                    }
+                    return chat
+                });
+                const roomObj:ChattingDto = {
+                    ...chatState,
+                    chatting: updatedChatting,
+                    last_read_chat_id: chatting[chatting.length-1].id
+                }
+                fetchChattingRoomInfo(roomObj)
+            }
+        })
     }
     componentWillUnmount() {
         this.messageRef.current!.removeEventListener("scroll", this.handleScroll);

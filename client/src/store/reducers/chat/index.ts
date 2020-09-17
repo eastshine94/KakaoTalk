@@ -13,6 +13,7 @@ const initialState: ChatState = {
     room_name: "",
     participant: [],
     chatting: [],
+    last_read_chat_id: -1,
     isChattingRoomShown: false,
     isFetchChattingLoading: false
 }
