@@ -56,12 +56,12 @@ const Content: React.FC<Props> = (props) => {
         const date = isSameDate ? "" : getDate();
         if(idx === chattingList.length - 1){
             if(senderId === myId){
-                return <MyChat msg={chat.message} localeTime={removeSecond} content={date} key={chat.id}/>;
+                return <MyChat msg={chat.message} notRead={chat.not_read} localeTime={removeSecond} content={date} key={chat.id}/>;
             }
             if(isPrevSender && isSameDate){
-                return <FriendChat msg={chat.message} localeTime={removeSecond} key={chat.id}/>;
+                return <FriendChat msg={chat.message} notRead={chat.not_read} localeTime={removeSecond} key={chat.id}/>;
             }
-            return <FriendChatWithThumbnail msg={chat.message} user={sender} localeTime={removeSecond} content={date} onImgClick={ () => showProfile(sender)} key={chat.id}/>;
+            return <FriendChatWithThumbnail msg={chat.message} user={sender} notRead={chat.not_read} localeTime={removeSecond} content={date} onImgClick={ () => showProfile(sender)} key={chat.id}/>;
         }
         const afterSender = chattingList[idx+1];
         const afterCreateAt = new Date(afterSender.createdAt);
@@ -72,12 +72,12 @@ const Content: React.FC<Props> = (props) => {
         const isSameDateWithAfterTime = afterLocaleDate === localeDate;
         const time = (afterSender.send_user_id !== senderId || !isSameTimeWithAfterTime || (!isSameDateWithAfterTime)) ? removeSecond : "";
         if(senderId === myId){
-            return <MyChat msg={chat.message} localeTime={time} content={date} key={chat.id}/>;
+            return <MyChat msg={chat.message} notRead={chat.not_read} localeTime={time} content={date} key={chat.id}/>;
         }
         if(isPrevSender && isSameDate && (prevRemoveSecond === removeSecond)){
-            return <FriendChat msg={chat.message} localeTime={time} key={chat.id}/>;            
+            return <FriendChat msg={chat.message} notRead={chat.not_read} localeTime={time} key={chat.id}/>;            
         }
-        return <FriendChatWithThumbnail msg={chat.message} user={sender} localeTime={time} content={date} onImgClick={ () => showProfile(sender)} key={chat.id}/>;
+        return <FriendChatWithThumbnail msg={chat.message} user={sender} notRead={chat.not_read} localeTime={time} content={date} onImgClick={ () => showProfile(sender)} key={chat.id}/>;
         
     })
     return(

@@ -1,6 +1,4 @@
 import { CreateRoomRequest, ChattingDto, ChattingResponseDto, FetchChattingRequest } from '~/types/chatting';
-import { UserResponseDto } from '~/types/user';
-
 
 export enum ChatTypes {
     SHOW_CHATTING_ROOM = "chat/SHOW_CHATTING_ROOM",
@@ -10,7 +8,6 @@ export enum ChatTypes {
     FETCH_CHATTING_REQUEST= 'chat/FETCH_CHATTING_REQUEST',
     FETCH_CHATTING_SUCCESS= 'chat/FETCH_CHATTING_SUCCESS',
     FETCH_CHATTING_FAILUER= 'chat/FETCH_CHATTING_FAILUER',
-    UPDATE_PARTICIPANTS =  'chat/UPDATE_PARTICIPANTS',
 }
 
 export interface ShowChattingRoomAction {
@@ -42,10 +39,6 @@ export interface FectchChattingSuccessAction {
     payload: Array<ChattingResponseDto>;
 }
 
-export interface UpdateParticipantsAction {
-    type: ChatTypes.UPDATE_PARTICIPANTS;
-    payload: Array<UserResponseDto>
-}
 
 export type ChatActionTypes = ShowChattingRoomAction
 | HideChattingRoomAction
@@ -53,7 +46,7 @@ export type ChatActionTypes = ShowChattingRoomAction
 | AddChattingAction
 | FetchChattingAction
 | FectchChattingSuccessAction
-| UpdateParticipantsAction
+
 
 export const showChattingRoom = (param: CreateRoomRequest):ShowChattingRoomAction => ({
     type: ChatTypes.SHOW_CHATTING_ROOM,
@@ -79,10 +72,6 @@ export const fetchChatting = (param: FetchChattingRequest) => ({
     payload: param,
 })
 
-export const updateParticipants = (participants: Array<UserResponseDto>) => ({
-    type: ChatTypes.UPDATE_PARTICIPANTS,
-    payload: participants
-});
 
 export const ChatActions = {
     showChattingRoom,
@@ -90,5 +79,4 @@ export const ChatActions = {
     fetchChattingRoomInfo,
     addChatting,
     fetchChatting,
-    updateParticipants
 }

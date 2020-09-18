@@ -24,8 +24,20 @@ const RightBlock = styled.div`
         text-align: left;
         & span{
             position: absolute;
-            bottom: 0;
-            left: -65px;
+            display: inline-block;
+            &.time{
+                min-width: 65px;
+                text-align: right;
+                bottom: 0;
+                left: -70px;
+            }
+            &.not-read {
+                color: #ffec42;
+                min-width: 30px;
+                text-align: right;
+                bottom: 16px;
+                left: -35px;
+            }
         }
     }
 `;
@@ -39,8 +51,19 @@ const LeftBlock = styled.div`
         background-color: #fff;
         & span{
             position: absolute;
-            bottom: 0;
-            right: -65px;
+            &.time{
+                min-width: 65px;
+                text-align: left;
+                bottom: 0;
+                right: -70px;
+            }
+            &.not-read {
+                color: #ffec42;
+                min-width: 30px;
+                text-align: left;
+                bottom: 16px;
+                right: -35px;
+            }
         }
     }
     & img {
@@ -85,6 +108,7 @@ const BorderBlock = styled.div`
 interface ChatProps {
     msg: string;
     localeTime: string;
+    notRead: number;
     content?: string;
 }
 
@@ -92,6 +116,7 @@ interface FriendChatProps {
     user: UserResponseDto;
     msg: string;
     localeTime: string;
+    notRead: number;
     content?: string;
     onImgClick():void;
 }
@@ -99,7 +124,7 @@ interface FriendChatProps {
 interface BorderBlockProps {
     content: string;
 }
-export const MyChat:React.FC<ChatProps> = ({msg, localeTime, content}) => {
+export const MyChat:React.FC<ChatProps> = ({msg, localeTime, content, notRead}) => {
     return(
         <React.Fragment>
             {content? <SeparationBlock content={content}/> : null}
@@ -107,7 +132,8 @@ export const MyChat:React.FC<ChatProps> = ({msg, localeTime, content}) => {
                 <div>
                     <Chat>
                         {msg}
-                        <span>{localeTime}</span>
+                        <span className="time">{localeTime}</span>
+                        <span className="not-read">{notRead > 0 ? notRead : ""}</span>
                     </Chat>
                 </div>
             </RightBlock>
@@ -115,21 +141,22 @@ export const MyChat:React.FC<ChatProps> = ({msg, localeTime, content}) => {
     )
 }
 
-export const FriendChat:React.FC<ChatProps> = ({msg, localeTime}) => {
+export const FriendChat:React.FC<ChatProps> = ({msg, localeTime, notRead}) => {
     return (
         <LeftBlock>
             <div>
                 <Chat>
                     {msg}
-                    <span>{localeTime}</span>
+                    <span className="time">{localeTime}</span>
+                    <span className="not-read">{notRead > 0 ? notRead : ""}</span>
                 </Chat>
             </div>
         </LeftBlock>
     )
 }
 
-export const FriendChatWithThumbnail: React.FC<FriendChatProps> = ({user, msg, localeTime, content, onImgClick}) => {
-
+export const FriendChatWithThumbnail: React.FC<FriendChatProps> = (props) => {
+    const {user, msg, localeTime, content, notRead, onImgClick} = props
     return(
         <React.Fragment>
             {content? <SeparationBlock content={content}/> : null}
@@ -139,7 +166,8 @@ export const FriendChatWithThumbnail: React.FC<FriendChatProps> = ({user, msg, l
                 <div>
                     <Chat>
                         {msg}
-                        <span>{localeTime}</span>
+                        <span className="time">{localeTime}</span>
+                        <span className="not-read">{notRead > 0 ? notRead : ""}</span>
                     </Chat>
                 </div>
             </LeftBlock>

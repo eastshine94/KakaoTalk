@@ -80,43 +80,13 @@ class ChattingRoomContainer extends Component<Props> {
     
     componentDidMount() {
         this.messageRef.current!.addEventListener("scroll", this.handleScroll);
-        
         const socket = this.props.rootState.auth.socket;
-        const chatState = this.props.rootState.chat;
-        const userState = this.props.rootState.user;
-        const { fetchChattingRoomInfo } = this.props.chatActions;
-        const chatting = chatState.chatting;
-        const lastChatId = chatting[chatting.length-1].id;
-
-
-        if(lastChatId !== chatState.last_read_chat_id) {
-            const obj: ReadChatRequest = {
-                user_id: userState.id,
-                room_id: chatState.room_id,
-                type: chatState.type as RoomType,
-                participant: chatState.participant,
-                last_read_chat_id: chatState.last_read_chat_id,
-            }
-            
-            socket!.emit("readChat", obj);
-        }
         
         socket!.on("readChat", (res: ReadChatResponse)=>{
-            if(chatState.room_id === res.room_id){
-                const updatedChatting = chatting.map(chat => {
-                    if(chat.id > res.last_read_chat_id){
-                        return {...chat, not_read: chat.not_read - 1}
-                    }
-                    return chat
-                });
-                const roomObj:ChattingDto = {
-                    ...chatState,
-                    chatting: updatedChatting,
-                    last_read_chat_id: chatting[chatting.length-1].id
-                }
-                fetchChattingRoomInfo(roomObj)
-            }
-        })
+            const chatState = this.props.rootState.chat;
+            const chatting = chatState.chatting;
+            console.log(chatting);
+        });
     }
     componentWillUnmount() {
         this.messageRef.current!.removeEventListener("scroll", this.handleScroll);
@@ -176,14 +146,57 @@ class ChattingRoomContainer extends Component<Props> {
         const currentFriendList = this.props.rootState.user.friends_list;
         if(prevFriendList !== currentFriendList){
             const chatState = this.props.rootState.chat;
-            const {updateParticipants} = this.props.chatActions;
+            const {fetchChattingRoomInfo} = this.props.chatActions;
             const participants = chatState.participant.map(participant => {
                 const find = currentFriendList.find(friend => friend.id === participant.id);
                 return find || participant;
             });
-            updateParticipants(participants);
+            fetchChattingRoomInfo({...chatState, participant: participants})
         }
     }
+    readChat = (prevProps: Props) => {
+        const prevChatting = prevProps.rootState.chat.chatting;
+        const chatState = this.props.rootState.chat;
+        const currChatting = chatState.chatting;
+
+
+        const socket = this.props.rootState.auth.socket;
+        const userState = this.props.rootState.user;
+        const { fetchChattingRoomInfo } = this.props.chatActions;
+        const chatting = chatState.chatting;
+        const lastChatId = chatting[chatting.length-1].id;
+
+
+        if(lastChatId !== chatState.last_read_chat_id) {
+            const obj: ReadChatRequest = {
+                user_id: userState.id,
+                room_id: chatState.room_id,
+                type: chatState.type as RoomType,
+                participant: chatState.participant,
+                last_read_chat_id: chatState.last_read_chat_id,
+            }
+            
+            socket!.emit("readChat", obj);
+        }
+        
+        socket!.on("readChat", (res: ReadChatResponse)=>{
+            console.log(chatting);
+            if(chatState.room_id === res.room_id){
+                const updatedChatting = chatting.map(chat => {
+                    if(chat.id > res.last_read_chat_id){
+                        return {...chat, not_read: chat.not_read - 1}
+                    }
+                    return chat
+                });
+                const roomObj:ChattingDto = {
+                    ...chatState,
+                    chatting: updatedChatting,
+                    last_read_chat_id: chatting[chatting.length-1].id
+                }
+                fetchChattingRoomInfo(roomObj)
+            }
+        })
+    } 
     render() {
         const userState = this.props.rootState.user;
         const chatState = this.props.rootState.chat;
