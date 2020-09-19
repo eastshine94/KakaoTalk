@@ -18,8 +18,8 @@ const Menu = styled(NavLink)`
     & li {
         position: relative;
         & ${Notification} {
-            top: 5px;
-            right: 20px;
+            top: 7px;
+            left: 55px;
             font-size: 12px;
         }
     }
@@ -35,7 +35,7 @@ const MenuSideBar: React.FC<Props> = ({roomList, socket, logout}) => {
     const totalNotReadNum = roomList.reduce((acc, curr) => {
         return acc + curr.not_read_chat;
     }, 0);
-    const showNotReadChat = totalNotReadNum > 0 ? <Notification>{totalNotReadNum}</Notification> : null;
+    const showNotReadChat = totalNotReadNum > 0 ? <Notification>{totalNotReadNum<= 300? totalNotReadNum: "300+"}</Notification> : null;
     const onLogoutClick = () => {
         const isLogout = confirm("로그아웃 하시겠습니까?");
         if(isLogout) {

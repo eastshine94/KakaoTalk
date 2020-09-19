@@ -63,7 +63,7 @@ const RoomRow: React.FC<RoomRowProps> = (props) => {
         return localeDate;
     } 
     getUpdatetAt(updatedAt);
-    const showNotReadChat = not_read_chat > 0 ? <Notification>{not_read_chat}</Notification> : null;
+    const showNotReadChat = not_read_chat > 0 ? <Notification>{not_read_chat <= 300? not_read_chat: "300+"}</Notification> : null;
     return (
         <li onDoubleClick={onDoubleClick}>
             <img src={roomImg} alt="profile Image" onClick={onImgClick}/>
