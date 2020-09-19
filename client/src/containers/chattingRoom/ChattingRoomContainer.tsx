@@ -9,11 +9,12 @@ import { ChatActions } from '~/store/actions/chat';
 import { ProfileActions } from '~/store/actions/profile';
 import { UserActions } from '~/store/actions/user';
 import {
-    ChattingDto, CreateRoomRequest, RoomType,
+    ChangeChattingRoomDto, CreateRoomRequest, RoomType,
     ChattingRequestDto, FetchChattingRequest,
     ReadChatRequest, ReadChatResponse, UpdateRoomListDto
 } from '~/types/chatting';
 import { createRoom } from '~/apis/chat';
+
 
 
 const Wrapper = styled.div`
@@ -47,7 +48,7 @@ class ChattingRoomContainer extends Component<Props> {
         const findRoom = roomList.find(room => room.identifier === chatState.identifier);
         const participant = chatState.participant;
 
-        const { fetchChattingRoomInfo, fetchChatting } = props.chatActions;
+        const { changeChattingRoomInfo, fetchChatting } = props.chatActions;
 
         if (findRoom) {
             const { updateRoomList } = props.userActions;
@@ -56,12 +57,12 @@ class ChattingRoomContainer extends Component<Props> {
                 not_read_chat: 0
             }
             updateRoomList(updateRoomObj);
-            const roomObj: ChattingDto = {
+            const roomObj: ChangeChattingRoomDto = {
                 ...findRoom,
                 participant,
                 chatting: []
             }
-            fetchChattingRoomInfo(roomObj);
+            changeChattingRoomInfo(roomObj);
             fetchChatting({
                 room_id: findRoom.room_id,
                 cursor: null,
@@ -76,12 +77,12 @@ class ChattingRoomContainer extends Component<Props> {
                 participant,
             }
             createRoom(createRoomObj).then(room => {
-                const roomObj: ChattingDto = {
+                const roomObj: ChangeChattingRoomDto = {
                     ...room,
                     participant,
                     chatting: [],
                 }
-                fetchChattingRoomInfo(roomObj);
+                changeChattingRoomInfo(roomObj);
             });
         }
     }
@@ -151,12 +152,12 @@ class ChattingRoomContainer extends Component<Props> {
         const currentFriendList = this.props.rootState.user.friends_list;
         if (prevFriendList !== currentFriendList) {
             const chatState = this.props.rootState.chat;
-            const { fetchChattingRoomInfo } = this.props.chatActions;
+            const { changeChattingRoomInfo } = this.props.chatActions;
             const participants = chatState.participant.map(participant => {
                 const find = currentFriendList.find(friend => friend.id === participant.id);
                 return find || participant;
             });
-            fetchChattingRoomInfo({ ...chatState, participant: participants })
+            changeChattingRoomInfo({ participant: participants })
         }
     }
     readChat = (prevProps: Props) => {
@@ -167,27 +168,25 @@ class ChattingRoomContainer extends Component<Props> {
         const currChattingLen = currChatting.length;
 
         if (prevChattingLen !== currChattingLen) {
-
             const lastReadChatId = chatState.last_read_chat_id;
             const lastChat = currChatting[currChattingLen - 1];
             if (lastChat.id !== lastReadChatId) {
                 const socket = this.props.rootState.auth.socket;
                 const userState = this.props.rootState.user;
-                const { fetchChattingRoomInfo } = this.props.chatActions;
-                const chatting = chatState.chatting;
+                const { changeChattingRoomInfo } = this.props.chatActions;
+                
                 if(lastChat.send_user_id !== userState.id){
-                    const updatedChatting = chatting.map(chat => {
+                    const updatedChatting = currChatting.map(chat => {
                         if (chat.id > lastReadChatId) {
                             return { ...chat, not_read: chat.not_read - 1 }
                         }
                         return chat
                     });
-                    const roomObj: ChattingDto = {
-                        ...chatState,
+                    const roomObj: ChangeChattingRoomDto = {
                         chatting: updatedChatting,
                         last_read_chat_id: lastChat.id
                     }
-                    fetchChattingRoomInfo(roomObj);
+                    changeChattingRoomInfo(roomObj);
                     const obj: ReadChatRequest = {
                         user_id: userState.id,
                         room_id: chatState.room_id,
@@ -200,28 +199,26 @@ class ChattingRoomContainer extends Component<Props> {
                     
                 }
                 else{
-                    const roomObj: ChattingDto = {
-                        ...chatState,
+                    const roomObj: ChangeChattingRoomDto = {
                         last_read_chat_id: lastChat.id
                     }
-                    fetchChattingRoomInfo(roomObj)
+                    changeChattingRoomInfo(roomObj)
                 }                
-
-
+                console.log("마지막 채팅의 id : ",lastChat.id);
+                console.log("마지막으로 읽은 채팅의 id : ", lastReadChatId);
                 socket!.off("readChat");
                 socket!.on("readChat", (res: ReadChatResponse) => {
                     if (chatState.room_id === res.room_id) {
-                        const updatedChatting = chatting.map(chat => {
+                        const updatedChatting = currChatting.map(chat => {
                             if (chat.id > res.last_read_chat_id) {
                                 return { ...chat, not_read: chat.not_read - 1 }
                             }
                             return chat
                         });
-                        const roomObj: ChattingDto = {
-                            ...chatState,
+                        const roomObj: ChangeChattingRoomDto = {
                             chatting: updatedChatting,
                         }
-                        fetchChattingRoomInfo(roomObj)
+                        changeChattingRoomInfo(roomObj)
                     }
                 })
             }

@@ -133,7 +133,7 @@ export const MyChat:React.FC<ChatProps> = ({msg, localeTime, content, notRead}) 
                     <Chat>
                         {msg}
                         <span className="time">{localeTime}</span>
-                        <span className="not-read">{notRead}</span>
+                        <span className="not-read">{notRead > 0 ? notRead : ""}</span>
                     </Chat>
                 </div>
             </RightBlock>
@@ -148,7 +148,7 @@ export const FriendChat:React.FC<ChatProps> = ({msg, localeTime, notRead}) => {
                 <Chat>
                     {msg}
                     <span className="time">{localeTime}</span>
-                    <span className="not-read">{notRead}</span>
+                    <span className="not-read">{notRead > 0 ? notRead : ""}</span>
                 </Chat>
             </div>
         </LeftBlock>
@@ -167,7 +167,7 @@ export const FriendChatWithThumbnail: React.FC<FriendChatProps> = (props) => {
                     <Chat>
                         {msg}
                         <span className="time">{localeTime}</span>
-                        <span className="not-read">{notRead}</span>
+                        <span className="not-read">{notRead > 0 ? notRead : ""}</span>
                     </Chat>
                 </div>
             </LeftBlock>

@@ -37,7 +37,7 @@ const chatReducer = (state = initialState, action: ChatActionTypes ) => {
                 isChattingRoomShown: false,
                 isFetchChattingLoading: false
             };
-        case ChatTypes.FETCH_CHATTING_ROOM_INFO :
+        case ChatTypes.CHANGE_CHATTING_ROOM_INFO :
             return {
                 ...state,
                 ...action.payload

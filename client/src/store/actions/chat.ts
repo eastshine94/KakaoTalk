@@ -1,9 +1,9 @@
-import { CreateRoomRequest, ChattingDto, ChattingResponseDto, FetchChattingRequest } from '~/types/chatting';
+import { CreateRoomRequest, ChattingResponseDto, FetchChattingRequest, ChangeChattingRoomDto } from '~/types/chatting';
 
 export enum ChatTypes {
     SHOW_CHATTING_ROOM = "chat/SHOW_CHATTING_ROOM",
     HIDE_CHATTING_ROOM = "chat/HIDE_CHATTING_ROOM",
-    FETCH_CHATTING_ROOM_INFO = "chat/FETCH_CHATTING_ROOM_INFO",
+    CHANGE_CHATTING_ROOM_INFO = "chat/CHANGE_CHATTING_ROOM_INFO",
     ADD_CHATTING = "chat/ADD_CHATTING",
     FETCH_CHATTING_REQUEST= 'chat/FETCH_CHATTING_REQUEST',
     FETCH_CHATTING_SUCCESS= 'chat/FETCH_CHATTING_SUCCESS',
@@ -19,9 +19,9 @@ export interface HideChattingRoomAction {
     type: ChatTypes.HIDE_CHATTING_ROOM;
 }
 
-export interface FetchChattingRoomInfoAction {
-    type: ChatTypes.FETCH_CHATTING_ROOM_INFO,
-    payload: ChattingDto
+export interface ChangeChattingRoomInfoAction {
+    type: ChatTypes.CHANGE_CHATTING_ROOM_INFO,
+    payload: ChangeChattingRoomDto
 }
 
 export interface AddChattingAction {
@@ -42,7 +42,7 @@ export interface FectchChattingSuccessAction {
 
 export type ChatActionTypes = ShowChattingRoomAction
 | HideChattingRoomAction
-| FetchChattingRoomInfoAction
+| ChangeChattingRoomInfoAction
 | AddChattingAction
 | FetchChattingAction
 | FectchChattingSuccessAction
@@ -57,8 +57,8 @@ export const hideChattingRoom = (): HideChattingRoomAction => ({
     type: ChatTypes.HIDE_CHATTING_ROOM,
 });
 
-export const fetchChattingRoomInfo = (param: ChattingDto): FetchChattingRoomInfoAction => ({
-    type: ChatTypes.FETCH_CHATTING_ROOM_INFO,
+export const changeChattingRoomInfo = (param: ChangeChattingRoomDto): ChangeChattingRoomInfoAction => ({
+    type: ChatTypes.CHANGE_CHATTING_ROOM_INFO,
     payload: param
 })
 
@@ -76,7 +76,7 @@ export const fetchChatting = (param: FetchChattingRequest) => ({
 export const ChatActions = {
     showChattingRoom,
     hideChattingRoom,
-    fetchChattingRoomInfo,
+    changeChattingRoomInfo,
     addChatting,
     fetchChatting,
 }

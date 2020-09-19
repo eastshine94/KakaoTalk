@@ -12,6 +12,14 @@ export interface ChattingDto {
     last_read_chat_id: number;
 }
 
+export interface ChangeChattingRoomDto {
+    room_id?: number;
+    room_name?: string;
+    participant?: Array<UserResponseDto>;
+    chatting?: Array<ChattingResponseDto>;
+    last_read_chat_id?: number;
+}
+
 export interface RoomListResponse {
     room_id: number;
     type: RoomType;

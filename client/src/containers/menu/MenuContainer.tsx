@@ -51,12 +51,15 @@ class MenuContainer extends Component<Props> {
         
         const findRoom = roomList.find(room => room.room_id === response.room_id);
         if(findRoom){
-            const notReadChat = (response.room_id === chatState.room_id) || (response.send_user_id === userState.id) ? 0 : findRoom.not_read_chat + 1;
+            const haveReadChat = response.room_id === chatState.room_id;
+            const notReadChat = haveReadChat ? 0 : findRoom.not_read_chat + 1;
+            const lastReadChatId = haveReadChat ? response.id : findRoom.last_read_chat_id
             const updateRoomObj: UpdateRoomListDto = {
                 room_id: response.room_id,
                 last_chat: response.message,
                 updatedAt: response.createdAt,
-                not_read_chat: notReadChat
+                not_read_chat: notReadChat,
+                last_read_chat_id: lastReadChatId,
             }
             updateRoomList(updateRoomObj)
         }else{
