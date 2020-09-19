@@ -35,6 +35,7 @@ const Wrapper = styled(MainContent)`
 `;
 
 interface Props {
+    search: string;
     userState: UserData;
     intoRoom(param: CreateRoomRequest): void;
     showProfile(userData: UserResponseDto): void;
@@ -82,7 +83,7 @@ const RoomRow: React.FC<RoomRowProps> = (props) => {
 
 
 const Content: React.FC<Props> = (props) => {
-    const {intoRoom, showProfile, userState} = props;
+    const {intoRoom, showProfile, userState, search} = props;
     const roomList = userState.room_list.sort((a,b) => b.updatedAt.toLocaleString().localeCompare(a.updatedAt.toLocaleString()));
     const friendList = userState.friends_list;
     
@@ -120,7 +121,13 @@ const Content: React.FC<Props> = (props) => {
             const participantWithoutMe = room.participant.length > 1 ? 
             room.participant.filter(person => person.id !== userState.id) : 
             room.participant;
-            
+            const reg_exp = new RegExp(`^.*${search}.*$`);
+            const findRoom = participantWithoutMe.find(person => {
+                return person.name.replace(/ /g,"").match(reg_exp);
+            });
+            if(!findRoom && !room.room_name.replace(/ /g,"").match(reg_exp)){
+                return null;
+            }
             return <RoomRow 
                 room_name={ room.room_name || participantWithoutMe[0].name} 
                 roomImg={participantWithoutMe[0].profile_img_url||BASE_IMG_URL}

@@ -14,6 +14,9 @@ interface Props {
 }
 
 class ChattingContainer extends Component<Props> {
+    state = {
+        search: "", 
+    }
     constructor(props: Props){
         super(props);
         const { hideChattingRoom } = props.chatActions;
@@ -23,11 +26,17 @@ class ChattingContainer extends Component<Props> {
         const userState = this.props.rootState.user;
         const { showProfile } = this.props.profileActions;
         const { showChattingRoom } = this.props.chatActions;
-
+        const changeSearch = (param: string) => {
+            this.setState({
+                ...this.state,
+                search: param
+            })
+        }
+        const search = this.state.search.replace(/ /g,"");
         return(
             <Main>
-                <Header/>
-                <Content userState={userState} showProfile={showProfile} intoRoom={showChattingRoom}/>
+                <Header changeSearch={changeSearch}/>
+                <Content search={search} userState={userState} showProfile={showProfile} intoRoom={showChattingRoom}/>
             </Main>
         )
     }

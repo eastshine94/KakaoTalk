@@ -39,7 +39,7 @@ class FriendsContainer extends Component<Props> {
         return(  
             <Main>
                 <Header changeSearch={changeSearch}/>
-                <Content search={this.state.search}userData={userState} showProfile={showProfile} showChattingRoom={showChattingRoom}/>
+                <Content search={this.state.search} userData={userState} showProfile={showProfile} showChattingRoom={showChattingRoom}/>
             </Main>
         )
     }
