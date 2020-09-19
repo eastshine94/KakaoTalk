@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import {Socket} from 'socket.io-client';
 import { NavLink } from 'react-router-dom';
 import { SideBar, Notification } from '~/styles/BaseStyle';
 import { PAGE_PATHS } from '../../constants';
@@ -26,17 +27,21 @@ const Menu = styled(NavLink)`
 
 interface Props {
     roomList: Array<RoomListResponse>;
+    socket: typeof Socket;
     logout(): void;
 }
 
-const MenuSideBar: React.FC<Props> = ({roomList, logout}) => {
+const MenuSideBar: React.FC<Props> = ({roomList, socket, logout}) => {
     const totalNotReadNum = roomList.reduce((acc, curr) => {
         return acc + curr.not_read_chat;
     }, 0);
     const showNotReadChat = totalNotReadNum > 0 ? <Notification>{totalNotReadNum}</Notification> : null;
     const onLogoutClick = () => {
         const isLogout = confirm("로그아웃 하시겠습니까?");
-        if(isLogout) logout();
+        if(isLogout) {
+            socket.close();
+            logout();
+        }
     };
     return (
         <SideBar>

@@ -81,7 +81,9 @@ class MenuContainer extends Component<Props> {
 
     render() {
         const { logout } = this.props.authActions;
-        const { token } = this.props.rootState.auth;
+        const authState = this.props.rootState.auth;
+        const token = authState.auth;
+        const socket = authState.socket as typeof Socket;
         const chatState = this.props.rootState.chat;
         const userState = this.props.rootState.user;
         const roomList = userState.room_list;
@@ -94,7 +96,7 @@ class MenuContainer extends Component<Props> {
                 <ProfileContainer/>
                 {chatState.isChattingRoomShown ? <ChattingRoomContainer/> : null}
                 <Wrapper>
-                    <MenuSideBar roomList={roomList} logout={logout}/>
+                    <MenuSideBar roomList={roomList} socket = {socket} logout={logout}/>
                     <MenuRoute/>
                 </Wrapper>
             </React.Fragment>
