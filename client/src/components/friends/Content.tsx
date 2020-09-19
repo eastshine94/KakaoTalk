@@ -89,7 +89,7 @@ const Content: React.FC<Props> = ({search, userData, showProfile, showChattingRo
             type: "individual",
             identifier,
             room_name: "",
-            participant: [{...friend}, {...userData}],
+            participant: [{...friend}],
         }
         
         return (
@@ -107,7 +107,7 @@ const Content: React.FC<Props> = ({search, userData, showProfile, showChattingRo
             type: "individual",
             identifier: `${userData.id}-${userData.id}`,
             room_name: "",
-            participant: [{...userData}],
+            participant: [userData],
         }
         showChattingRoom(roomObj);
     }

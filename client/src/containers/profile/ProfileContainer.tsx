@@ -72,7 +72,7 @@ class ProfileContainer extends Component<Props> {
                 type: "individual",
                 identifier,
                 room_name: "",
-                participant: myId === friendId ?  [{...userState}] : [{...profileState}, {...userState}],
+                participant: [profileState],
             }
             await hideProfile();
             if(chatState.isChattingRoomShown){

@@ -45,9 +45,7 @@ class ChattingRoomContainer extends Component<Props> {
         const chatState = props.rootState.chat;
         const roomList = userState.room_list;
         const findRoom = roomList.find(room => room.identifier === chatState.identifier);
-        const participantWithoutMe = chatState.participant.length > 1 ?
-            chatState.participant.filter(person => person.id !== userState.id) :
-            chatState.participant;
+        const participant = chatState.participant;
 
         const { fetchChattingRoomInfo, fetchChatting } = props.chatActions;
 
@@ -60,7 +58,7 @@ class ChattingRoomContainer extends Component<Props> {
             updateRoomList(updateRoomObj);
             const roomObj: ChattingDto = {
                 ...findRoom,
-                participant: participantWithoutMe,
+                participant,
                 chatting: []
             }
             fetchChattingRoomInfo(roomObj);
@@ -70,17 +68,17 @@ class ChattingRoomContainer extends Component<Props> {
             });
         }
         else {
-            const createRoomObj: CreateRoomRequest = {
+            const createRoomObj: CreateRoomRequest  = {
                 my_id: userState.id,
                 type: chatState.type as RoomType,
                 identifier: chatState.identifier,
                 room_name: "",
-                participant: chatState.participant,
+                participant,
             }
             createRoom(createRoomObj).then(room => {
                 const roomObj: ChattingDto = {
                     ...room,
-                    participant: participantWithoutMe,
+                    participant,
                     chatting: [],
                 }
                 fetchChattingRoomInfo(roomObj);
@@ -178,15 +176,6 @@ class ChattingRoomContainer extends Component<Props> {
                 const { fetchChattingRoomInfo } = this.props.chatActions;
                 const chatting = chatState.chatting;
                 if(lastChat.send_user_id !== userState.id){
-                    const obj: ReadChatRequest = {
-                        user_id: userState.id,
-                        room_id: chatState.room_id,
-                        type: chatState.type as RoomType,
-                        participant: chatState.participant,
-                        last_read_chat_id: lastReadChatId,
-                    }
-    
-                    socket!.emit("readChat", obj);
                     const updatedChatting = chatting.map(chat => {
                         if (chat.id > lastReadChatId) {
                             return { ...chat, not_read: chat.not_read - 1 }
@@ -198,7 +187,17 @@ class ChattingRoomContainer extends Component<Props> {
                         chatting: updatedChatting,
                         last_read_chat_id: lastChat.id
                     }
-                    fetchChattingRoomInfo(roomObj)
+                    fetchChattingRoomInfo(roomObj);
+                    const obj: ReadChatRequest = {
+                        user_id: userState.id,
+                        room_id: chatState.room_id,
+                        type: chatState.type as RoomType,
+                        participant: chatState.participant,
+                        last_read_chat_id: lastReadChatId,
+                    }
+    
+                    socket!.emit("readChat", obj);
+                    
                 }
                 else{
                     const roomObj: ChattingDto = {

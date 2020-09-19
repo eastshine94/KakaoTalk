@@ -38,14 +38,23 @@ router.post("/room/create", async(req, res) => {
                 identifier,
                 last_chat: ""
             });
+            await Participant.create({
+                user_id: my_id,
+                room_id: room.id,
+                room_name,
+                not_read_chat: 0,
+                last_read_chat_id: 0,
+            })
             await participant.forEach(person => {
-                Participant.create({
-                    user_id: person.id,
-                    room_id: room.id,
-                    room_name,
-                    not_read_chat: 0,
-                    last_read_chat_id: 0,
-                })
+                if(person.id !== my_id){
+                    Participant.create({
+                        user_id: person.id,
+                        room_id: room.id,
+                        room_name,
+                        not_read_chat: 0,
+                        last_read_chat_id: 0,
+                    })
+                }
             })
             const data: CreateRoomResponse = {
                 room_id: room.id,
@@ -70,7 +79,7 @@ router.post("/room/create", async(req, res) => {
     }
 })
 
-router.get("/room", async(req,res) => {
+router.get("/room", async(req, res) => {
     const room_id: number = Number(req.query.room_id);
     if(!room_id){
         throw new Error();
@@ -101,7 +110,7 @@ router.get("/room", async(req,res) => {
 })
 
 router.get("/roomList/:user_id", async(req,res) =>{
-    const user_id = req.params.user_id;
+    const user_id = Number(req.params.user_id);
     try {
         const roomData = await Participant.findAll({
             attributes: ["room_id", "room_name", "not_read_chat", "last_read_chat_id"],
@@ -118,14 +127,19 @@ router.get("/roomList/:user_id", async(req,res) =>{
             }],
             where: { 
                 user_id,
-             }
+            }
         })
         
         const response: Array<RoomListResponse> = await Promise.all(
             roomData.map(async(val) => {
                 const participant = await Participant.findAll({
                     attributes: ["user_id"],
-                    where:{room_id: val.room_id}
+                    where:{
+                        room_id: val.room_id,
+                        user_id: {
+                            [Sequelize.Op.ne]: user_id
+                        }
+                    }
                 }).reduce((acc, curr) => {
                     acc.push(curr.user_id);
                     return acc;
@@ -137,7 +151,7 @@ router.get("/roomList/:user_id", async(req,res) =>{
                     room_name: val.room_name,
                     type: roomRow.type,
                     identifier: roomRow.identifier,
-                    participant,
+                    participant: participant.length === 0 ? [ user_id ] : participant,
                     last_chat: roomRow.last_chat,
                     not_read_chat: val.not_read_chat,
                     last_read_chat_id: val.last_read_chat_id,

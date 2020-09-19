@@ -118,23 +118,21 @@ const Content: React.FC<Props> = (props) => {
     }
     const renderRoomList = rooms.map(room => {
         if(room.type==="individual"){
-            const participantWithoutMe = room.participant.length > 1 ? 
-            room.participant.filter(person => person.id !== userState.id) : 
-            room.participant;
+            const participant = room.participant.length > 0 ? room.participant : [userState];
             const reg_exp = new RegExp(`^.*${search}.*$`);
-            const findRoom = participantWithoutMe.find(person => {
+            const findRoom = participant.find(person => {
                 return person.name.replace(/ /g,"").match(reg_exp);
             });
             if(!findRoom && !room.room_name.replace(/ /g,"").match(reg_exp)){
                 return null;
             }
             return <RoomRow 
-                room_name={ room.room_name || participantWithoutMe[0].name} 
-                roomImg={participantWithoutMe[0].profile_img_url||BASE_IMG_URL}
+                room_name={ room.room_name || participant[0].name} 
+                roomImg={participant[0].profile_img_url||BASE_IMG_URL}
                 updatedAt={room.updatedAt}
                 last_chat={room.last_chat}
                 not_read_chat={room.not_read_chat}
-                onImgClick={() => showProfile(participantWithoutMe[0])}
+                onImgClick={() => showProfile(participant[0])}
                 onDoubleClick={() => onDoubleClick(room)} 
                 key={room.room_id}
             />
