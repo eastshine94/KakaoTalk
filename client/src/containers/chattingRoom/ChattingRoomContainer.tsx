@@ -95,12 +95,22 @@ class ChattingRoomContainer extends Component<Props> {
         const socket = this.props.rootState.auth.socket;
         this.messageRef.current!.removeEventListener("scroll", this.handleScroll);
         socket!.off("readChat");
+        const { updateRoomList } = this.props.userActions;
+        const chatState = this.props.rootState.chat;
+        const chatting = chatState.chatting;
+        const chattingLen = chatting.length;
+         
+        updateRoomList({
+            room_id: chatState.room_id,
+            last_read_chat_id: chatting[chattingLen - 1].id,
+        });
     }
     componentDidUpdate(prevProps: Props) {
         this.changeScroll(prevProps);
         this.updateFriendList(prevProps);
         this.readChat(prevProps);
     }
+
     handleScroll = () => {
         const messageRef = this.messageRef.current!;
         const scrollTop = messageRef.scrollTop;
@@ -194,7 +204,7 @@ class ChattingRoomContainer extends Component<Props> {
                         participant: chatState.participant,
                         last_read_chat_id: lastReadChatId,
                     }
-    
+                    
                     socket!.emit("readChat", obj);
                     
                 }
@@ -204,8 +214,7 @@ class ChattingRoomContainer extends Component<Props> {
                     }
                     changeChattingRoomInfo(roomObj)
                 }                
-                console.log("마지막 채팅의 id : ",lastChat.id);
-                console.log("마지막으로 읽은 채팅의 id : ", lastReadChatId);
+
                 socket!.off("readChat");
                 socket!.on("readChat", (res: ReadChatResponse) => {
                     if (chatState.room_id === res.room_id) {
