@@ -91,7 +91,7 @@ const FoundFriendProfile: React.FC<Props> = (props) => {
                     type: "individual",
                     identifier,
                     room_name: "",
-                    participant: [foundUser],
+                    participant: existFriend ? [existFriend] : [userData],
                 }
                 showChattingRoom(roomObj);
                 onClose();

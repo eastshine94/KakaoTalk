@@ -95,15 +95,7 @@ class ChattingRoomContainer extends Component<Props> {
         const socket = this.props.rootState.auth.socket;
         this.messageRef.current!.removeEventListener("scroll", this.handleScroll);
         socket!.off("readChat");
-        const { updateRoomList } = this.props.userActions;
-        const chatState = this.props.rootState.chat;
-        const chatting = chatState.chatting;
-        const chattingLen = chatting.length;
-         
-        updateRoomList({
-            room_id: chatState.room_id,
-            last_read_chat_id: chatting[chattingLen - 1].id,
-        });
+        this.updateRoom();
     }
     componentDidUpdate(prevProps: Props) {
         this.changeScroll(prevProps);
@@ -233,7 +225,19 @@ class ChattingRoomContainer extends Component<Props> {
             }
 
         }
-
+    }
+    
+    updateRoom = () =>{
+        const { updateRoomList } = this.props.userActions;
+        const chatState = this.props.rootState.chat;
+        const chatting = chatState.chatting;
+        const chattingLen = chatting.length;
+        if(chattingLen > 0){
+            updateRoomList({
+                room_id: chatState.room_id,
+                last_read_chat_id: chatting[chattingLen - 1].id,
+            });
+        }
     }
     render() {
         const userState = this.props.rootState.user;
