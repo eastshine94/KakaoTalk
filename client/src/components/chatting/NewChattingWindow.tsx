@@ -3,8 +3,8 @@ import styled from 'styled-components';
 import Modal from '~/pages/Modal';
 import {MainContent} from '~/styles/BaseStyle';
 import { BASE_IMG_URL } from '~/constants';
-import { UserData } from '~/types/user';
-
+import { UserData, UserResponseDto } from '~/types/user';
+import { CreateRoomRequest } from '~/types/chatting';
 
 const Wrapper = styled.div`
     position: relative;
@@ -57,7 +57,17 @@ const ContentWrapper = styled(MainContent)`
     & li {
         & img {
             top: 10px;
-            cursor: none;
+            cursor: auto;
+        }
+    }
+    & label {
+        position: relative;
+        display: block;
+        width: 100%;
+        & input {
+            position: absolute;
+            top: 25px;
+            right: 10px;
         }
     }
 `;
@@ -83,6 +93,11 @@ const FooterWrapper = styled.div`
                 background: #fada0a;
             }
         }
+        &.disabled {
+            color: #969696;
+            background: #e2e2e2;
+            pointer-events: none;
+        }
         &.cancel{
             &:hover{
                 background: #f5f5f5;
@@ -104,6 +119,7 @@ const CancelIcon = styled.i`
 interface Props {
     userState: UserData
     onClose(): void;
+    showChattingRoom(param: CreateRoomRequest): void;
 }
 
 interface HeaderProps {
@@ -112,12 +128,37 @@ interface HeaderProps {
 
 interface ContentProps {
     search: string;
+    selectedFriend?: UserResponseDto;
     userState: UserData;
+    onSelectedFriendChange(friend: UserResponseDto): void;
+}
+interface FooterProps {
+    isCanSubmit: boolean
+    onSubmit(): void;
+    onClose(): void;
 }
 
 interface FriendRowProps {
-    name: string;
-    profile_img_url: string,
+    isSelected: boolean;
+    friend: UserResponseDto;
+    onSelectedFriendChange(): void;
+}
+
+const FriendRow:React.FC<FriendRowProps> = (props) => {
+    const { name, profile_img_url } = props.friend;
+    const { isSelected, onSelectedFriendChange } = props;
+
+    return(
+        <React.Fragment>
+            <label>
+                <li>
+                    <img src={profile_img_url||BASE_IMG_URL} alt="profile Image"/>
+                    <p><b>{name}</b></p>
+                </li>
+                <input type="radio" name="friend" onChange={onSelectedFriendChange} checked={isSelected}/>
+            </label>
+        </React.Fragment>
+    )
 }
 
 const Header: React.FC<HeaderProps> = (props) => {
@@ -136,7 +177,8 @@ const Header: React.FC<HeaderProps> = (props) => {
 }
 
 const Content: React.FC<ContentProps> = (props) => {
-    const { search, userState } = props;
+    const { search, userState, selectedFriend } = props;
+    const { onSelectedFriendChange } = props;
     const reg_exp = new RegExp(`^.*${search}.*$`);
     const friendsList = userState.friends_list.sort((a,b)=>{
         return a.name.localeCompare(b.name);
@@ -144,53 +186,73 @@ const Content: React.FC<ContentProps> = (props) => {
     const searchedFriends = friendsList.filter(friend => {
         return friend.name.replace(/ /g,"").match(reg_exp);
     });
-    const renderFriends = searchedFriends.map(friend => {        
+    const renderFriends = searchedFriends.map(friend => {      
+        const isSelected = selectedFriend? (friend.id === selectedFriend.id): false;
         return (
             <FriendRow 
-                {...friend} 
-                key={friend.id} 
+                friend={friend}
+                isSelected={isSelected}
+                key={friend.id}
+                onSelectedFriendChange={() => onSelectedFriendChange(friend)}
             />
         )
     });
     return(
         <ContentWrapper>
             <h6>{renderFriends.length > 0 ? `친구 ${renderFriends.length}` : ""}</h6>
-            {renderFriends}
+            <form>
+                <ul>
+                    {renderFriends}
+                </ul>
+            </form>
+            
         </ContentWrapper>
     )
 }
 
-const FriendRow:React.FC<FriendRowProps> = (props) => {
-    const {name, profile_img_url} = props;
-    return(
-        <li>
-            <img src={profile_img_url||BASE_IMG_URL} alt="profile Image"/>
-            <p><b>{name}</b></p>
-        </li>
-    )
-}
-
-
-const Footer: React.FC<{onClose(): void}> = (props) => {
-    const { onClose } = props;
+const Footer: React.FC<FooterProps> = (props) => {
+    const { isCanSubmit, onSubmit, onClose } = props;
+    const buttonClassName = isCanSubmit ? "confirm" : "disabled";
     return(
         <FooterWrapper>
-            <button className="confirm">확인</button>
+            <button className={buttonClassName} onClick={onSubmit}>확인</button>
             <button className="cancel" onClick={onClose}>취소</button>
         </FooterWrapper>
     )
 }
 
 const NewChattingWindow: React.FC<Props> = (props) => {
-    const { userState, onClose } = props;
+    const { userState, onClose, showChattingRoom } = props;
     const [ search, setSearch ] = useState("");
+    const [ selectedFriend, setSelectedFriend ] = useState( undefined as undefined | UserResponseDto);
+    const onSelectedFriendChange = (friend: UserResponseDto) => {
+        setSelectedFriend(friend);
+    }
+    const onSubmit = () => {
+        if(selectedFriend){
+            const confirmChatting = confirm(`${selectedFriend.name}님과 대화 하시겠습니까?`);
+            if(confirmChatting){
+                const myId = userState.id;
+                const friendId = selectedFriend.id;
+                const identifier = myId < friendId ? `${myId}-${friendId}`:`${friendId}-${myId}`
+                const roomObj: CreateRoomRequest = {
+                    type: "individual",
+                    identifier,
+                    room_name: "",
+                    participant: [selectedFriend],
+                }
+                showChattingRoom(roomObj);
+                onClose();
+            }
+        }
+    }
     return(
-        <Modal onClose ={onClose}>
+        <Modal onClose ={onClose} overlayClose={false}>
             <Wrapper>
                 <CancelIcon className="fas fa-times" title="닫기" onClick={onClose}/>
                 <Header setSearch={setSearch}/>
-                <Content userState={userState} search={search}/>
-                <Footer onClose ={onClose}/>
+                <Content userState={userState} search={search} selectedFriend={selectedFriend} onSelectedFriendChange={onSelectedFriendChange}/>
+                <Footer isCanSubmit={selectedFriend ? true : false} onSubmit={onSubmit} onClose ={onClose}/>
             </Wrapper>        
         </Modal>
     )

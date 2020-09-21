@@ -2,21 +2,22 @@ import React, { useState, ChangeEvent} from 'react';
 import {  MainHeader, TitleBlock } from '~/styles/BaseStyle';
 import NewChattingWindow from './NewChattingWindow';
 import { UserData } from '~/types/user';
+import { CreateRoomRequest } from '~/types/chatting';
 
 interface Props {
     userState: UserData;
     changeSearch(value: string):void
+    showChattingRoom(param: CreateRoomRequest): void;
 }
 
-
 const Header: React.FC<Props> = (props) => {
-    const { userState, changeSearch } = props;
+    const { userState, changeSearch, showChattingRoom } = props;
     const [isOpenNewChatting, openNewChatting] = useState(false);
     const onSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
         event.preventDefault();
         changeSearch(event.target.value);
     }
-    const showCreateNewChatting = isOpenNewChatting ? <NewChattingWindow userState={userState} onClose={()=>openNewChatting(false)}/> : null;
+    const showCreateNewChatting = isOpenNewChatting ? <NewChattingWindow userState={userState} onClose={()=>openNewChatting(false)} showChattingRoom={showChattingRoom}/> : null;
     return(
         <React.Fragment>
             {showCreateNewChatting}
