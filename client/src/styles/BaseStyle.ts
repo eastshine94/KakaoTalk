@@ -36,11 +36,17 @@ export const MainHeader = styled.section`
     background-color: #fff;
     z-index: 1;
     & input {
-        border: none; 
+        border: none;
+        outline: none;
         border-radius: 10px;
         background-color: #f6f6f7;
         width: 100%;
         padding: 5px 10px;
+        &:focus {
+            &::placeholder {
+                color: #f6f6f7;
+            }
+        }
     }
     
 `;

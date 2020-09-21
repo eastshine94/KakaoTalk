@@ -25,6 +25,7 @@ class FriendsContainer extends Component<Props> {
         super(props);
         const { hideChattingRoom } = props.chatActions;
         hideChattingRoom();
+        window.scrollTo(0,0);
     }
     render() {
         const userState = this.props.rootState.user;

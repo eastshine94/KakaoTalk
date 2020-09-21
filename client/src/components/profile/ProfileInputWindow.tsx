@@ -15,7 +15,7 @@ const InputBlock = styled.div`
     position: absolute;
     bottom: 0;
     background: #fff;
-    border: 1px solid #fff;
+    border: 1px solid #969696;
     color: #000;
     width : 100%;
     height: 150px;

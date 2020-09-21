@@ -22,7 +22,7 @@ const Header: React.FC<Props> = ({changeSearch}) => {
             <MainHeader>
                 <TitleBlock>
                     <h2>친구</h2>
-                    <i className="fas fa-user-plus" onClick={()=>openFindFriend(true)}/>
+                    <i className="fas fa-user-plus" title="친구 추가" onClick={()=>openFindFriend(true)}/>
                 </TitleBlock>
                 <input placeholder="이름 검색" onChange={onSearchChange}/>                        
             </MainHeader>

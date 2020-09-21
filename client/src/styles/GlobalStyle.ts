@@ -34,7 +34,8 @@ const GlobalStyle = createGlobalStyle`
     }
     /* 버튼 초기화 */
     button {
-      border: 0;
+      border: none;
+      outline: none;
     }
 
     /* 테두리 초기화 */

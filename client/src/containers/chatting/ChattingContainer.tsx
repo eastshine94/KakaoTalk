@@ -21,6 +21,7 @@ class ChattingContainer extends Component<Props> {
         super(props);
         const { hideChattingRoom } = props.chatActions;
         hideChattingRoom();
+        window.scrollTo(0,0);
     }
     render() {
         const userState = this.props.rootState.user;
@@ -35,7 +36,7 @@ class ChattingContainer extends Component<Props> {
         const search = this.state.search.replace(/ /g,"");
         return(
             <Main>
-                <Header changeSearch={changeSearch}/>
+                <Header userState = {userState} changeSearch={changeSearch}/>
                 <Content search={search} userState={userState} showProfile={showProfile} intoRoom={showChattingRoom}/>
             </Main>
         )
