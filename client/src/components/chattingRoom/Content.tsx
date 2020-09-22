@@ -22,11 +22,12 @@ interface Props {
     chattingList: Array<ChattingResponseDto>;
     messageRef: React.RefObject<HTMLDivElement>;
     showProfile(userData: UserResponseDto): void;
+    onAddFriendClick(friend: UserResponseDto): void;
 }
 
 const Content: React.FC<Props> = (props) => {
-    const { myId, chattingList, participant, isFriend, messageRef, showProfile } = props;
-
+    const { myId, chattingList, participant, isFriend, messageRef } = props;
+    const { showProfile, onAddFriendClick } = props;
     const renderChatting = chattingList.map((chat,idx) => {
         const createdAt = new Date(chat.createdAt);
         const localeTime = createdAt.toLocaleTimeString();
@@ -85,7 +86,7 @@ const Content: React.FC<Props> = (props) => {
     
     return(
         <Wrapper ref={messageRef}>
-            {isFriend ? null : <NotFriendWarning/>}
+            {isFriend ? null : <NotFriendWarning onAddFriendClick={() => onAddFriendClick(participant[0])}/>}
             {renderChatting}
         </Wrapper>
     )

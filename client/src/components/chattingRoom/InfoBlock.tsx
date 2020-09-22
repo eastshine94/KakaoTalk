@@ -85,7 +85,7 @@ interface SeparationBlockProps {
 }
 
 interface NotFriendWariningProps {
-   
+    onAddFriendClick(): void;
 }
 
 export const SeparationBlock: React.FC<SeparationBlockProps> = ({content}) => {
@@ -94,13 +94,13 @@ export const SeparationBlock: React.FC<SeparationBlockProps> = ({content}) => {
     )
 }
 
-export const NotFriendWarning: React.FC<NotFriendWariningProps> = () => {
-
+export const NotFriendWarning: React.FC<NotFriendWariningProps> = (props) => {
+    const { onAddFriendClick } = props;
     return(
         <WarningAreaBlock>
             <NotFriendBlock>
                 <ActionBlock>
-                    <span><i className="fas fa-user-plus"/> 추가</span>
+                    <span onClick={onAddFriendClick}><i className="fas fa-user-plus"/> 추가</span>
                 </ActionBlock>
                 <WarningBlock>
                     <i className="fas fa-exclamation-triangle"/>

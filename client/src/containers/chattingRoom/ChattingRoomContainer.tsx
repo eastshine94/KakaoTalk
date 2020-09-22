@@ -14,6 +14,9 @@ import {
     ReadChatRequest, ReadChatResponse, UpdateRoomListDto
 } from '~/types/chatting';
 import { createRoom } from '~/apis/chat';
+import { AddFriendRequestDto } from '~/types/friend';
+import { UserResponseDto } from '~/types/user';
+import { addFriendRequest } from '~/apis/friend';
 
 
 
@@ -263,6 +266,21 @@ class ChattingRoomContainer extends Component<Props> {
         const isFriend: boolean = chatState.type === "group" || isMe 
         || !!userState.friends_list.find(friend => friend.id === chatState.participant[0].id); 
 
+
+        const onAddFriendClick = async(friend: UserResponseDto) => {
+            const my_id = userState.id;
+            const friend_id = friend.id;
+            const friend_name = friend.name;
+            const { addFriend } = this.props.userActions;
+            const request: AddFriendRequestDto = { my_id, friend_id, friend_name };
+            try {
+                await addFriendRequest(request);
+                await addFriend(friend);
+            }catch(err) {
+                alert("친구 추가 실패");
+            }
+        }
+
         const contentProps = {
             myId: userState.id,
             participant: chatState.participant,
@@ -270,6 +288,7 @@ class ChattingRoomContainer extends Component<Props> {
             messageRef: this.messageRef,
             isFriend: isFriend,
             showProfile,
+            onAddFriendClick,
         }
 
         return (

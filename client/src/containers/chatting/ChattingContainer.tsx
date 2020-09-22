@@ -34,7 +34,6 @@ class ChattingContainer extends Component<Props> {
             })
         }
         const search = this.state.search.replace(/ /g,"");
-        
         return(
             <Main>
                 <Header userState = {userState} showChattingRoom={showChattingRoom} changeSearch={changeSearch}/>
