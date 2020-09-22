@@ -9,7 +9,7 @@ import { UserActions } from '~/store/actions/user';
 import { ChatActions } from '~/store/actions/chat';
 import { Modal } from '~/pages';
 import { CreateRoomRequest } from '~/types/chatting';
-import { AddFriendRequest } from '~/types/friend';
+import { AddFriendRequestDto } from '~/types/friend';
 import { addFriendRequest } from '~/apis/friend';
 
 const Wrapper = styled.main`
@@ -86,7 +86,7 @@ class ProfileContainer extends Component<Props> {
             const friend_id = profileState.id;
             const friend_name = profileState.name;
             const { addFriend } = this.props.userActions;
-            const request: AddFriendRequest = { my_id, friend_id, friend_name };
+            const request: AddFriendRequestDto = { my_id, friend_id, friend_name };
             try {
                 await addFriendRequest(request);
                 await addFriend({...profileState});

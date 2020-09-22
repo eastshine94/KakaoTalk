@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import {UserResponseDto} from '~/types/user';
 import { BASE_IMG_URL } from '~/constants';
+import { SeparationBlock } from './InfoBlock';
 
 const Chat = styled.div`
     position: relative;
@@ -80,30 +81,6 @@ const LeftBlock = styled.div`
 const NameBlock = styled.div`
     margin-bottom: 5px;
 `;
-const BorderBlock = styled.div`
-    position: relative;
-    text-align: center;
-    width: 100%;
-    padding: 13px 0;
-    & span {
-        position: relative;
-        display: inline-block;
-        background-color: #b2c7d9;
-        padding: 0 10px;
-    }
-    &:before {
-        content: "";
-        display: block;
-        position: absolute;
-        left: 2%;
-        top: 50%;
-        width : 96%;
-        height: 1px;
-        background-color: #727b83;
-    }
-`;
-
-
 
 interface ChatProps {
     msg: string;
@@ -121,9 +98,6 @@ interface FriendChatProps {
     onImgClick():void;
 }
 
-interface BorderBlockProps {
-    content: string;
-}
 export const MyChat:React.FC<ChatProps> = ({msg, localeTime, content, notRead}) => {
     return(
         <React.Fragment>
@@ -175,9 +149,3 @@ export const FriendChatWithThumbnail: React.FC<FriendChatProps> = (props) => {
     )
 }
 
-
-export const SeparationBlock: React.FC<BorderBlockProps> = ({content}) => {
-    return(
-        <BorderBlock><span>{content}</span></BorderBlock>
-    )
-}

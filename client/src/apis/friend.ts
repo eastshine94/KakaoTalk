@@ -1,11 +1,11 @@
 import axios from 'axios';
 import { API_HOST } from '~/constants';
 import { UserResponseDto} from '~/types/user';
-import { AddFriendRequest } from '~/types/friend';
+import { AddFriendRequestDto } from '~/types/friend';
 import { ChangeFriendNameRequestDto } from '~/types/profile';
 import {ApiResponse} from '~/types/base';
 
-export const addFriendRequest = async(request: AddFriendRequest) => {
+export const addFriendRequest = async(request: AddFriendRequestDto) => {
     const addedFriend:ApiResponse<boolean> = await axios.post(`${API_HOST}/friend/add`, request);
     return addedFriend.data.data;
 }

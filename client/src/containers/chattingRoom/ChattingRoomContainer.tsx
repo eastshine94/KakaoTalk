@@ -259,11 +259,24 @@ class ChattingRoomContainer extends Component<Props> {
             }
             authState.socket?.emit('message', chattingRequset);
         }
+
+        const isFriend: boolean = chatState.type === "group" || isMe 
+        || !!userState.friends_list.find(friend => friend.id === chatState.participant[0].id); 
+
+        const contentProps = {
+            myId: userState.id,
+            participant: chatState.participant,
+            chattingList: chatState.chatting,
+            messageRef: this.messageRef,
+            isFriend: isFriend,
+            showProfile,
+        }
+
         return (
             <Portal>
                 <Wrapper>
                     <Header room_name={roomName} hideRoom={hideChattingRoom} />
-                    <Content myId={userState.id} participant={chatState.participant} chattingList={chatState.chatting} messageRef={this.messageRef} showProfile={showProfile} />
+                    <Content {...contentProps} />
                     <Footer onChatSumbmit={onChatSumbmit} />
                 </Wrapper>
             </Portal>

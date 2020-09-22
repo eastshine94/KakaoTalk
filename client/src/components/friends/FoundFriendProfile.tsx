@@ -5,7 +5,7 @@ import { Dispatch, bindActionCreators } from 'redux';
 import { UserResponseDto } from '~/types/user';
 import {BASE_IMG_URL} from '~/constants';
 import { addFriendRequest } from '~/apis/friend';
-import { AddFriendRequest } from '~/types/friend';
+import { AddFriendRequestDto } from '~/types/friend';
 import { UserActions } from '~/store/actions/user';
 import { RootState } from '../../store/reducers';
 import { CreateRoomRequest } from '~/types/chatting';
@@ -70,7 +70,7 @@ const FoundFriendProfile: React.FC<Props> = (props) => {
         const { addFriend } = userActions;
         const onAddFriendClick = async(event: MouseEvent<HTMLButtonElement>) => {
             event.preventDefault();
-            const request: AddFriendRequest = { my_id, friend_id, friend_name };
+            const request: AddFriendRequestDto = { my_id, friend_id, friend_name };
             try {
                 await addFriendRequest(request);
                 await addFriend(foundUser);
