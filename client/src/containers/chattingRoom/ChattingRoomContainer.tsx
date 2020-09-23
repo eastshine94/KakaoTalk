@@ -17,7 +17,7 @@ import { createRoom } from '~/apis/chat';
 import { AddFriendRequestDto } from '~/types/friend';
 import { UserResponseDto } from '~/types/user';
 import { addFriendRequest } from '~/apis/friend';
-
+import { NotFriendWarning, DownBtn, MessageNotification } from '~/components/chattingRoom/InfoBlock';
 
 
 const Wrapper = styled.div`
@@ -248,6 +248,7 @@ class ChattingRoomContainer extends Component<Props> {
         const authState = this.props.rootState.auth;
         const roomName = chatState.room_name || chatState.participant[0].name;
         const isMe = chatState.participant[0].id === userState.id;
+        const isGroup = chatState.type === "group";
         const { hideChattingRoom } = this.props.chatActions;
         const { showProfile } = this.props.profileActions;
         
@@ -258,12 +259,12 @@ class ChattingRoomContainer extends Component<Props> {
                 participant: chatState.participant,
                 send_user_id: userState.id,
                 message: msg,
-                not_read: isMe ? 0 : chatState.participant.length,
+                not_read: isGroup && isMe ? 0 : chatState.participant.length,
             }
             authState.socket?.emit('message', chattingRequset);
         }
 
-        const isFriend: boolean = chatState.type === "group" || isMe 
+        const isFriend: boolean = isGroup || isMe 
         || !!userState.friends_list.find(friend => friend.id === chatState.participant[0].id); 
 
 
@@ -286,16 +287,17 @@ class ChattingRoomContainer extends Component<Props> {
             participant: chatState.participant,
             chattingList: chatState.chatting,
             messageRef: this.messageRef,
-            isFriend: isFriend,
             showProfile,
-            onAddFriendClick,
         }
 
         return (
             <Portal>
                 <Wrapper>
                     <Header room_name={roomName} hideRoom={hideChattingRoom} />
-                    <Content {...contentProps} />
+                    <Content {...contentProps}>
+                        {isFriend ? null : <NotFriendWarning onAddFriendClick={() => onAddFriendClick(chatState.participant[0])}/>}
+                        <MessageNotification/>
+                    </Content>
                     <Footer onChatSumbmit={onChatSumbmit} />
                 </Wrapper>
             </Portal>

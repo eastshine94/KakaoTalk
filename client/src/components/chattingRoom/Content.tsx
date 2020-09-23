@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import { MyChat, FriendChat, FriendChatWithThumbnail } from '~/components/chattingRoom/ChatBlock';
-import { NotFriendWarning } from '~/components/chattingRoom/InfoBlock';
 import { ChattingResponseDto } from '~/types/chatting';
 import { UserResponseDto } from '~/types/user';
 
@@ -17,17 +16,15 @@ const Wrapper = styled.main`
 
 interface Props {
     myId: number;
-    isFriend: boolean;
     participant: Array<UserResponseDto>;
     chattingList: Array<ChattingResponseDto>;
     messageRef: React.RefObject<HTMLDivElement>;
     showProfile(userData: UserResponseDto): void;
-    onAddFriendClick(friend: UserResponseDto): void;
 }
 
 const Content: React.FC<Props> = (props) => {
-    const { myId, chattingList, participant, isFriend, messageRef } = props;
-    const { showProfile, onAddFriendClick } = props;
+    const { myId, chattingList, participant, children, messageRef } = props;
+    const { showProfile } = props;
     const renderChatting = chattingList.map((chat,idx) => {
         const createdAt = new Date(chat.createdAt);
         const localeTime = createdAt.toLocaleTimeString();
@@ -86,7 +83,7 @@ const Content: React.FC<Props> = (props) => {
     
     return(
         <Wrapper ref={messageRef}>
-            {isFriend ? null : <NotFriendWarning onAddFriendClick={() => onAddFriendClick(participant[0])}/>}
+            {children}
             {renderChatting}
         </Wrapper>
     )

@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { BASE_IMG_URL } from '~/constants';
 
 const BorderBlock = styled.div`
     position: relative;
@@ -79,6 +80,85 @@ const WarningBlock = styled.div`
         margin-right: 10px;
     }
 `
+const DownBtnWrapper = styled.div`
+    position: fixed;
+    bottom: 70px;
+    right: 30px;
+    z-index: 200;
+    & i {
+        width : 40px;
+        height: 40px;
+        padding: 10px;
+        border-radius: 20px;
+        text-align: center;
+        background: #6e6e6e;
+        color: #fff;
+        font-size: 20px;
+        &:hover {
+            cursor: pointer;
+            border: 1px solid #000;
+        }
+    }
+`
+
+const MsgNotificationWrapper = styled.div`
+    position: fixed;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    bottom: 70px;
+    right: 30px;
+    z-index: 200;
+    width: 96%;
+    border-radius: 10px;
+    padding: 10px;
+    background: #6e6e6e;
+    &:hover {
+        cursor: pointer;
+        border: 1px solid #000;
+    }
+    
+    & i {
+        display: block;
+        color: #fff;
+        text-align: right;
+        font-size: 20px;        
+    }
+    @media only screen and (max-width: 960px){
+        width: 90%;
+    } 
+`;
+
+const NotificationBlockWrapper = styled.div`
+    position: relative;
+    width: 95%;
+    padding-left: 23px;
+    display: flex;
+    & img {
+        position: absolute;
+        left: 0;
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border-radius: 8px;
+        margin-right: 10px;
+    }
+    & span {
+        display: inline-block;
+        color: #fff;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        &.name{
+            max-width: 100px;
+            color: #bebebe;
+            margin-right: 10px;
+        }
+        &.msg {
+            width: 100%;
+        }
+    }
+`
 
 interface SeparationBlockProps {
     content: string;
@@ -107,7 +187,27 @@ export const NotFriendWarning: React.FC<NotFriendWariningProps> = (props) => {
                     <p> 친구로 등록되지 않은 사용자입니다. 금전 요구 등으로 인한 피해를 입지 않도록 주의해주세요.</p>
                 </WarningBlock>
             </NotFriendBlock>  
-            
         </WarningAreaBlock>       
+    )
+}
+
+export const DownBtn: React.FC = () => {
+    return(
+        <DownBtnWrapper>
+            <i className="fas fa-angle-down"/>        
+        </DownBtnWrapper>
+    )
+}
+
+export const MessageNotification: React.FC = () => {
+    return(
+        <MsgNotificationWrapper>
+            <NotificationBlockWrapper>
+                <img src={BASE_IMG_URL} alt="profile image"/>
+                <span className="name">홍길동홍길동홍길동홍길동홍길동홍길동</span>
+                <span className="msg">메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지</span>
+            </NotificationBlockWrapper>
+            <i className="fas fa-angle-down"/>  
+        </MsgNotificationWrapper>
     )
 }
