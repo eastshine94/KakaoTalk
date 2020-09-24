@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { BASE_IMG_URL } from '~/constants';
+import { UserResponseDto } from '~/types/user';
 
 const BorderBlock = styled.div`
     position: relative;
@@ -100,7 +101,6 @@ const DownBtnWrapper = styled.div`
         }
     }
 `
-
 const MsgNotificationWrapper = styled.div`
     position: fixed;
     display: flex;
@@ -128,7 +128,6 @@ const MsgNotificationWrapper = styled.div`
         width: 90%;
     } 
 `;
-
 const NotificationBlockWrapper = styled.div`
     position: relative;
     width: 95%;
@@ -155,7 +154,7 @@ const NotificationBlockWrapper = styled.div`
             margin-right: 10px;
         }
         &.msg {
-            width: 100%;
+            width: 90%;
         }
     }
 `
@@ -166,6 +165,15 @@ interface SeparationBlockProps {
 
 interface NotFriendWariningProps {
     onAddFriendClick(): void;
+}
+
+interface DownProps {
+    onDownClick(): void;
+}
+
+interface MessageNotificationProp extends DownProps {
+    user?: UserResponseDto;
+    msg: string;
 }
 
 export const SeparationBlock: React.FC<SeparationBlockProps> = ({content}) => {
@@ -191,21 +199,25 @@ export const NotFriendWarning: React.FC<NotFriendWariningProps> = (props) => {
     )
 }
 
-export const DownBtn: React.FC = () => {
+export const DownBtn: React.FC<DownProps> = (props) => {
+    const { onDownClick } = props;
     return(
-        <DownBtnWrapper>
+        <DownBtnWrapper onClick={onDownClick}>
             <i className="fas fa-angle-down"/>        
         </DownBtnWrapper>
     )
 }
 
-export const MessageNotification: React.FC = () => {
+export const MessageNotification: React.FC<MessageNotificationProp> = (props) => {
+    const { msg } = props;
+    const user = props.user as UserResponseDto;
+    const { onDownClick } = props;
     return(
-        <MsgNotificationWrapper>
+        <MsgNotificationWrapper onClick={onDownClick}>
             <NotificationBlockWrapper>
-                <img src={BASE_IMG_URL} alt="profile image"/>
-                <span className="name">홍길동홍길동홍길동홍길동홍길동홍길동</span>
-                <span className="msg">메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지메시지</span>
+                <img src={user.profile_img_url || BASE_IMG_URL} alt="profile image"/>
+                <span className="name">{user.name}</span>
+                <span className="msg">{msg}</span>
             </NotificationBlockWrapper>
             <i className="fas fa-angle-down"/>  
         </MsgNotificationWrapper>

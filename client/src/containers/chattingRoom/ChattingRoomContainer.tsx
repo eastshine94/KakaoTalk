@@ -41,7 +41,11 @@ let prevScrollHeight = 0;
 
 class ChattingRoomContainer extends Component<Props> {
     messageRef: React.RefObject<HTMLDivElement>;
-
+    state = {
+        isShowDownBtn: false,
+        sendUser: undefined,
+        msg: ""
+    }
     constructor(props: Props) {
         super(props);
         this.messageRef = React.createRef<HTMLDivElement>();
@@ -120,6 +124,20 @@ class ChattingRoomContainer extends Component<Props> {
             fetchChatting(requestObj);
             prevScrollHeight = messageRef.scrollHeight;
         }
+        if(messageRef.scrollHeight - messageRef.scrollTop > messageRef.clientHeight + 500 ){
+            this.setState({
+                ...this.state,
+                isShowDownBtn: true,
+            });
+        }
+        else {
+            this.setState({
+                ...this.state,
+                isShowDownBtn: false,
+                sendUser: undefined,
+                msg: "",
+            });
+        }
     }
 
     changeScroll = (prevProps: Props) => {
@@ -133,7 +151,7 @@ class ChattingRoomContainer extends Component<Props> {
         if (prevChattingLen !== currChattingLen) {
             // 처음에 스크롤 가장 아래로
             if (prevChattingLen === 0) {
-                messageRef.scrollTop = currScrollHeight;
+                this.pageDown();
             }
             else {
                 const prevLastChat = prevChatState.chatting[prevChattingLen - 1];
@@ -145,7 +163,16 @@ class ChattingRoomContainer extends Component<Props> {
                 // 메시지 송수신 시 스크롤 변화
                 else if (prevLastChat.id !== currLastChat.id) {
                     if (currLastChat.send_user_id === userState.id || currScrollHeight - messageRef.scrollTop <= messageRef.clientHeight + 100) {
-                        messageRef.scrollTop = currScrollHeight;
+                        this.pageDown();
+                    }
+                    else if (currScrollHeight - messageRef.scrollTop > messageRef.clientHeight + 500){
+                        const findSendUser = chatState.participant.find(person => person.id === currLastChat.send_user_id);
+                        this.setState({
+                            ...this.state,
+                            isShowDownBtn: true,
+                            sendUser: findSendUser,
+                            msg: currLastChat.message
+                        });
                     }
                 }
             }
@@ -242,6 +269,12 @@ class ChattingRoomContainer extends Component<Props> {
             });
         }
     }
+
+    pageDown = () => {
+        const messageRef = this.messageRef.current!
+        messageRef.scrollTop = messageRef.scrollHeight;
+    }
+
     render() {
         const userState = this.props.rootState.user;
         const chatState = this.props.rootState.chat;
@@ -296,7 +329,7 @@ class ChattingRoomContainer extends Component<Props> {
                     <Header room_name={roomName} hideRoom={hideChattingRoom} />
                     <Content {...contentProps}>
                         {isFriend ? null : <NotFriendWarning onAddFriendClick={() => onAddFriendClick(chatState.participant[0])}/>}
-                        <MessageNotification/>
+                        {!!this.state.sendUser ? <MessageNotification user={this.state.sendUser} msg={this.state.msg} onDownClick={this.pageDown}/> : (this.state.isShowDownBtn ? <DownBtn onDownClick={this.pageDown}/> : null)}
                     </Content>
                     <Footer onChatSumbmit={onChatSumbmit} />
                 </Wrapper>
