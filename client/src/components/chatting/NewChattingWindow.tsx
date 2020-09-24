@@ -55,7 +55,9 @@ const ContentWrapper = styled(MainContent)`
         padding: 10px 20px;
     }
     & li {
+        padding-left: 80px;
         & img {
+            left: 20px;
             top: 10px;
             cursor: auto;
         }
@@ -67,7 +69,11 @@ const ContentWrapper = styled(MainContent)`
         & input {
             position: absolute;
             top: 25px;
-            right: 10px;
+            right: 15px;
+        }
+        &.selected {
+            background-color: #cccccc;
+            pointer-events: none;
         }
     }
 `;
@@ -150,7 +156,7 @@ const FriendRow:React.FC<FriendRowProps> = (props) => {
 
     return(
         <React.Fragment>
-            <label>
+            <label className = {isSelected? "selected":""}>
                 <li>
                     <img src={profile_img_url||BASE_IMG_URL} alt="profile Image"/>
                     <p><b>{name}</b></p>
