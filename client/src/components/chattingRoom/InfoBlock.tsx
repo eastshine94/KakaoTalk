@@ -146,14 +146,19 @@ const NotificationBlockWrapper = styled.div`
         display: inline-block;
         color: #fff;
         overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
+
         &.name{
+            white-space: nowrap;
+            text-overflow: ellipsis;
             max-width: 100px;
             color: #bebebe;
             margin-right: 10px;
         }
         &.msg {
+            white-space: pre-wrap;
+            display: -webkit-box;
+            -webkit-line-clamp: 1; 
+            -webkit-box-orient: vertical;
             width: 90%;
         }
     }

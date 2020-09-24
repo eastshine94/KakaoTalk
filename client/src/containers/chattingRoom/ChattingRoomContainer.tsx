@@ -43,7 +43,7 @@ class ChattingRoomContainer extends Component<Props> {
     messageRef: React.RefObject<HTMLDivElement>;
     state = {
         isShowDownBtn: false,
-        sendUser: undefined,
+        sendUserId: undefined,
         msg: ""
     }
     constructor(props: Props) {
@@ -134,7 +134,7 @@ class ChattingRoomContainer extends Component<Props> {
             this.setState({
                 ...this.state,
                 isShowDownBtn: false,
-                sendUser: undefined,
+                sendUserId: undefined,
                 msg: "",
             });
         }
@@ -166,11 +166,10 @@ class ChattingRoomContainer extends Component<Props> {
                         this.pageDown();
                     }
                     else if (currScrollHeight - messageRef.scrollTop > messageRef.clientHeight + 500){
-                        const findSendUser = chatState.participant.find(person => person.id === currLastChat.send_user_id);
                         this.setState({
                             ...this.state,
                             isShowDownBtn: true,
-                            sendUser: findSendUser,
+                            sendUserId: currLastChat.send_user_id,
                             msg: currLastChat.message
                         });
                     }
@@ -322,14 +321,20 @@ class ChattingRoomContainer extends Component<Props> {
             messageRef: this.messageRef,
             showProfile,
         }
-
+        const renderNotification = () => {
+            if(!!this.state.sendUserId){
+                const findSendUser = chatState.participant.find(person => person.id === this.state.sendUserId);
+                return <MessageNotification user={findSendUser} msg={this.state.msg} onDownClick={this.pageDown}/>
+            }
+            return this.state.isShowDownBtn ? <DownBtn onDownClick={this.pageDown}/> : null;
+        }
         return (
             <Portal>
                 <Wrapper>
                     <Header room_name={roomName} hideRoom={hideChattingRoom} />
                     <Content {...contentProps}>
                         {isFriend ? null : <NotFriendWarning onAddFriendClick={() => onAddFriendClick(chatState.participant[0])}/>}
-                        {!!this.state.sendUser ? <MessageNotification user={this.state.sendUser} msg={this.state.msg} onDownClick={this.pageDown}/> : (this.state.isShowDownBtn ? <DownBtn onDownClick={this.pageDown}/> : null)}
+                        {renderNotification()}
                     </Content>
                     <Footer onChatSumbmit={onChatSumbmit} />
                 </Wrapper>
