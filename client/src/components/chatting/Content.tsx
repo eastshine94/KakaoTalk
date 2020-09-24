@@ -8,7 +8,7 @@ import { findUserUsingId } from '~/apis/user';
 import { Notification } from '~/styles/BaseStyle';
 const Wrapper = styled(MainContent)`
     & li {
-        padding: 10px 20px 10px 80px;
+        padding: 10px 20px 10px 180px;
     }
     & .preview {
         position: relative;

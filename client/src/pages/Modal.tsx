@@ -29,10 +29,10 @@ export interface ModalProps{
 
 export const Portal:React.FC = ({children}) => {
     useEffect(() => {
-        document.body.style.cssText = `position: fixed; width:100%; top: -${window.scrollY}px`;
+        document.body.style.cssText = `position: fixed; top: -${window.scrollY}px`;
         return () => {
             const scrollY = document.body.style.top;
-            document.body.style.cssText = `position: ""; width: auto; top: "";`;
+            document.body.style.cssText = `position: "";  top: "";`;
             window.scrollTo(0, parseInt(scrollY || '0') * -1);
         }
     }, []);

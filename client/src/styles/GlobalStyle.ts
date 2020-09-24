@@ -4,10 +4,15 @@ const GlobalStyle = createGlobalStyle`
      * {
        box-sizing: border-box;
      }
+     body {
+      width: 100%;
+      height: 100%;
+    }
      body, div, ul, li, dl, dd, dt, ol, h1, h2, h3, h4, h5, h6, input, fieldset, legend, p, select, table, th, td, tr, textarea, button, form, figure, figcaption {
       padding: 0;
       margin: 0;
     }
+    
     a{
       color: #222;
       text-decoration:none;

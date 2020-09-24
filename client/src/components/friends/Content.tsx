@@ -8,11 +8,11 @@ import { BASE_IMG_URL } from '~/constants';
 
 const MyProfileBlock = styled.div`
     position: relative;
-    padding: 25px 10px 25px 85px;
+    padding: 25px 10px 25px 185px;
     & img {
         position: absolute;
         top: 18px;
-        left: 20px;
+        left: 120px;
         width: 50px;
         height: 50px;
         border-radius: 15px;
@@ -38,7 +38,7 @@ const MyProfileBlock = styled.div`
 
 const FriendsBorder = styled.div`
     border-top: 0.5px solid #dcdcdc;
-    margin: 10px 20px 0 20px;
+    margin: 10px 20px 0 120px;
     padding-top: 10px;
     & p {
         font-size: 12px;

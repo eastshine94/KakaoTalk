@@ -66,15 +66,19 @@ export const TitleBlock = styled.section`
     }
 `
 export const MainContent = styled.section`
-    margin-top: 100px;
+    position: absolute;
+    top: 100px;
+    bottom: 5px;
+    left: 0px;
     width: 100%;
+    overflow: auto;
     & li{
         position: relative;
-        padding: 20px 100px 20px 80px;
+        padding: 20px 100px 20px 180px;
         & img {
             position: absolute;
             top: 18px;
-            left: 20px;
+            left: 120px;
             width: 45px;
             height: 45px;
             border-radius: 15px;
