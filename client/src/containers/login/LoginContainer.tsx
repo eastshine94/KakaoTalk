@@ -13,7 +13,6 @@ const Wrapper = styled.div`
     width: 360px;
     height: 600px;
     background-color: #ffeb33;
-    margin: auto;
 `
 interface Props {
     authActions: typeof AuthActions;

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { API_HOST } from '~/constants';
+import { HOST, API_HOST } from '~/constants';
 import { ApiResponse } from '~/types/base';
 import { UserResponseDto } from '~/types/user';
 import { ProfileChangeRequestDto } from '../types/profile';
@@ -24,5 +24,5 @@ export const uploadImageFile = async(image: File) => {
     const formData = new FormData();
     formData.append('image', image);
     const imageUrl: ApiResponse<string> = await axios.post(`${API_HOST}/user/upload`, formData);
-    return `http://localhost:3001/${imageUrl.data.data}`;
+    return `${HOST}/${imageUrl.data.data}`;
 }

@@ -1,7 +1,28 @@
-# Kakao Talk Clone Coding
+# Kakao Talk Clone Project
 > 카카오톡 채팅 기능을 구현
 
-Socket.io를 이용하여 실시간 채팅 기능을 구현하고 싶었습니다. 그래서 현재 우리나라에서 가장 대중적으로 사용되고 있는 카카오톡 클론 코딩을 통해 채팅 기능을 구현해보았습니다.
+Socket.io를 이용하여 실시간 양방향 통신 기능을 구현해보고 싶었습니다. 이 기능을 사용하기에 가장 적합한 것이 채팅이라고 생각하였습니다. 그래서 가장 흔하게 사용하고 있는 카카오톡 채팅 기능을 구현해보자는 생각으로 이 프로젝트를 진행하였습니다.
+
+## 기술 스택
+
+- TypeScript
+
+### Client
+
+- React
+- React Router v4
+- Redux
+- Redux-saga
+- Styled-components
+- Socket.io-client
+- Webpack
+
+### Server
+
+- Node.js - Express
+- Sequelize
+- Socket.io
+- MYSQL
 
 ## 주요 기능
 

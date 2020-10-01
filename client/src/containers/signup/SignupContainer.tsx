@@ -9,11 +9,10 @@ import { PAGE_PATHS } from '~/constants';
 
 const Wrapper = styled.div`
     margin: 0 auto;
-    padding: 50px 0;
     width: 50%;
-    min-height: 100vh;
+    min-height: 95vh;
     border: 1px solid #dadada;
-    a only screen and (max-width: 640px){
+    @media only screen and (max-width: 640px){
         width: 100%;
     }
     @media only screen and (max-width: 360px){

@@ -29,10 +29,15 @@ const runServer = async() => {
     app.use('/api/user', userRouter);
     app.use('/api/friend', friendRouter);
     app.use('/api/chat', chatRouter);
+    app.use('/', express.static(path.join(__dirname, '/build')));
     app.get('/uploads/:fileName', (req, res) => {
         const fileName = req.params.fileName
         res.sendFile(path.join(__dirname, `../uploads/${fileName}`));
     });
+    app.get('*',(req, res)=> {
+        res.sendFile('index.html', {root: path.join(__dirname, '/build')});
+    });
+    
     const server = http.createServer(app).listen(app.get('port'), () => {
         logger.info(`listening on port ${app.get('port')}...`);
     });
