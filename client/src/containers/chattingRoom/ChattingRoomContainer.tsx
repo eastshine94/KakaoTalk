@@ -291,7 +291,7 @@ class ChattingRoomContainer extends Component<Props> {
                 participant: chatState.participant,
                 send_user_id: userState.id,
                 message: msg,
-                not_read: isGroup && isMe ? 0 : chatState.participant.length,
+                not_read: !isGroup && isMe ? 0 : chatState.participant.length,
             }
             authState.socket?.emit('message', chattingRequset);
         }
