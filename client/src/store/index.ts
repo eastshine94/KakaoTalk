@@ -12,7 +12,7 @@ const logger = createLogger({
 
 const middleware = [logger, sagaMiddleware];
 const enhancer = process.env.NODE_ENV === 'production'
-	? compose(applyMiddleware(...middleware))
+	? compose(applyMiddleware(sagaMiddleware))
 : composeWithDevTools(applyMiddleware(...middleware));
 
 const store = createStore(

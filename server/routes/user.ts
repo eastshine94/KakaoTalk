@@ -1,8 +1,10 @@
 import * as express from "express";
 import User from "../models/User";
 import * as multer from 'multer';
+import * as path from 'path';
 
-const upload = multer({dest:"uploads/"})
+const dest = path.join(__dirname, '../uploads/');
+const upload = multer({dest})
 const router = express.Router();
 
 router.get("/:user_id", async(req, res) => {
@@ -61,12 +63,12 @@ router.post("/profile/change", async(req, res) => {
 })
 
 router.post("/upload", upload.single("image"), (req, res) => {
-    try {
-      const image = req.file;
-      return res.json({ data: `${image.path}` });
-    } catch (err) {
-      return res.status(400).json({ msg: err.message });
-    }
+  try {
+    const image = req.file;
+    return res.json({ data: `uploads\\${image.filename}` });
+  } catch (err) {
+    return res.status(400).json({ msg: err.message });
+  }
 })
 
 export default router;

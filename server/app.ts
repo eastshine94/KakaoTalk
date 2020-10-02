@@ -32,7 +32,7 @@ const runServer = async() => {
     app.use('/', express.static(path.join(__dirname, '/build')));
     app.get('/uploads/:fileName', (req, res) => {
         const fileName = req.params.fileName
-        res.sendFile(path.join(__dirname, `../uploads/${fileName}`));
+        res.sendFile(path.join(__dirname, `./uploads/${fileName}`));
     });
     app.get('*',(req, res)=> {
         res.sendFile('index.html', {root: path.join(__dirname, '/build')});
