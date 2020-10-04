@@ -22,7 +22,7 @@ const stopServer = async (server: http.Server, sequelize: Sequelize, signal?: st
 const runServer = async() => {
     const app = express();
     const sequelize = DB.init();
-    app.set('port', process.env.PORT || 3001);
+    app.set('port', process.env.PORT || 8001);
     app.use(express.json());
     app.use(cors());
     app.use('/api/auth', authRouter);
