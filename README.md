@@ -69,19 +69,19 @@
 
 > 해당 메뉴에서는 친구 목록 확인 및 친구 추가, 검색이 가능합니다.
 > 
-<img src="https://user-images.githubusercontent.com/41350459/95071711-10bea700-0745-11eb-9645-e631faa4923b.png" alt="친구 메뉴"/>
+<img src="https://user-images.githubusercontent.com/41350459/95090891-c2b79c80-0760-11eb-91fb-9617e8a48557.png" alt="친구 메뉴"/>
 
 #### 3.1 친구 추가
 
 > 친구 ID를 입력하여 친구를 추가할 수 있습니다. 만약 이미 친구라면 1:1 채팅 버튼이 나옵니다.
 
-<img src="https://user-images.githubusercontent.com/41350459/95072744-a575d480-0746-11eb-86d4-06625ca08e49.png" alt="친구 추가"/>
+<img src="https://user-images.githubusercontent.com/41350459/95090876-bf241580-0760-11eb-81b0-dafb74bb38b3.png" alt="친구 추가"/>
 
 #### 3.2 친구 검색
 
 > 검색 창에 입력한 단어가 이름에 있는 친구들을 찾습니다.
 
-<img src="https://user-images.githubusercontent.com/41350459/95088937-84b97900-075e-11eb-8697-b0363874c672.png" alt="친구 검색"/>
+<img src="https://user-images.githubusercontent.com/41350459/95090885-c1866f80-0760-11eb-8caa-eb9cebbeb373.png" alt="친구 검색"/>
 
 ### 5. Profile
 
@@ -89,7 +89,7 @@
 
 1. 나의 프로필
   
-<img src="https://user-images.githubusercontent.com/41350459/95067605-0c8f8b00-073f-11eb-8e23-d5cd846e8b57.png" alt="나의 프로필 창"/>   
+<img src="https://user-images.githubusercontent.com/41350459/95090872-bdf2e880-0760-11eb-8d70-40171d1b5820.png" alt="나의 프로필 창"/>   
 
 -------------
 
@@ -97,4 +97,4 @@
 
 > 친구의 경우, 이름 변경만 가능합니다.
 
-<img src="https://user-images.githubusercontent.com/41350459/95068016-a2c3b100-073f-11eb-8bbf-3d01653bab6e.png" alt="친구 프로필 창"/>   
+<img src="https://user-images.githubusercontent.com/41350459/95090878-c0554280-0760-11eb-9fe9-ec60c33b29ab.png" alt="친구 프로필 창"/>   
