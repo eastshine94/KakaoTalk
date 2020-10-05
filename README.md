@@ -5,6 +5,8 @@
 
 ## 기술 스택
 
+### 사용 언어
+
 - TypeScript
 
 ### Client
@@ -87,14 +89,14 @@
 
 > 친구 메뉴, 채팅방 등에서 사진을 클릭 시 프로필 창이 등장합니다. 해당 창에서 사용자 정보를 변경할 수 있습니다.
 
-1. 나의 프로필
+1. **나의 프로필**
   
-<img src="https://user-images.githubusercontent.com/41350459/95090872-bdf2e880-0760-11eb-8d70-40171d1b5820.png" alt="나의 프로필 창"/>   
+<img src="https://user-images.githubusercontent.com/41350459/95090872-bdf2e880-0760-11eb-8d70-40171d1b5820.png" alt="나의 프로필 창"/>
 
 -------------
 
-2. 친구 프로필
+2. **친구 프로필**
 
 > 친구의 경우, 이름 변경만 가능합니다.
 
-<img src="https://user-images.githubusercontent.com/41350459/95090878-c0554280-0760-11eb-9fe9-ec60c33b29ab.png" alt="친구 프로필 창"/>   
+<img src="https://user-images.githubusercontent.com/41350459/95090878-c0554280-0760-11eb-9fe9-ec60c33b29ab.png" alt="친구 프로필 창"/>

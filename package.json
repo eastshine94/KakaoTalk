@@ -4,14 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "server": "nodemon --config \"./server/nodemon.json\"",
+    "server": "cd server && yarn start",
     "client": "cd client && yarn start",
     "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
   },
   "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "tslib": "^2.0.1",
-    "win-node-env": "^0.4.0"
-  }
+  "license": "ISC"
 }

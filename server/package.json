@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
-    "start": "yarn build & node ./build/web.js"
+    "start": "nodemon --config nodemon.json"
   },
   "author": "",
   "license": "ISC",
@@ -35,5 +35,9 @@
     "sequelize": "^5.21.3",
     "socket.io": "^2.3.0",
     "winston": "^3.2.1"
+  },
+  "devDependencies": {
+    "tslib": "^2.0.1",
+    "win-node-env": "^0.4.0"
   }
 }
