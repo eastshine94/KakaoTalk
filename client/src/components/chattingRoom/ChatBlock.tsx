@@ -12,6 +12,7 @@ const Chat = styled.div`
 	margin-bottom: 7px;
 	box-shadow: 0px 1px 2px 0px #8FABC7;
     max-width: 70%;
+    word-wrap: break-word;
     white-space: pre-wrap;
 `;
 const RightBlock = styled.div`

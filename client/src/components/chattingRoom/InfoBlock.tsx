@@ -155,6 +155,7 @@ const NotificationBlockWrapper = styled.div`
             margin-right: 10px;
         }
         &.msg {
+            word-wrap: break-word;
             white-space: pre-wrap;
             display: -webkit-box;
             -webkit-line-clamp: 1; 

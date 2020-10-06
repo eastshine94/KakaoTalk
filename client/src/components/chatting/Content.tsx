@@ -13,6 +13,7 @@ const Wrapper = styled(MainContent)`
     & .preview {
         position: relative;
         height: 40px;
+        word-wrap: break-word;
         white-space: pre-wrap;
         display: -webkit-box;
         -webkit-line-clamp: 2; 
