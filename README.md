@@ -52,7 +52,7 @@
 
 - 채팅방에서 스크롤을 기준치 이상 올릴 경우, 페이지 맨 아래로 내리는 버튼이 나오게 됩니다. 또한, 스크롤이 위로 올라간 상태에서 상대방이 채팅을 보내면, 채팅이 왔다는 것을 알려주는 창이 나오도록 하였습니다. 
 
-## 사용 방법
+## UI/UX
 
 ### 1. 회원가입
 
@@ -109,7 +109,16 @@
 
 <img src="https://user-images.githubusercontent.com/41350459/95185750-129b6f80-0804-11eb-9f04-847ba3cebb5b.png" alt="방 검색">
 
-### 5. Profile
+### 5. 채팅방
+
+> - 채팅방에서 다른 사용자와 대화를 할 수 있습니다.
+> - 친구가 아닐 경우, 경고창이 뜨고 원하면 친구 추가를 할 수 있습니다.
+> - 스크롤이 위로 올라가 있을 때, 상대방이
+메시지를 보내면 알려줍니다.
+
+<img src="https://user-images.githubusercontent.com/41350459/95193059-28159700-080e-11eb-9d8e-54ea6ba409cf.png" alt="채팅방"/>
+
+### 6. Profile
 
 > 친구 메뉴, 채팅방 등에서 사진을 클릭 시 프로필 창이 등장합니다. 해당 창에서 사용자 정보를 변경할 수 있습니다.
 
@@ -124,3 +133,63 @@
 > 친구의 경우, 이름 변경만 가능합니다.
 
 <img src="https://user-images.githubusercontent.com/41350459/95090878-c0554280-0760-11eb-9fe9-ec60c33b29ab.png" alt="친구 프로필 창"/>
+
+## 프로젝트 구현 기술
+
+### 1. webpack
+
+> 기존에 사용했던 CRA(create-react-app)를 통해 프로젝트를 진행하는 것이 아닌, Webpack을 이용하여 직접 개발환경을 설정하였습니다. 이를 통해 Customize하게 개발 환경을 구성할 수 있습니다.
+
+```
+  mode: process.env.NODE_ENV,
+
+  entry: "./src/index.tsx",
+
+  resolve: {
+    extensions: [".ts", ".tsx", '.js'],
+    plugins: [new TsconfigPathsPlugin({ configFile: "./tsconfig.json" })]
+  },
+  module: {
+    rules: [
+      {
+        test: /\.tsx?$/,
+        loader: "babel-loader",
+        exclude: /node_modules/
+      },
+      {
+          test: /\.tsx?$/,
+          loader: 'ts-loader'
+      }
+    ]
+  },
+
+                    ......
+```
+
+
+### 2. Styled-Components
+
+> **Styled-Components**를 사용하여 **CSS-in-JS**를 구현하였습니다. 이를 통해 CSS 모델을 문서 레벨이 아니라 컴포넌트 레벨로 추상화하여, 스타일 시트를 더 이상 유지 보수할 필요가 없도록 하였습니다.
+
+글로벌적으로 설정해야 하는 스타일(ex) body, div, input 등)이나, 재사용할 수 있는 스타일은 **styles** 폴더에 따로 분리하였습니다. 그 후 다른 컴포넌트에서 import하여 사용하였습니다.
+
+```
+const GlobalStyle = createGlobalStyle`
+     * {
+       box-sizing: border-box;
+     }
+     body {
+      width: 100%;
+      height: 100%;
+    }
+     body, div, ul, li, dl, dd, dt, ol, h1, h2, h3, h4, h5, h6, input, fieldset, legend, p, select, table, th, td, tr, textarea, button, form, figure, figcaption {
+      padding: 0;
+      margin: 0;
+    }
+                      ......
+```
+
+### 3. 스크롤 페이징
+
+> 채팅방에 스크롤 페이징 기술을 접목하였습니다. 이를 통해 처음부터 모든 채팅 내용을 서버에서 가져오는 것이 아니라, 사용자가 원할 때만 이전 채팅 내용을 가져오기 때문에 자원 낭비를 막을 수 있습니다.
+

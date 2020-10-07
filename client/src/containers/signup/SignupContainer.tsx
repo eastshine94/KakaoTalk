@@ -15,9 +15,6 @@ const Wrapper = styled.div`
     @media only screen and (max-width: 640px){
         width: 100%;
     }
-    @media only screen and (max-width: 360px){
-        width: 360px;
-    }
 `
 
 interface Props {
