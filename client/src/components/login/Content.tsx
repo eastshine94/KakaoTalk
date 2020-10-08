@@ -20,6 +20,7 @@ const Wrapper = styled.main`
         }
     }
     & button {
+        position: relative;
         display: block;
         margin: auto;
         margin-top: 5px;
@@ -29,12 +30,30 @@ const Wrapper = styled.main`
         color: #fff;
         background-color: #423630;
         outline: none;
+        @keyframes iconLotate {
+            0% { transform: rotate(0deg) }
+            50% { transform: rotate(180deg) }
+            100% { transform: rotate(360deg) }
+        }
+        & i {
+            position: absolute;
+            top: 15px;
+            right: 10px;
+            color: #5c5c5c;
+            animation: iconLotate 1.5s linear infinite;
+        }
         &:hover {
             background-color:#594941;
             cursor: pointer;
         }
         &:active{
             background-color: #423630; 
+        }
+        &.disabled {
+            color: #969696;
+            background: #e2e2e2;
+            pointer-events: none;
+            border: 1px solid #dcdcdc;
         }
     }
     & p {
@@ -46,28 +65,39 @@ const Wrapper = styled.main`
 
 interface Props {
     login(loginData: LoginData): void;
+    changeMessage(message: string): void;
     loginFailuerMsg: string;
+    loggingIn: boolean;
 }
 const Content: React.FC<Props> = (props) => {
-    const { login, loginFailuerMsg } = props;
+    const { login, changeMessage, loginFailuerMsg, loggingIn } = props;
     const MAX_LEN = 20;
     const [userId, setUserId] = useState("");
     const [password, setPassword] = useState("");
     const onUserIdChange = (event: ChangeEvent<HTMLInputElement>):void => {
         event.preventDefault();
-        const value = event.target.value;
-        setUserId(value);
+        if(!loggingIn){
+            const value = event.target.value;
+            setUserId(value);
+        }
     }
 
     const onPasswordChange = (event: ChangeEvent<HTMLInputElement>):void => {
         event.preventDefault();
-        const value = event.target.value;
-        setPassword(value);
+        if(!loggingIn){
+            const value = event.target.value;
+            setPassword(value);
+            if(value.length >= 5){
+                changeMessage("");
+            }
+        }
     }
     const onSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        login({userId, password});
-        setPassword("");
+        if(!loggingIn && password.length >= 5){
+            login({userId, password});
+            setPassword("");
+        }
     }
 
     return(
@@ -75,7 +105,10 @@ const Content: React.FC<Props> = (props) => {
             <form onSubmit={onSubmit}>
                 <input type="text" value={userId} placeholder="계정" maxLength={MAX_LEN} onChange={onUserIdChange}/>
                 <input type="password" value={password} autoComplete="new-password" placeholder="비밀번호" maxLength={MAX_LEN} onChange={onPasswordChange}/>
-                <button>로그인</button>
+                <button className={loggingIn || password.length < 5? "disabled" : ""}>
+                    {loggingIn ? <i className="fas fa-circle-notch"/> : ""}    
+                    <span>로그인</span>
+                </button>
                 <p>{loginFailuerMsg}</p>
             </form>
         </Wrapper>

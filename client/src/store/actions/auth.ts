@@ -5,7 +5,7 @@ export enum AuthTypes {
   LOGIN_SUCCESS = 'auth/LOGIN_SUCCESS',
   LOGIN_FAILURE =  'auth/LOGIN_FAILURE',
   LOGOUT = 'auth/LOGOUT',
-  RESET_MESSAGE = "auth/RESET_MESSAGE",
+  CHANGE_MESSAGE = "auth/CHANGE_MESSAGE",
 };
 
 export interface LoginAction {
@@ -28,15 +28,16 @@ export interface LogoutAction {
   type: AuthTypes.LOGOUT;
 }
 
-export interface ResetMessageAction{
-  type: AuthTypes.RESET_MESSAGE;
+export interface ChangeMessageAction{
+  type: AuthTypes.CHANGE_MESSAGE;
+  payload: string;
 }
 
 export type AuthActionTypes = LoginAction
   | LoginSuccessAction
   | LoginFailureAction
   | LogoutAction
-  | ResetMessageAction
+  | ChangeMessageAction
 
 export const login = (loginData: LoginData): LoginAction => ({
   type: AuthTypes.LOGIN_REQUEST,
@@ -46,11 +47,12 @@ export const login = (loginData: LoginData): LoginAction => ({
 export const logout = (): LogoutAction => ({
   type: AuthTypes.LOGOUT,
 })
-export const resetMessage = (): ResetMessageAction => ({
-  type: AuthTypes.RESET_MESSAGE,
+export const changeMessage = (message: string): ChangeMessageAction => ({
+  type: AuthTypes.CHANGE_MESSAGE,
+  payload: message
 })
 export const AuthActions = {
     login,
     logout,
-    resetMessage,
+    changeMessage,
 }

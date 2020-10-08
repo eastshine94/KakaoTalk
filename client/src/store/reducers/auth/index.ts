@@ -9,12 +9,15 @@ export interface AuthState {
   socket: typeof Socket | undefined;
   token: string|null;
   loginFailuerMsg: string;
+  loggingIn: boolean;
 }
+
 const initialState: AuthState = {
   auth: undefined,
   socket: undefined,
   token: window.sessionStorage.getItem('jwt'),
-  loginFailuerMsg: "", 
+  loginFailuerMsg: "",
+  loggingIn: false, 
 }
 
 if (initialState.token) {
@@ -24,10 +27,16 @@ if (initialState.token) {
 
 const authReducer = (state = initialState, action: AuthActionTypes )=> {
   switch(action.type){
+    case AuthTypes.LOGIN_REQUEST :
+      return {
+        ...state,
+        loggingIn: true,
+      }
     case AuthTypes.LOGIN_SUCCESS : 
       return {
         ...state,
         loginFailuerMsg:"",
+        loggingIn: false,
         socket: socketio.connect(HOST),
         auth: action.payload.auth,
         token: action.payload.token
@@ -35,6 +44,7 @@ const authReducer = (state = initialState, action: AuthActionTypes )=> {
     case AuthTypes.LOGIN_FAILURE :
       return {
         ...state,
+        loggingIn: false,
         loginFailuerMsg: action.payload,
       }
     case AuthTypes.LOGOUT : 
@@ -44,10 +54,10 @@ const authReducer = (state = initialState, action: AuthActionTypes )=> {
         auth: undefined,
         socket: undefined
       };
-    case AuthTypes.RESET_MESSAGE :
+    case AuthTypes.CHANGE_MESSAGE :
       return {
         ...state,
-        loginFailuerMsg: "",
+        loginFailuerMsg: action.payload,
       }
     default:
       return state;

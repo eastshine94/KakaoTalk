@@ -22,18 +22,24 @@ interface Props {
 class LoginContainer extends Component<Props> {
     
     componentWillUnmount() {
-        this.props.authActions.resetMessage();
+        this.props.authActions.changeMessage("");
     }
 
     render() {
-        const { login } = this.props.authActions;
-        const { token, loginFailuerMsg } = this.props.authState;
-
+        const { login, changeMessage } = this.props.authActions;
+        const { token, loginFailuerMsg, loggingIn } = this.props.authState;
+        
+        const contentProps = {
+            login,
+            changeMessage,
+            loginFailuerMsg,
+            loggingIn
+        }
         if(token) return <Redirect to={PAGE_PATHS.FRIENDS}/>
         return(
             <Wrapper>
                 <Header/>
-                <Content login={login} loginFailuerMsg={loginFailuerMsg}/>
+                <Content {...contentProps}/>
                 <Footer/>
             </Wrapper>
         )
