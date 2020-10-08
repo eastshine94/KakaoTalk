@@ -5,6 +5,7 @@ export enum ChatTypes {
     HIDE_CHATTING_ROOM = "chat/HIDE_CHATTING_ROOM",
     CHANGE_CHATTING_ROOM_INFO = "chat/CHANGE_CHATTING_ROOM_INFO",
     ADD_CHATTING = "chat/ADD_CHATTING",
+    READ_CHATTING = "chat/READ_CHATTING",
     FETCH_CHATTING_REQUEST= 'chat/FETCH_CHATTING_REQUEST',
     FETCH_CHATTING_SUCCESS= 'chat/FETCH_CHATTING_SUCCESS',
     FETCH_CHATTING_FAILUER= 'chat/FETCH_CHATTING_FAILUER',
@@ -20,13 +21,18 @@ export interface HideChattingRoomAction {
 }
 
 export interface ChangeChattingRoomInfoAction {
-    type: ChatTypes.CHANGE_CHATTING_ROOM_INFO,
-    payload: ChangeChattingRoomDto
+    type: ChatTypes.CHANGE_CHATTING_ROOM_INFO;
+    payload: ChangeChattingRoomDto;
 }
 
 export interface AddChattingAction {
-    type: ChatTypes.ADD_CHATTING,
-    payload: ChattingResponseDto
+    type: ChatTypes.ADD_CHATTING;
+    payload: ChattingResponseDto;
+}
+
+export interface ReadChattingAction {
+    type: ChatTypes.READ_CHATTING;
+    payload: Array<number>;
 }
 
 export interface FetchChattingAction {
@@ -44,6 +50,7 @@ export type ChatActionTypes = ShowChattingRoomAction
 | HideChattingRoomAction
 | ChangeChattingRoomInfoAction
 | AddChattingAction
+| ReadChattingAction
 | FetchChattingAction
 | FectchChattingSuccessAction
 
@@ -67,6 +74,11 @@ export const addChatting = (chat: ChattingResponseDto): AddChattingAction => ({
     payload: chat
 });
 
+export const readChatting = (range: Array<number>): ReadChattingAction => ({
+    type: ChatTypes.READ_CHATTING,
+    payload: range
+})
+
 export const fetchChatting = (param: FetchChattingRequest) => ({
     type: ChatTypes.FETCH_CHATTING_REQUEST,
     payload: param,
@@ -78,5 +90,6 @@ export const ChatActions = {
     hideChattingRoom,
     changeChattingRoomInfo,
     addChatting,
+    readChatting,
     fetchChatting,
 }

@@ -67,7 +67,7 @@ class ChattingRoomContainer extends Component<Props> {
             const roomObj: ChangeChattingRoomDto = {
                 ...findRoom,
                 participant,
-                chatting: []
+                
             }
             changeChattingRoomInfo(roomObj);
             fetchChatting({
@@ -87,7 +87,6 @@ class ChattingRoomContainer extends Component<Props> {
                 const roomObj: ChangeChattingRoomDto = {
                     ...room,
                     participant,
-                    chatting: [],
                 }
                 changeChattingRoomInfo(roomObj);
             });
@@ -204,26 +203,20 @@ class ChattingRoomContainer extends Component<Props> {
             if (lastChat.id !== lastReadChatId) {
                 const socket = this.props.rootState.auth.socket;
                 const userState = this.props.rootState.user;
-                const { changeChattingRoomInfo } = this.props.chatActions;
-                
+                const { readChatting, changeChattingRoomInfo } = this.props.chatActions;
+                const currRange = [lastReadChatId, lastChat.id];
                 if(lastChat.send_user_id !== userState.id){
-                    const updatedChatting = currChatting.map(chat => {
-                        if (chat.id > lastReadChatId) {
-                            return { ...chat, not_read: chat.not_read - 1 }
-                        }
-                        return chat
-                    });
                     const roomObj: ChangeChattingRoomDto = {
-                        chatting: updatedChatting,
                         last_read_chat_id: lastChat.id
                     }
                     changeChattingRoomInfo(roomObj);
+                    readChatting(currRange);
                     const obj: ReadChatRequest = {
                         user_id: userState.id,
                         room_id: chatState.room_id,
                         type: chatState.type as RoomType,
                         participant: chatState.participant,
-                        last_read_chat_id_range: [lastReadChatId, lastChat.id],
+                        last_read_chat_id_range: currRange,
                     }
                     
                     socket!.emit("readChat", obj);
@@ -240,16 +233,7 @@ class ChattingRoomContainer extends Component<Props> {
                 socket!.on("readChat", (res: ReadChatResponse) => {
                     if (chatState.room_id === res.room_id) {
                         const range = res.last_read_chat_id_range;
-                        const updatedChatting = currChatting.map(chat => {
-                            if ( chat.id > range[0] && chat.id<=range[1]) {
-                                return { ...chat, not_read: chat.not_read - 1 }
-                            }
-                            return chat
-                        });
-                        const roomObj: ChangeChattingRoomDto = {
-                            chatting: updatedChatting,
-                        }
-                        changeChattingRoomInfo(roomObj)
+                        readChatting(range);
                     }
                 })
             }

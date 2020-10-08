@@ -50,6 +50,22 @@ const chatReducer = (state = initialState, action: ChatActionTypes ) => {
                     action.payload
                 ]
             }
+        case ChatTypes.READ_CHATTING :
+            const len = state.chatting.length - 1;
+            const range = action.payload;
+            for(let i= len; i>=0; i--){
+                const id = state.chatting[i].id;
+                if(id <= range[0]) {
+                    break;
+                }
+                else if( id <= range[1]){
+                    state.chatting[i].not_read--;
+                }
+                
+            }
+            return {
+                ...state
+            }
         case ChatTypes.FETCH_CHATTING_REQUEST :
             return {
                 ...state,
