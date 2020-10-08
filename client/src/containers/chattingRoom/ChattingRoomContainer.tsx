@@ -223,7 +223,7 @@ class ChattingRoomContainer extends Component<Props> {
                         room_id: chatState.room_id,
                         type: chatState.type as RoomType,
                         participant: chatState.participant,
-                        last_read_chat_id: lastReadChatId,
+                        last_read_chat_id_range: [lastReadChatId, lastChat.id],
                     }
                     
                     socket!.emit("readChat", obj);
@@ -239,8 +239,9 @@ class ChattingRoomContainer extends Component<Props> {
                 socket!.off("readChat");
                 socket!.on("readChat", (res: ReadChatResponse) => {
                     if (chatState.room_id === res.room_id) {
+                        const range = res.last_read_chat_id_range;
                         const updatedChatting = currChatting.map(chat => {
-                            if (chat.id > res.last_read_chat_id) {
+                            if ( chat.id > range[0] && chat.id<=range[1]) {
                                 return { ...chat, not_read: chat.not_read - 1 }
                             }
                             return chat

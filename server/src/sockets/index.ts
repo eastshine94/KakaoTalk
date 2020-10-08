@@ -92,25 +92,20 @@ const message = (socket: socketIO.Socket, io: socketIO.Server) => {
 
 const readChat = (socket: socketIO.Socket, io: socketIO.Server) => {
     socket.on('readChat', async(req: ReadChatRequest) => {
-        const {user_id, room_id, participant, last_read_chat_id} = req;
+        const {user_id, room_id, participant, last_read_chat_id_range} = req;
    
-        const readChatting = await Chatting.findAll({
+        await Chatting.increment(['not_read'],{
+            by: -1,
             where: {
                 room_id,
-                id: {[Op.gt]: last_read_chat_id}
+                id: {[Op.gt]: last_read_chat_id_range[0], [Op.lte]: last_read_chat_id_range[1]},
+                not_read: { [Op.gt]: 0 }
             }
-        }).then(people => {
-            people.forEach(person => {
-                person.decrement(['not_read'],{
-                    by: 1,
-                })
-            })
-            return people[people.length-1];
-        });
+        })
  
         await Participant.update({
             not_read_chat: 0,
-            last_read_chat_id: readChatting.id
+            last_read_chat_id: last_read_chat_id_range[1]
         },{
             where: {
                 user_id,
@@ -120,7 +115,7 @@ const readChat = (socket: socketIO.Socket, io: socketIO.Server) => {
 
         const readChatResponse: ReadChatResponse = {
             room_id,
-            last_read_chat_id
+            last_read_chat_id_range
         }
         if(req.type === "individual"){
             const me = user_id.toString();

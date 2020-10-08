@@ -100,11 +100,11 @@ export interface ReadChatRequest {
     room_id: number;
     type: RoomType;
     participant: Array<UserResponseDto>;
-    last_read_chat_id: number;
+    last_read_chat_id_range: Array<number>;
 }
 
 export interface ReadChatResponse{
     room_id: number;
-    last_read_chat_id: number;
+    last_read_chat_id_range: Array<number>;
 }
 
