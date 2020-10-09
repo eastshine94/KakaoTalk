@@ -4,7 +4,7 @@ import {UserResponseDto} from '~/types/user';
 import { BASE_IMG_URL } from '~/constants';
 import { SeparationBlock } from './InfoBlock';
 
-const Chat = styled.div`
+const ChatWrapper = styled.div`
     position: relative;
     display: inline-block;
 	padding: 7px 8px;
@@ -21,7 +21,7 @@ const RightBlock = styled.div`
 	margin-left: 10px;
 	margin-right: 10px;
     
-    & ${Chat}{
+    & ${ChatWrapper}{
         background-color: #ffec42;
         text-align: left;
         & span{
@@ -49,7 +49,7 @@ const LeftBlock = styled.div`
 	margin-left: 10px;
 	margin-right: 10px;
     padding-left: 50px;
-    & ${Chat}{
+    & ${ChatWrapper}{
         background-color: #fff;
         & span{
             position: absolute;
@@ -99,39 +99,44 @@ interface FriendChatProps {
     onImgClick():void;
 }
 
-export const MyChat:React.FC<ChatProps> = ({msg, localeTime, content, notRead}) => {
+
+export const Chat: React.FC<ChatProps> = ({msg, localeTime, notRead}) => {
+    return(
+        <ChatWrapper>
+            {msg}
+            <span className="time">{localeTime}</span>
+            <span className="not-read">{notRead > 0 ? notRead : ""}</span>
+        </ChatWrapper>
+    );
+}
+
+
+export const MyChat:React.FC<ChatProps> = (props) => {
+    const { content } = props;
     return(
         <React.Fragment>
             {content? <SeparationBlock content={content}/> : null}
             <RightBlock>
                 <div>
-                    <Chat>
-                        {msg}
-                        <span className="time">{localeTime}</span>
-                        <span className="not-read">{notRead > 0 ? notRead : ""}</span>
-                    </Chat>
+                    <Chat {...props} />
                 </div>
             </RightBlock>
         </React.Fragment>
     )
 }
 
-export const FriendChat:React.FC<ChatProps> = ({msg, localeTime, notRead}) => {
+export const FriendChat:React.FC<ChatProps> = (props) => {
     return (
         <LeftBlock>
             <div>
-                <Chat>
-                    {msg}
-                    <span className="time">{localeTime}</span>
-                    <span className="not-read">{notRead > 0 ? notRead : ""}</span>
-                </Chat>
+                <Chat {...props} />
             </div>
         </LeftBlock>
     )
 }
 
 export const FriendChatWithThumbnail: React.FC<FriendChatProps> = (props) => {
-    const {user, msg, localeTime, content, notRead, onImgClick} = props
+    const {user, content, onImgClick} = props
     return(
         <React.Fragment>
             {content? <SeparationBlock content={content}/> : null}
@@ -139,11 +144,7 @@ export const FriendChatWithThumbnail: React.FC<FriendChatProps> = (props) => {
                 <img src={ user.profile_img_url || BASE_IMG_URL } alt="thumbnail" onClick={onImgClick}/>
                 <NameBlock>{user.name}</NameBlock>
                 <div>
-                    <Chat>
-                        {msg}
-                        <span className="time">{localeTime}</span>
-                        <span className="not-read">{notRead > 0 ? notRead : ""}</span>
-                    </Chat>
+                    <Chat {...props} />
                 </div>
             </LeftBlock>
         </React.Fragment>
