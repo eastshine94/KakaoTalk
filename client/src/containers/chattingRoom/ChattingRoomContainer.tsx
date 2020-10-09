@@ -123,7 +123,7 @@ class ChattingRoomContainer extends Component<Props> {
             fetchChatting(requestObj);
             prevScrollHeight = messageRef.scrollHeight;
         }
-        if(messageRef.scrollHeight - messageRef.scrollTop > messageRef.clientHeight + 500 ){
+        if(prevScrollHeight - messageRef.scrollTop > messageRef.clientHeight + 1000 ){
             this.setState({
                 ...this.state,
                 isShowDownBtn: true,
@@ -161,10 +161,10 @@ class ChattingRoomContainer extends Component<Props> {
                 }
                 // 메시지 송수신 시 스크롤 변화
                 else if (prevLastChat.id !== currLastChat.id) {
-                    if (currLastChat.send_user_id === userState.id || currScrollHeight - messageRef.scrollTop <= messageRef.clientHeight + 100) {
+                    if (currLastChat.send_user_id === userState.id || prevScrollHeight - messageRef.scrollTop <= messageRef.clientHeight + 100) {
                         this.pageDown();
                     }
-                    else if (currScrollHeight - messageRef.scrollTop > messageRef.clientHeight + 500){
+                    else if (prevScrollHeight - messageRef.scrollTop > messageRef.clientHeight + 1000){
                         this.setState({
                             ...this.state,
                             isShowDownBtn: true,
@@ -174,6 +174,7 @@ class ChattingRoomContainer extends Component<Props> {
                     }
                 }
             }
+            prevScrollHeight = currScrollHeight;
         }
     }
 
