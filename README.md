@@ -138,7 +138,7 @@
 
 ### 1. webpack
 
-> 기존에 사용했던 CRA(create-react-app)를 통해 프로젝트를 진행하는 것이 아닌, Webpack을 이용하여 직접 개발환경을 설정하였습니다. 이를 통해 Customize하게 개발 환경을 구성할 수 있습니다.
+> CRA(create-react-app)를 통해 프로젝트를 진행하지 않고, Webpack을 이용하여 직접 개발환경을 설정하였습니다. 이를 통해 Customize하게 개발 환경을 구성할 수 있습니다.
 
 ```
   mode: process.env.NODE_ENV,
@@ -191,5 +191,13 @@ const GlobalStyle = createGlobalStyle`
 
 ### 3. 스크롤 페이징
 
-> 채팅방에 스크롤 페이징 기술을 접목하였습니다. 이를 통해 처음부터 모든 채팅 내용을 서버에서 가져오는 것이 아니라, 사용자가 원할 때만 이전 채팅 내용을 가져오기 때문에 자원 낭비를 막을 수 있습니다.
+> 채팅방에 스크롤 페이징 기술을 접목하였습니다. 이를 통해 처음부터 모든 채팅 내용을 서버에서 가져오는 것이 아니라, 사용자가 원할 때만 이전 채팅 내용을 가져오기 때문에 리소스 낭비를 막을 수 있습니다.
+
+<img src="https://user-images.githubusercontent.com/41350459/95644681-39eb8880-0af3-11eb-9aa6-e850fb33d526.gif" alt="스크롤 페이징"/>
+
+### 4. Sequelize
+
+> ERD & API는 다음 사이트에 정리히였습니다.
+> - **ERD Cloud : https://www.erdcloud.com/d/dqzfcGwjsQFq8BiG7**
+> - **Gitbook: https://app.gitbook.com/@eastshine94/s/kakaoclone/chat**
 
