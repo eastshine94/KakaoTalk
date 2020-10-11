@@ -1,9 +1,22 @@
 # Kakao Talk Clone Project
+
 > 카카오톡 채팅 기능을 구현
 
  Socket.io를 이용하여 실시간 양방향 통신 기능을 구현해보고 싶었습니다. 그러기에 가장 적합한 것이 채팅이라고 생각하였습니다. 그래서 가장 흔하게 사용하고 있는 카카오톡 채팅 기능을 구현해보자는 생각으로 이 프로젝트를 진행하였습니다.
 
-## 기술 스택
+## 목차
+
+Ⅰ) **기술 스택**
+
+Ⅱ) **프로젝트 사용해보기**
+
+Ⅲ) **주요 기능**
+
+Ⅳ) **UI/UX**
+
+Ⅴ) **프로젝트 구현 기술**
+
+## Ⅰ) 기술 스택
 
 ### 사용 언어
 
@@ -27,7 +40,7 @@
 - MySQL
 
 
-## 프로젝트 사용해보기
+## Ⅱ) 프로젝트 사용해보기
 
 -  http://kakaoclone.cafe24app.com/ 에서 서비스를 이용할 수 있습니다.
 
@@ -40,7 +53,11 @@
 
 - Session Storage를 사용하였기 때문에, 여러 창에서 로그인하여 서로 대화가 가능합니다. 또는 서로 다른 컴퓨터에서 접속하여 대화를 해보시기 바랍니다.
 
-## 주요 기능
+**※** 프로젝트에 사용된 **ERD & API**는 다음 사이트에 정리하였습니다.
+- **ERD Cloud : https://www.erdcloud.com/d/dqzfcGwjsQFq8BiG7**
+- **Gitbook: https://app.gitbook.com/@eastshine94/s/kakaoclone/chat**
+
+## Ⅲ) 주요 기능
 
 - 프로필 창에서 상태메시지, 배경사진, 프로필 사진 등을 변경할 수 있습니다. 또한, 친구의 이름을 변경할 수 있습니다.
 
@@ -52,7 +69,7 @@
 
 - 채팅방에서 스크롤을 기준치 이상 올릴 경우, 페이지 맨 아래로 내리는 버튼이 나오게 됩니다. 또한, 스크롤이 위로 올라간 상태에서 상대방이 채팅을 보내면, 채팅이 왔다는 것을 알려주는 창이 나오도록 하였습니다. 
 
-## UI/UX
+## Ⅳ) UI/UX
 
 ### 1. 회원가입
 
@@ -134,7 +151,7 @@
 
 <img src="https://user-images.githubusercontent.com/41350459/95090878-c0554280-0760-11eb-9fe9-ec60c33b29ab.png" alt="친구 프로필 창"/>
 
-## 프로젝트 구현 기술
+## Ⅴ) 프로젝트 구현 기술
 
 ### 1. webpack
 
@@ -193,11 +210,102 @@ const GlobalStyle = createGlobalStyle`
 
 > 채팅방에 스크롤 페이징 기술을 접목하였습니다. 이를 통해 처음부터 모든 채팅 내용을 서버에서 가져오는 것이 아니라, 사용자가 원할 때만 이전 채팅 내용을 가져오기 때문에 리소스 낭비를 막을 수 있습니다.
 
+**이전 채팅 불러오기**
 <img src="https://user-images.githubusercontent.com/41350459/95644681-39eb8880-0af3-11eb-9aa6-e850fb33d526.gif" alt="스크롤 페이징"/>
 
-### 4. Sequelize
 
-> ERD & API는 다음 사이트에 정리히였습니다.
-> - **ERD Cloud : https://www.erdcloud.com/d/dqzfcGwjsQFq8BiG7**
-> - **Gitbook: https://app.gitbook.com/@eastshine94/s/kakaoclone/chat**
+### 4. Socket.io
 
+> - 채팅의 실시간 양방향 통신을 위하여 Socket.io를 사용하였습니다.
+> - 채팅의 전반적인 기능(메시지 송수신, 알림 등)에 사용하여 실시간으로 채팅이 이루어지도록 구현하였습니다.
+
+**test01과 test02의 채팅**
+<img src="https://user-images.githubusercontent.com/41350459/95676907-c3d34880-0bfc-11eb-9c3b-1832713d234b.gif" alt="채팅"/>
+
+**채팅 알림**
+<img src="https://user-images.githubusercontent.com/41350459/95676908-c46bdf00-0bfc-11eb-9560-1cb02ce78a94.gif" alt="채팅 알림"/>
+
+
+### 5. Sequelize(ORM)
+
+> ORM(Object Relational Mapping)인 Sequelize를 이용하여 객체와 관계형 데이터베이스의 데이터를 매핑하였습니다. 이를 통해 SQL Query가 아닌 직관적인 코드로 데이터를 조작할 수 있기 때문에, 더 수월하게 개발이 가능합니다.
+
+**Object(객체)**
+```
+class Friend extends Model {
+    public id!: number;
+    public my_id!: number;
+    public friend_id!: number;
+    public friend_name!: string;
+    
+    public readonly User?: User;
+    public readonly createdAt!: Date;
+    public readonly updatedAt!: Date;
+}
+```
+
+**Object와 RDB를 Mapping**
+```
+Friend.init({
+        id: {
+            type: DataTypes.INTEGER.UNSIGNED,
+            autoIncrement: true,
+            primaryKey: true,
+            allowNull: false,
+        },
+        my_id: {
+            type: DataTypes.INTEGER.UNSIGNED,
+            allowNull: false,
+        },
+        friend_id: {
+            type: DataTypes.INTEGER.UNSIGNED,
+            allowNull: false,
+        },
+        friend_name: {
+            type: new DataTypes.STRING(20),
+            allowNull: false,
+        },
+        createdAt: {
+            type: DataTypes.DATE,
+            allowNull: false,
+        },
+        updatedAt: {
+            type: DataTypes.DATE,
+            allowNull: false,
+        },
+    }, {
+        sequelize,
+        tableName: 'friend',
+        engine: 'InnoDB',
+        charset: 'utf8',
+        freezeTableName: true,
+        indexes: [
+            {
+                unique: true,
+                fields: ['my_id', 'friend_id']
+            }
+        ]
+    });
+```
+
+**객체를 이용한 CRUD**
+
+```
+
+Friend.findAll({
+    attributes: ["friend_id", "friend_name"],
+    where: {my_id: 1},
+});
+
+Friend.create({
+  my_id: 1, 
+  friend_id: 2, 
+  friend_name: "김갑수"
+});
+
+Friend.update({
+  friend_name: "홍길동"
+}, {
+  where: {my_id, friend_id}
+});
+```

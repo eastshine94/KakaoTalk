@@ -1,4 +1,4 @@
-import {Model, Association} from 'sequelize';
+import { Model } from 'sequelize';
 import User from './User';
 
 export default class Friend extends Model {
