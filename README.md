@@ -55,7 +55,7 @@
 
 **※** 프로젝트에 사용된 **ERD & API**는 다음 사이트에 정리하였습니다.
 - **ERD Cloud : https://www.erdcloud.com/d/dqzfcGwjsQFq8BiG7**
-- **Gitbook: https://app.gitbook.com/@eastshine94/s/kakaoclone/chat**
+- **Gitbook: https://eastshine94.gitbook.io/kakaoclone/**
 
 ## Ⅲ) 주요 기능
 
