@@ -14,6 +14,7 @@ interface LoginResponseDto {
     token: string;
 }
 
+// 서버에 회원가입 요청
 export const signup = async(signupData: SignupData) => {
     const signupRequest: SignupRequestDto = {
         user_id: signupData.userId,
@@ -23,7 +24,7 @@ export const signup = async(signupData: SignupData) => {
     await axios.post(`${API_HOST}/auth/signup`, signupRequest);
 }
 
-
+// 서버에 로그인 요청
 export const login = async(loginData: LoginData)  => {
     const request = {
         user_id: loginData.userId,
