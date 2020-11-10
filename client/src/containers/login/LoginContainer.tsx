@@ -20,7 +20,7 @@ interface Props {
 }
 
 class LoginContainer extends Component<Props> {
-    
+    // 로그인 실패 메시지 등을 제거
     componentWillUnmount() {
         this.props.authActions.changeMessage("");
     }

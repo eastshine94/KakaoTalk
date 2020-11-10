@@ -9,6 +9,8 @@ interface Props {
 
 const Header: React.FC<Props> = ({changeSearch}) => {
     const [isopenFindFriend, openFindFriend] = useState(false);
+
+    // 친구 찾기 창(modal)
     const showFindFriend = isopenFindFriend ? 
         <FindFriendWindow onClose={()=>openFindFriend(false)} overlayClose={false}/>:null;
 

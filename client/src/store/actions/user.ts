@@ -89,6 +89,7 @@ export type UserActionTypes = FetchUserAction
 | AddFriendAction
 | ResetUserAction;
 
+// 로그인 시, 해당 유저의 정보를 가져옴
 export const fetchUser = (userId: string) => ({
     type: UserTypes.FETCH_USER_REQUEST,
     payload: userId
@@ -110,6 +111,7 @@ export const fetchRoomList = (id: number) => ({
     payload: id
 })
 
+// 안 읽은 채팅 수, 마지막 채팅 등 채팅 목록의 방 정보를 변경합니다.
 export const updateRoomList = (param: UpdateRoomListDto) => ({
     type: UserTypes.UPDATE_ROOMLIST,
     payload: param

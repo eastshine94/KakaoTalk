@@ -61,16 +61,16 @@ const CancelIcon = styled.i`
 
 
 interface Props extends ModalProps{
-
 }
 
+// 친구를 찾는 창
 const FindFriendWindow: React.FC<Props> = (props) => {
     const { overlayClose , onClose } = props;
     const MAX_LEN = 20;
     const [userId, setUserId] = useState("");
     const [foundUser, setFoundUser] = useState<UserResponseDto|undefined|null>();
     const [findUserId, setFindUserId] = useState("");
-
+    
     const onIdInputChange = (event: ChangeEvent<HTMLInputElement>) => {
         event.preventDefault();
         const value = event.target.value;

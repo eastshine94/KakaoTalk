@@ -57,8 +57,9 @@ interface Props {
     chatActions: typeof ChatActions;
 }
 
+// 친구 찾기 창에서 친구를 찾았을 때 나타나는 친구 정보
 const FoundFriendProfile: React.FC<Props> = (props) => {
-    const {findUserId, foundUser, onClose, rootState, userActions} = props;
+    const {findUserId, foundUser, onClose, rootState, userActions, chatActions} = props;
     const userData = rootState.user;
     if(foundUser){
         const my_id = userData.id;
@@ -68,6 +69,8 @@ const FoundFriendProfile: React.FC<Props> = (props) => {
         const existFriend = friendsList.find(friend => friend.id === friend_id);
         const isMe = my_id === friend_id;
         const { addFriend } = userActions;
+        const {showChattingRoom} = chatActions;
+        // 친구 추가
         const onAddFriendClick = async(event: MouseEvent<HTMLButtonElement>) => {
             event.preventDefault();
             const request: AddFriendRequestDto = { my_id, friend_id, friend_name };
@@ -80,38 +83,38 @@ const FoundFriendProfile: React.FC<Props> = (props) => {
             }
         }
 
-        if(existFriend || isMe){
-            const {showChattingRoom} = props.chatActions;
-            const onChatClick = () => {
-                const myId = userData.id;
-                const friendId = foundUser.id;
-                const identifier = myId < friendId ? `${myId}-${friendId}`:`${friendId}-${myId}`
-    
-                const roomObj: CreateRoomRequest = {
-                    type: "individual",
-                    identifier,
-                    room_name: "",
-                    participant: existFriend ? [existFriend] : [userData],
-                }
-                showChattingRoom(roomObj);
-                onClose();
+        
+        const onChatClick = () => {
+            const myId = userData.id;
+            const friendId = foundUser.id;
+            const identifier = myId < friendId ? `${myId}-${friendId}`:`${friendId}-${myId}`
+
+            const roomObj: CreateRoomRequest = {
+                type: "individual",
+                identifier,
+                room_name: "",
+                participant: existFriend ? [existFriend] : [userData],
             }
-            return(
-                <FoundUserProfile>
-                    <img src={foundUser.profile_img_url || BASE_IMG_URL} alt="profile_img"/>
-                    <p>{existFriend?.name || foundUser.name}</p>
-                    <Button onClick={onChatClick}>1:1 채팅</Button>
-                </FoundUserProfile>
-            )
-        } 
+            showChattingRoom(roomObj);
+            onClose();
+        }
+
+        /** 
+            이미 친구이거나 나일 경우 => 1:1 채팅 버튼, 
+            아닐 경우 => 친구 추가 버튼 
+        **/
+        const renderBtn = existFriend || isMe ? <Button onClick={onChatClick}>1:1 채팅</Button>:<Button onClick={onAddFriendClick}>친구 추가</Button>; 
+        
         return(
             <FoundUserProfile>
                 <img src={foundUser.profile_img_url || BASE_IMG_URL} alt="profile_img"/>
-                <p>{foundUser.name}</p>
-                <Button onClick={onAddFriendClick}>친구 추가</Button>
+                <p>{existFriend?.name || foundUser.name}</p>
+                {renderBtn}
             </FoundUserProfile>
         )
     }
+
+    // 친구를 찾지 못한 경우 나타나는 컴포넌트
     if(foundUser===null){
         return(
             <FindNull>

@@ -28,6 +28,7 @@ export interface LogoutAction {
   type: AuthTypes.LOGOUT;
 }
 
+// 로그인 실패 등에 따른 message
 export interface ChangeMessageAction{
   type: AuthTypes.CHANGE_MESSAGE;
   payload: string;

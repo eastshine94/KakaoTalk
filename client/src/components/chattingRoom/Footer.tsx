@@ -53,6 +53,7 @@ interface Props {
 }
 const Footer: React.FC<Props> = ({ onChatSumbmit }) => {
     const [ message, setMessage ] = useState("");
+    // 채팅 내용이 공백이라면, 채팅을 보낼 수 없도록 설정하였습니다.
     const isCanSubmit = !!message.replace(/ |\n/g,"");
     const btnClassName = isCanSubmit ? "canSubmit": "cannotSubmit";
     const onMessageChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
@@ -71,6 +72,7 @@ const Footer: React.FC<Props> = ({ onChatSumbmit }) => {
         requestSubmit();
     }
     const onEnterPress = (event: KeyboardEvent<HTMLTextAreaElement>) => {
+        // shift + enter 이면 줄바꿈이 되고, enter키만 누르면 채팅 전송이 됩니다.
         if(!event.shiftKey && event.key === "Enter"){
             event.preventDefault();
             requestSubmit();

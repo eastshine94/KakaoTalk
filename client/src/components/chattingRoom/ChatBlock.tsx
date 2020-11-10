@@ -4,6 +4,7 @@ import {UserResponseDto} from '~/types/user';
 import { BASE_IMG_URL } from '~/constants';
 import { SeparationBlock } from './InfoBlock';
 
+// 채팅방에서 채팅을 나타내는 컴포넌트
 const ChatWrapper = styled.div`
     position: relative;
     display: inline-block;
@@ -110,7 +111,7 @@ export const Chat: React.FC<ChatProps> = ({msg, localeTime, notRead}) => {
     );
 }
 
-
+// 내가 보낸 채팅
 export const MyChat:React.FC<ChatProps> = (props) => {
     const { content } = props;
     return(
@@ -125,6 +126,7 @@ export const MyChat:React.FC<ChatProps> = (props) => {
     )
 }
 
+// 다른 사람이 보낸 채팅 
 export const FriendChat:React.FC<ChatProps> = (props) => {
     return (
         <LeftBlock>
@@ -135,6 +137,7 @@ export const FriendChat:React.FC<ChatProps> = (props) => {
     )
 }
 
+// 다른 사람이 보냈으며, 프로필 사진을 포함하는 채팅
 export const FriendChatWithThumbnail: React.FC<FriendChatProps> = (props) => {
     const {user, content, onImgClick} = props
     return(

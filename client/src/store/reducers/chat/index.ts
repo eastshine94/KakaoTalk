@@ -53,6 +53,7 @@ const chatReducer = (state = initialState, action: ChatActionTypes ) => {
         case ChatTypes.READ_CHATTING :
             const len = state.chatting.length - 1;
             const range = action.payload;
+            // range에 포함되는 채팅만 숫자를 줄임
             for(let i= len; i>=0; i--){
                 const id = state.chatting[i].id;
                 if(id <= range[0]) {

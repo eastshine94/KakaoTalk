@@ -42,6 +42,7 @@ interface Props {
     showProfile(userData: UserResponseDto): void;
 }
 
+// 채팅방 목록 Props
 interface RoomRowProps {
     onDoubleClick(): void;
     onImgClick(): void;
@@ -52,8 +53,10 @@ interface RoomRowProps {
     not_read_chat: number;
 }
 
+// 채팅방 목록
 const RoomRow: React.FC<RoomRowProps> = (props) => {
     const { onImgClick, onDoubleClick, room_name, updatedAt, roomImg, last_chat, not_read_chat } = props;
+    // 마지막 채팅 시간
     const getUpdatetAt = (date: Date) => {
         const today = new Date();
         const updateDate = new Date(date);
@@ -64,8 +67,10 @@ const RoomRow: React.FC<RoomRowProps> = (props) => {
         }
         return localeDate;
     } 
-    getUpdatetAt(updatedAt);
+    
+    // 읽지 않은 채팅 수
     const showNotReadChat = not_read_chat > 0 ? <Notification>{not_read_chat <= 300? not_read_chat: "300+"}</Notification> : null;
+    
     return (
         <li onDoubleClick={onDoubleClick}>
             <img src={roomImg} alt="profile Image" onClick={onImgClick}/>
@@ -81,8 +86,6 @@ const RoomRow: React.FC<RoomRowProps> = (props) => {
     )
 }
 
-
-
 const Content: React.FC<Props> = (props) => {
     const {intoRoom, showProfile, userState, search} = props;
     const roomList = userState.room_list.sort((a,b) => b.updatedAt.toLocaleString().localeCompare(a.updatedAt.toLocaleString()));
@@ -90,19 +93,26 @@ const Content: React.FC<Props> = (props) => {
     
     let [rooms, setRooms] = useState([] as Array<RoomListDto>);
     let [notFriends, setNotFriends] = useState([] as Array<UserResponseDto>);
+    
+    /**  채팅방 메뉴가 처음 rendering 되거나, 
+    userState(내 정보, 친구 정보, 방 정보 등)이 바뀔 때, 채팅방 참가자 정보를 바꿈.*/
     useEffect(() => {
         const getParticipants = async() => {
             const getRoomList = await Promise.all(roomList.map(async(room) => {
                 const participant = await Promise.all(room.participant.map(async(val) => {
+                    // 참가자가 나 자신인가?
                     if(userState.id === val) return userState;
+                    // 참가자가 친구 목록에 있는가?
                     const findParticipant = friendList.find(friend => friend.id === val);
                     if(findParticipant){
                         return findParticipant;    
                     }
+                    // 참가자가 기존에 친구 아닌 목록에 있는가?
                     const findNotFriends = notFriends.find(person => person.id === val);
                     if(findNotFriends) {
                         return findNotFriends;
                     }
+                    // 서버에서 참가자 정보를 가져오고, 친구아님 목록에 추가합니다.
                     const user = await findUserUsingId(val);
                     await setNotFriends([...notFriends, user]);
                     return user;
@@ -113,13 +123,15 @@ const Content: React.FC<Props> = (props) => {
         }
         getParticipants();
     },[userState]);
-
+    
+    // 더블 클릭 시, 채팅방에 입장
     const onDoubleClick = (room: RoomListDto) => {
         intoRoom({...room});
     }
     const renderRoomList = rooms.map(room => {
         if(room.type==="individual"){
             const participant = room.participant.length > 0 ? room.participant : [userState];
+            // 채팅 참가자 중, 찾는 사람이 있는 방만 보여줍니다. 검색을 안하면 채팅방 전부 보여줌
             const reg_exp = new RegExp(`^.*${search}.*$`);
             const findRoom = participant.find(person => {
                 return person.name.replace(/ /g,"").match(reg_exp);

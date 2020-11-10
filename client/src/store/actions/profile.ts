@@ -54,6 +54,7 @@ export const hideProfile = (): HideProfileAction => ({
     type: ProfileTypes.HIDE_PROFILE,
 });
 
+// 이름, 상태 메시지, 프로필 사진 등을 변경
 export const changeProfile = (profileData: ProfileChangeRequestDto): ChangeProfileAction => ({
     type: ProfileTypes.CHANGE_PROFILE_REQUEST,
     payload: profileData,

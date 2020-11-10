@@ -65,6 +65,7 @@ interface Props{
     changeProfile(value: string): void;
 }
 
+// 이름이나 상태 메시지를 변경하는 창
 const ProfileInputWindow: React.FC<Props> = ({currentValue, maxLength, showWindow, changeProfile}) => {
     const [value, setValue] = useState(currentValue);
     const onValueChange = (event: ChangeEvent<HTMLInputElement>) => {

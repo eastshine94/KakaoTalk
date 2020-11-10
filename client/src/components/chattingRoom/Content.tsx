@@ -40,6 +40,8 @@ const Content: React.FC<Props> = (props) => {
         const isPrevSender = prevChat? prevChat.send_user_id === senderId : false;
         const isSameDate = prevLocaleDate === localeDate;
         const sender = participant.find(person => person.id === senderId) as UserResponseDto;
+        
+        // 채팅한 날짜를 표시
         const getDate = () => {
             let weekday=new Array(7);
             weekday[0]="일요일";
@@ -53,16 +55,27 @@ const Content: React.FC<Props> = (props) => {
             const day = weekday[createdAt.getDay()];
             return `${splitDate[0].trim()}년 ${splitDate[1].trim()}월 ${splitDate[2].trim()}일 ${day}`
         }
+        // 지금 채팅 날짜가 이전에 채팅 날짜와 다르면 날짜 표시
         const date = isSameDate ? "" : getDate();
+        
+        // 마지막 채팅인 경우
         if(idx === chattingList.length - 1){
+            // 내가 보낸 채팅인 경우
             if(senderId === myId){
                 return <MyChat msg={chat.message} notRead={chat.not_read} localeTime={removeSecond} content={date} key={chat.id}/>;
             }
+
+            // 이전에 보낸 채팅과 사람, 날짜가 동일한 경우
             if(isPrevSender && isSameDate){
                 return <FriendChat msg={chat.message} notRead={chat.not_read} localeTime={removeSecond} key={chat.id}/>;
             }
             return <FriendChatWithThumbnail msg={chat.message} user={sender} notRead={chat.not_read} localeTime={removeSecond} content={date} onImgClick={ () => showProfile(sender)} key={chat.id}/>;
         }
+        /**
+         채팅 시간 표시 여부를 결정하기 위해, 다음과 같은 규칙을 적용했습니다. 
+         1. 기준 채팅과 다음 채팅을 보낸 사람이 다르면 시간을 표시합니다.
+         2. 기준 채팅과 다음 채팅을 보낸 시간 또는 날짜가 다르면 시간을 표시합니다.
+         **/ 
         const afterSender = chattingList[idx+1];
         const afterCreateAt = new Date(afterSender.createdAt);
         const afterLocaleDate = afterCreateAt.toLocaleDateString();
@@ -71,9 +84,11 @@ const Content: React.FC<Props> = (props) => {
         const isSameTimeWithAfterTime = afterRemoveSecond === removeSecond;
         const isSameDateWithAfterTime = afterLocaleDate === localeDate;
         const time = (afterSender.send_user_id !== senderId || !isSameTimeWithAfterTime || (!isSameDateWithAfterTime)) ? removeSecond : "";
+        // 내가 보낸 경우
         if(senderId === myId){
             return <MyChat msg={chat.message} notRead={chat.not_read} localeTime={time} content={date} key={chat.id}/>;
         }
+        // 이전 채팅과 지금 채팅이 보낸 사람, 날짜가 같고, 보낸 시간이 같을 경우
         if(isPrevSender && isSameDate && (prevRemoveSecond === removeSecond)){
             return <FriendChat msg={chat.message} notRead={chat.not_read} localeTime={time} key={chat.id}/>;            
         }

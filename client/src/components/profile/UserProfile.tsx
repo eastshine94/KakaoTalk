@@ -67,11 +67,14 @@ const UserProfile: React.FC<Props> = ( props ) => {
         showProfileSetting(false);
     }
     const showSettinOverlay = isShowBgSetting || isShowProfileSetting ? <SettingOverlay onClick={onSettingBgClick}/>:""
+    
+    // 이름이나 상태 메시지 변경 창
     const showProfileInputWindow = () => {
         const user_profile_id = profileData.id;
         const changeName = async(name: string) => {
             name = name.trim();
             const isExistName = name.replace(/ /g,"");
+            // 공백이 입력되면 이름을 변경하지 않습니다.
             if(isExistName){
                 if(isMe){
                     await changeProfile({id: user_profile_id, name});
@@ -86,6 +89,7 @@ const UserProfile: React.FC<Props> = ( props ) => {
             await changeProfile({id:user_profile_id, status_msg: msg});
         }
         
+        // 클릭된 것이 이름 변경인지 상태 메시지 변경인지에 따라 컴포넌트를 render 합니다.
         if(isShowNameChange){
             return <ProfileInputWindow currentValue={profileData.name || ""} maxLength={20} showWindow={showNameChange} changeProfile={changeName}/>
         }

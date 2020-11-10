@@ -138,15 +138,18 @@ export const FriendProfileImage: React.FC<{ userData: UserResponseDto }> = ({use
     )
 }
 
+// 배경 변경이나 프로필 사진 클릭 시 나타나는 컴포넌트 
 const Setting: React.FC<SettingBlockProps> = ({className, showSetting, changeImage, changeToInitImage}) => {
     const settingName = className === "bgSetting" ? "배경 변경" : "사진 변경";
     const validFileType = ["image/bmp","image/png","image/jpg","image/jpeg"];
 
+    // 이미지 이외의 파일은 받지 않습니다.
     const selectFile = async(event: ChangeEvent<HTMLInputElement>) => {
         event.preventDefault();
         if(event.target.files){
             const file = event.target.files[0];
             if(validFileType.includes(file.type)){
+                // 서버로 업로드
                 const imageUrl = await uploadImageFile(file);
                 await changeImage(imageUrl);
             }

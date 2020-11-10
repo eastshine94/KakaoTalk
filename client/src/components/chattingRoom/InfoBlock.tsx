@@ -182,12 +182,14 @@ interface MessageNotificationProp extends DownProps {
     msg: string;
 }
 
+// 날짜를 표시하는 등 채팅방의 경계를 나타냅니다.
 export const SeparationBlock: React.FC<SeparationBlockProps> = ({content}) => {
     return(
         <BorderBlock><span>{content}</span></BorderBlock>
     )
 }
 
+// 친구가 아닐 경우, 상단에 경고 창이 뜨게 됩니다.
 export const NotFriendWarning: React.FC<NotFriendWariningProps> = (props) => {
     const { onAddFriendClick } = props;
     return(
@@ -205,6 +207,7 @@ export const NotFriendWarning: React.FC<NotFriendWariningProps> = (props) => {
     )
 }
 
+// 채팅방의 스크롤이 일정 이상 올라가면 나타나는 Down 버튼입니다.
 export const DownBtn: React.FC<DownProps> = (props) => {
     const { onDownClick } = props;
     return(
@@ -214,6 +217,8 @@ export const DownBtn: React.FC<DownProps> = (props) => {
     )
 }
 
+
+// 채팅방의 스크롤이 일정 이상 올라가 있는 상태에서, 메시지가 도착하면 이를 알려주는 컴포넌트 입니다.
 export const MessageNotification: React.FC<MessageNotificationProp> = (props) => {
     const { msg } = props;
     const user = props.user as UserResponseDto;

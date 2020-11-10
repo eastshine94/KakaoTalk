@@ -129,6 +129,7 @@ const Content: React.FC<RouteComponentProps> = (props) => {
         return true;
     }
 
+    // 입력 창에서 벗어날 때 발생하는 action
     const onUserIdBlur = (event: FocusEvent<HTMLInputElement>):void => {
         event.preventDefault();
         isValidUserId();

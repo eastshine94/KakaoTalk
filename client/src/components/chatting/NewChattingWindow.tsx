@@ -6,6 +6,7 @@ import { BASE_IMG_URL } from '~/constants';
 import { UserData, UserResponseDto } from '~/types/user';
 import { CreateRoomRequest } from '~/types/chatting';
 
+// 새로운 채팅창 => 친구 목록에서 대화할 상대를 골라 채팅하도록 하는 컴포넌트입니다.
 const Wrapper = styled.div`
     position: relative;
     width: 380px;
@@ -169,6 +170,7 @@ const FriendRow:React.FC<FriendRowProps> = (props) => {
 
 const Header: React.FC<HeaderProps> = (props) => {
     const { setSearch } = props;
+    // 친구 찾기
     const onSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
         event.preventDefault();
         const searchRemoveBlank = event.target.value.replace(/ /g,"");
@@ -189,6 +191,7 @@ const Content: React.FC<ContentProps> = (props) => {
     const friendsList = userState.friends_list.sort((a,b)=>{
         return a.name.localeCompare(b.name);
     });
+    // 검색한 친구만 나타냅니다. 만약 검색한 것이 없다면 모든 친구를 나타냅니다.
     const searchedFriends = friendsList.filter(friend => {
         return friend.name.replace(/ /g,"").match(reg_exp);
     });

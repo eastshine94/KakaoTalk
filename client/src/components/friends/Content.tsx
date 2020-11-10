@@ -59,6 +59,8 @@ interface FriendRowProps {
     profileImgClick(): void,
     onDoubleClick(): void,
 }
+
+// 친구 목록
 const FriendRow:React.FC<FriendRowProps> = (props) => {
     const {name, status_msg, profile_img_url} = props;
     const {profileImgClick, onDoubleClick} = props;
@@ -73,6 +75,7 @@ const FriendRow:React.FC<FriendRowProps> = (props) => {
 
 
 const Content: React.FC<Props> = ({search, userData, showProfile, showChattingRoom}) => {
+    // 검색된 친구들만 보여줍니다. 검색을 안 할 경우 모든 찬구를 보여줍니다.
     const searchRemoveBlank = search.replace(/ /g,"");
     const reg_exp = new RegExp(`^.*${searchRemoveBlank}.*$`);
     const friendsList = userData.friends_list.sort((a,b)=>{

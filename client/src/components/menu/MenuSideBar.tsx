@@ -32,10 +32,11 @@ interface Props {
 }
 
 const MenuSideBar: React.FC<Props> = ({roomList, socket, logout}) => {
+    // 읽지 않은 총 채팅 수를 의미합니다.
     const totalNotReadNum = roomList.reduce((acc, curr) => {
         return acc + curr.not_read_chat;
     }, 0);
-    const showNotReadChat = totalNotReadNum > 0 ? <Notification>{totalNotReadNum<= 300? totalNotReadNum: "300+"}</Notification> : null;
+    const showNotReadChat = totalNotReadNum > 0 ? <Notification>{totalNotReadNum <= 300 ? totalNotReadNum : "300+"}</Notification> : null;
     const onLogoutClick = () => {
         const isLogout = confirm("로그아웃 하시겠습니까?");
         if(isLogout) {

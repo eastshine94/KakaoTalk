@@ -90,6 +90,8 @@ class MenuContainer extends Component<Props> {
         const chatState = this.props.rootState.chat;
         const userState = this.props.rootState.user;
         const roomList = userState.room_list;
+        
+        // 로그인 상태가 아니라면 로그인 메뉴로 이동합니다.
         if(!token) {
             return <Redirect to={PAGE_PATHS.LOGIN}/>
         }
