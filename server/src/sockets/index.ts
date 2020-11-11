@@ -31,6 +31,10 @@ const joinRoom = (socket: socketIO.Socket) => {
     })
 }
 
+/** 
+    클라이언트가 채팅 메시지를 보내면, 서버는 자신과 참가자들에게 채팅을 보냅니다.
+    클라이언트는 서버의 response를 받아 채팅 목록을 update합니다.
+**/  
 const message = (socket: socketIO.Socket, io: socketIO.Server) => {
     socket.on('message', async(messageObj:MessageRequest) => {
         const {room_id, send_user_id, message, not_read} = messageObj;
@@ -117,13 +121,16 @@ const readChat = (socket: socketIO.Socket, io: socketIO.Server) => {
             room_id,
             last_read_chat_id_range
         }
+
         if(req.type === "individual"){
             const me = user_id.toString();
             const target = participant[0].id.toString();
+            // 나 이외에 참가자들에게 채팅을 읽었다는 신호를 보냄
             if(me !== target){
                 io.to(target).emit('readChat', readChatResponse); 
             }
         }
+        
         else {
             const roomId = req.room_id.toString();
             io.to(roomId).emit('readChat',readChatResponse);

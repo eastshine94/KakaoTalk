@@ -79,6 +79,7 @@ router.post("/room/create", async(req, res) => {
     }
 })
 
+// 채팅 내용을 보낼 때 사용
 router.get("/room", async(req, res) => {
     const room_id: number = Number(req.query.room_id);
     if(!room_id){
@@ -112,6 +113,7 @@ router.get("/room", async(req, res) => {
 router.get("/roomList/:user_id", async(req,res) =>{
     const user_id = Number(req.params.user_id);
     try {
+        // participant 테이블과 room 테이블을 join한 결과 값을 얻어옵니다.
         const roomData = await Participant.findAll({
             attributes: ["room_id", "room_name", "not_read_chat", "last_read_chat_id"],
             include: [{

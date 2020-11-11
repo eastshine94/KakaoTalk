@@ -7,6 +7,7 @@ const dest = path.join(__dirname, '../uploads/');
 const upload = multer({dest})
 const router = express.Router();
 
+// 회원가입한 user id로 유저 정보를 찾습니다.
 router.get("/:user_id", async(req, res) => {
   const user_id = req.params.user_id;
   try {
@@ -31,6 +32,7 @@ router.get("/:user_id", async(req, res) => {
   }
 });
 
+// uid로 유저 정보를 찾습니다.
 router.get("/find/:id", async(req, res) => {
   const id = req.params.id;
   try {

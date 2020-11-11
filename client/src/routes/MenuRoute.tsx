@@ -3,7 +3,7 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 import { PAGE_PATHS } from '~/constants';
 import {FriendsContainer, ChattingContainer } from '~/containers'
 
-const MenuRoute:React.SFC = () => {
+const MenuRoute:React.FC = () => {
     return(
         <Switch>
             <Route path={PAGE_PATHS.FRIENDS} component={FriendsContainer}/>

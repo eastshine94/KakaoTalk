@@ -7,7 +7,7 @@ import Room from './Room';
 import Participant from './Participant';
 import Chatting from './Chatting';
 
-
+// DB 스키마 정의
 export function init(): Sequelize {
     const sequelize = new Sequelize(config.db.url,{
         dialect: 'mysql',

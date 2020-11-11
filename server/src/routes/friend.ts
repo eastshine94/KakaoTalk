@@ -17,6 +17,7 @@ const router = express.Router();
 router.get("/:id", async(req, res) => {
     const id = req.params.id;
     try{
+        // user와 friend를 join한 결과값을 얻어냅니다.
         const friends = await Friend.findAll({
             attributes: ["friend_id", "friend_name"],
             include: [{
@@ -27,6 +28,7 @@ router.get("/:id", async(req, res) => {
             }],
             where: {my_id: id},
         });
+
         const response = friends.reduce((acc,curr) => { 
             const user = curr.User as User;
             const friend: FriendResponseDto = {
