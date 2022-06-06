@@ -75,13 +75,13 @@
 
 > 간단한 입력을 통해 회원가입이 가능합니다.
 
-<img src="https://user-images.githubusercontent.com/41350459/95066085-e2d56480-073c-11eb-8ddf-9c2ffedffb97.PNG" alt="회원가입"/>
+![회원가입](https://user-images.githubusercontent.com/41350459/95066085-e2d56480-073c-11eb-8ddf-9c2ffedffb97.PNG)
 
 ### 2. 로그인
 
 > 회원가입한 정보로 로그인할 수 있습니다.
 
-<img src="https://user-images.githubusercontent.com/41350459/95066838-e61d2000-073d-11eb-8c75-e89c407dbdfd.PNG" alt="로그인"/>
+![로그인](https://user-images.githubusercontent.com/41350459/95066838-e61d2000-073d-11eb-8c75-e89c407dbdfd.PNG)
 
 
 ### 3. 친구 메뉴
@@ -90,19 +90,20 @@
 > - 친구는 이름순으로 정렬되어 있습니다.
 > - 친구를 더블 클릭 시 채팅방에 입장하게 됩니다.
 
-<img src="https://user-images.githubusercontent.com/41350459/95090891-c2b79c80-0760-11eb-91fb-9617e8a48557.png" alt="친구 메뉴"/>
+![친구메뉴](https://user-images.githubusercontent.com/41350459/95090891-c2b79c80-0760-11eb-91fb-9617e8a48557.png)
+
 
 #### 3.1 친구 추가
 
 > 친구 ID를 입력하여 친구를 추가할 수 있습니다. 만약 이미 친구라면 1:1 채팅 버튼이 나옵니다.
 
-<img src="https://user-images.githubusercontent.com/41350459/95090876-bf241580-0760-11eb-81b0-dafb74bb38b3.png" alt="친구 추가"/>
+![친구추가](https://user-images.githubusercontent.com/41350459/95090876-bf241580-0760-11eb-81b0-dafb74bb38b3.png)
 
 #### 3.2 친구 검색
 
 > 검색 창에 입력한 단어가 이름에 있는 친구들을 찾습니다.
 
-<img src="https://user-images.githubusercontent.com/41350459/95090885-c1866f80-0760-11eb-8caa-eb9cebbeb373.png" alt="친구 검색"/>
+![친구검색](https://user-images.githubusercontent.com/41350459/95090885-c1866f80-0760-11eb-8caa-eb9cebbeb373.png)
 
 ### 4. 채팅 메뉴
 
@@ -110,21 +111,21 @@
 > - 채팅방은 최근 수신한 채팅 날짜 순으로 정렬되어 있으며, 읽지 않은 채팅 수가 표시됩니다.
 > - 채팅방을 더블 클릭 시 채팅방에 입장하게 됩니다.
 
-<img src="https://user-images.githubusercontent.com/41350459/95163480-ea4f4900-07e2-11eb-8ff1-49377be284e5.png" alt="채팅 메뉴"/>
+![채팅메뉴](https://user-images.githubusercontent.com/41350459/95163480-ea4f4900-07e2-11eb-8ff1-49377be284e5.png)
 
 #### 4.1 새로운 채팅
 
 > - 친구 목록에서 채팅 할 대상을 선택하여 대화할 수 있습니다.
 > - 검색을 통해 대화할 친구를 찾을 수도 있습니다.
 
-<img src="https://user-images.githubusercontent.com/41350459/95184281-1d550500-0802-11eb-8622-420b1c799a54.png" alt="새로운 채팅"/>
+![새로운채팅](https://user-images.githubusercontent.com/41350459/95184281-1d550500-0802-11eb-8622-420b1c799a54.png)
 
 
 #### 4.2 채팅방 검색
 
 > 검색 단어가 방 참가자 또는 방 이름에 있는 채팅방들을 나타냅니다.
 
-<img src="https://user-images.githubusercontent.com/41350459/95185750-129b6f80-0804-11eb-9f04-847ba3cebb5b.png" alt="방 검색">
+![방검색](https://user-images.githubusercontent.com/41350459/95185750-129b6f80-0804-11eb-9f04-847ba3cebb5b.png)
 
 ### 5. 채팅방
 
@@ -133,7 +134,7 @@
 > - 스크롤이 위로 올라가 있을 때, 상대방이
 메시지를 보내면 알려줍니다.
 
-<img src="https://user-images.githubusercontent.com/41350459/95193059-28159700-080e-11eb-9d8e-54ea6ba409cf.png" alt="채팅방"/>
+![채팅방](https://user-images.githubusercontent.com/41350459/95193059-28159700-080e-11eb-9d8e-54ea6ba409cf.png)
 
 ### 6. Profile
 
@@ -141,7 +142,7 @@
 
 1. **나의 프로필**
   
-<img src="https://user-images.githubusercontent.com/41350459/95090872-bdf2e880-0760-11eb-8d70-40171d1b5820.png" alt="나의 프로필 창"/>
+![나의 프로필 창](https://user-images.githubusercontent.com/41350459/95090872-bdf2e880-0760-11eb-8d70-40171d1b5820.png)
 
 -------------
 
@@ -149,7 +150,7 @@
 
 > 친구의 경우, 이름 변경만 가능합니다.
 
-<img src="https://user-images.githubusercontent.com/41350459/95090878-c0554280-0760-11eb-9fe9-ec60c33b29ab.png" alt="친구 프로필 창"/>
+![친구 프로필 창](https://user-images.githubusercontent.com/41350459/95090878-c0554280-0760-11eb-9fe9-ec60c33b29ab.png)
 
 ## Ⅴ) 프로젝트 구현 기술
 
@@ -212,7 +213,7 @@ const GlobalStyle = createGlobalStyle`
 
 #### 이전 채팅 불러오기
 
-<img src="https://user-images.githubusercontent.com/41350459/95644681-39eb8880-0af3-11eb-9aa6-e850fb33d526.gif" alt="스크롤 페이징"/>
+![스크롤페이징](https://user-images.githubusercontent.com/41350459/95644681-39eb8880-0af3-11eb-9aa6-e850fb33d526.gif)
 
 
 ### 4. Socket.io
@@ -222,11 +223,11 @@ const GlobalStyle = createGlobalStyle`
 
 #### test01과 test02의 채팅
 
-<img src="https://user-images.githubusercontent.com/41350459/95676907-c3d34880-0bfc-11eb-9c3b-1832713d234b.gif" alt="채팅"/>
+![채팅](https://user-images.githubusercontent.com/41350459/95676907-c3d34880-0bfc-11eb-9c3b-1832713d234b.gif)
 
 #### 채팅 알림
 
-<img src="https://user-images.githubusercontent.com/41350459/95676908-c46bdf00-0bfc-11eb-9560-1cb02ce78a94.gif" alt="채팅 알림"/>
+![채팅알림](https://user-images.githubusercontent.com/41350459/95676908-c46bdf00-0bfc-11eb-9560-1cb02ce78a94.gif)
 
 
 ### 5. Sequelize(ORM)
