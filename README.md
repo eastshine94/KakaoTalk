@@ -24,8 +24,8 @@
 
 ### Client
 
-- React
-- React Router v4
+- React V16
+- React Router V5
 - Redux
 - Redux-saga
 - Styled-components
