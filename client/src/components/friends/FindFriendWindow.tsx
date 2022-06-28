@@ -2,110 +2,116 @@ import React, { useState, ChangeEvent, FormEvent } from 'react';
 import styled from 'styled-components';
 import { findUser } from '~/apis/user';
 import { UserResponseDto } from '~/types/user';
-import Modal, {ModalProps} from '~/pages/Modal';
+import Modal, { ModalProps } from '~/pages/Modal';
 import FoundFriendProfile from './FoundFriendProfile';
 
-
 const Wrapper = styled.div`
-    width: 360px;
-    height: 450px;
-    border: 1px solid #646464;
-    margin: auto;
-    color: #000;
-    background: #fff;
-    & h4 {
-        padding: 25px 20px;
-        font-size: 18px;
-        font-weight: 600;
+  width: 360px;
+  height: 450px;
+  border: 1px solid #646464;
+  margin: auto;
+  color: #000;
+  background: #fff;
+  & h4 {
+    padding: 25px 20px;
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+  & form {
+    width: 90%;
+    border-bottom: 2px solid #000;
+    margin: 30px auto;
+    & input,
+    span {
+      padding: 5px;
     }
-    
-    & form{
-        width: 90%;
-        border-bottom: 2px solid #000;
-        margin: 30px auto;
-        & input, span{
-            padding: 5px;
-        }
-        & input{
-            width: 85%;
-            outline: none;
-            border: none;
-        }
-        & span {
-            display: inline-block;
-            width: 15%;
-            text-align: center;
-        }
+    & input {
+      width: 85%;
+      outline: none;
+      border: none;
     }
+    & span {
+      display: inline-block;
+      width: 15%;
+      text-align: center;
+    }
+  }
 `;
 const Menu = styled.div`
-    padding: 0 20px;
-    border-bottom: 1px solid #dcdcdc;
-    & span{
-        display: inline-block;
-        font-size: 13px;
-        font-weight: bold;
-        border-bottom: 1px solid #000;
-        padding: 10px 0;
-    }  
-`
+  padding: 0 20px;
+  border-bottom: 1px solid #dcdcdc;
+  & span {
+    display: inline-block;
+    font-size: 13px;
+    font-weight: bold;
+    border-bottom: 1px solid #000;
+    padding: 10px 0;
+  }
+`;
 const CancelIcon = styled.i`
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    font-size: 15px;
-    color: #000;
-    z-index: 100;
-    cursor: pointer;
-`
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  font-size: 15px;
+  color: #000;
+  z-index: 100;
+  cursor: pointer;
+`;
 
-
-interface Props extends ModalProps{
-}
+interface Props extends ModalProps {}
 
 // 친구를 찾는 창
-const FindFriendWindow: React.FC<Props> = (props) => {
-    const { overlayClose , onClose } = props;
-    const MAX_LEN = 20;
-    const [userId, setUserId] = useState("");
-    const [foundUser, setFoundUser] = useState<UserResponseDto|undefined|null>();
-    const [findUserId, setFindUserId] = useState("");
-    
-    const onIdInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-        event.preventDefault();
-        const value = event.target.value;
-        if(value.length <=20){
-            setUserId(event.target.value);
-        }
-        if(value.length === 0){
-            setFoundUser(undefined);
-        }
+const FindFriendWindow: React.FC<Props> = props => {
+  const { overlayClose, onClose } = props;
+  const MAX_LEN = 20;
+  const [userId, setUserId] = useState('');
+  const [foundUser, setFoundUser] = useState<
+    UserResponseDto | undefined | null
+  >();
+  const [findUserId, setFindUserId] = useState('');
+
+  const onIdInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    event.preventDefault();
+    const value = event.target.value;
+    if (value.length <= 20) {
+      setUserId(event.target.value);
     }
-    const onSubmit = async(event: FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        const user = await findUser(userId);
-        await setFoundUser(user);
-        await setFindUserId (userId);
+    if (value.length === 0) {
+      setFoundUser(undefined);
     }
-    return(
-        <Modal overlayClose={overlayClose} onClose={onClose}>
-            <Wrapper>
-                <CancelIcon className="fas fa-times" onClick={onClose}/>
-                <h4>친구 추가</h4>
-                <Menu><span>ID로 추가</span></Menu>
-                <form onSubmit={onSubmit}>
-                    <input 
-                        value= {userId} 
-                        maxLength={MAX_LEN} 
-                        autoFocus={true} 
-                        onChange={onIdInputChange}
-                    />
-                    <span>{`${userId.length}/${MAX_LEN}`}</span>
-                </form>
-                <FoundFriendProfile findUserId={findUserId} foundUser= {foundUser} onClose={onClose}/>
-            </Wrapper>
-        </Modal>
-    )
-}
+  };
+  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const user = await findUser(userId);
+    await setFoundUser(user);
+    await setFindUserId(userId);
+  };
+  return (
+    <Modal overlayClose={overlayClose} onClose={onClose}>
+      <Wrapper>
+        <CancelIcon className="fas fa-times" onClick={onClose} />
+        <h4>친구 추가</h4>
+        <Menu>
+          <span>ID로 추가</span>
+        </Menu>
+        <form onSubmit={onSubmit}>
+          <input
+            value={userId}
+            maxLength={MAX_LEN}
+            autoFocus={true}
+            onChange={onIdInputChange}
+          />
+          <span>{`${userId.length}/${MAX_LEN}`}</span>
+        </form>
+        <FoundFriendProfile
+          findUserId={findUserId}
+          foundUser={foundUser}
+          onClose={onClose}
+        />
+      </Wrapper>
+    </Modal>
+  );
+};
 
 export default FindFriendWindow;

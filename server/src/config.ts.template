@@ -1,0 +1,8 @@
+export default {
+  auth: {
+    key: 'auth-key'
+  },
+  db: {
+    url: 'mysql://USER:PASSWORD@@DB_URL:DB_PORT/DB_NAME'
+  }
+};
